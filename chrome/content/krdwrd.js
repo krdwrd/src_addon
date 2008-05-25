@@ -158,6 +158,7 @@ function KrdWrd()
         var url = encodeURIComponent(content.document.location.href);
         var params = "url=" + url + "&html=" + html;
         var request = new XMLHttpRequest();
+        var ocg = this.onCommandGrab();
 
         request.open('POST', kwserver + 'tagpage', true);
         request.onreadystatechange = function()
@@ -168,7 +169,10 @@ function KrdWrd()
                 if (request.status != 200)
                     notify("Upload failed. " + response);
                 else
+                {
                     notify("Upload complete.");
+                    ocg();
+                }
             }
         };
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -181,6 +185,8 @@ function KrdWrd()
     this.onCommandGrab = function()
     {
         content.document.location = kwserver + 'serve?corpus=' + this.getCorpus();
+        $('kwmenu_track').setAttribute('checked', true);
+        this.onCommandTracking();
     }
 
     // handler for user tag events
@@ -200,6 +206,7 @@ function KrdWrd()
         $('kwmenu_grab').disabled = false;
         $('kwmenu_submit').disabled = false;
         this.corpus = corpus;
+        this.onCommandGrab();
     }
 
     // update per-document tracker when the current page changes
