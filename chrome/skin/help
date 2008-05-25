@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<link rel="stylesheet" type="text/css" href="about.css" />
+</head>
+<body>
+	<div id="aboutPageContainer">
+		<h2>krdwrd help</h2>
+		For you to be a productive drone, all you need to do is:
+		<ul>
+			<li>
+				<b>select a corpus</b> using the krdwrd menu in your statusbar.
+			</li>
+			<li>
+			    <b>grab a page</b> from your current corpus.
+			</li>
+			<li>
+				<b>enable tagging</b> -
+				Hovering over a webpage highlights
+				the element under the cursor.
+			</li>
+			<li>
+				<b>annotate</b>
+				the currently highlighted element. Use the context menu to
+				tag it.	The color will change accordingly.
+			</li>
+			<li>
+				<b>submit</b>
+				your annotation.
+			</li>
+			<li>
+				<b>repeat</b>
+				until you reach the end game monster.
+			</li>
+		</ul>
+		<br />
+		<i>
+		Please note the keyboard shortcuts given next to the menu
+		items. They tend to make life a lot easier.
+		</i>
+	</div>
+</body>
+</html>

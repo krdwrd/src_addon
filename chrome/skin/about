@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<link rel="stylesheet" type="text/css" href="about.css" />
+</head>
+<body>
+	<div id="aboutPageContainer">
+		<center>
+		<div id="aboutLogoContainer" align="center">
+			<embed src="krdwrd.svg" type="image/svg+xml" width="300" height="300" />
+			<p id="version">krdwrd version: 14 @ svn</p>
+		</div>
+		</center>
+		<ul>
+		<li>Copyright &copy; 2008 by Egon Stemle, Johannes Steger</li>
+		<li>Visit the <a href="https://krdwrd.org/">Project Website</a>.</li>
+		<li>Read the <a href="LICENSE">licensing information</a> for this product.</li>
+		<li>Thank you for tagging the web!</li>
+		</ul>
+	</div>
+</body>
+</html>
