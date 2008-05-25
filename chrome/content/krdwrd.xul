@@ -83,6 +83,10 @@
 	    </menupopup>
 
 		</menu>
+         
+        <menuitem id="kwmenu_about" label="My Stats"
+         accesskey="m"
+		 oncommand="content.document.location = 'https://krdwrd.org/pages/bin/stat';"/>
 
         <menuseparator/>
          
