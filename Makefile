@@ -24,7 +24,9 @@ update.rdf: install.rdf
 skin: $(REV)
 	$(TXTVER) chrome/skin/about
 
-$(XPI): is-clean tag-revision skin update.rdf
+tag: is-clean tag-revision skin update.rdf
+
+$(XPI):
 	zip $(XPI) chrome.manifest install.rdf -r chrome -x '*/.*'
 
 clean:
