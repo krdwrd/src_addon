@@ -1,28 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-         xmlns:em="http://www.mozilla.org/2004/em-rdf#">
-
-  <RDF:Description about="urn:mozilla:extension:krdwrd@krdwrd.org">
-    <em:updates>
-      <RDF:Seq>
-
-        <!-- we just store the current version -->
-        <RDF:li>
-          <RDF:Description>
-            <em:version>0.0.50</em:version>
-            <em:targetApplication>
-              <RDF:Description>
-                <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-                <em:minVersion>2.0</em:minVersion>
-                <em:maxVersion>3.0.*</em:maxVersion>
-                <em:updateLink>https://krdwrd.org/addon/krdwrd.xpi</em:updateLink>
-              </RDF:Description>
-            </em:targetApplication>
-          </RDF:Description>
-        </RDF:li>
-
-      </RDF:Seq>
-    </em:updates>
+<?xml version="1.0"?>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Seq RDF:about="rdf:#$xYokI1">
+    <RDF:li RDF:resource="rdf:#$yYokI1"/>
+  </RDF:Seq>
+  <RDF:Description RDF:about="urn:mozilla:extension:krdwrd@krdwrd.org"
+                   em:signature="MIGTMA0GCSqGSIb3DQEBDQUAA4GBAEx3RRfR3ISnOFdrCjpz5WCZ/8o5uxKSI7bfAljBk0fZz7Rpn/faYvQVXoBIFCvjP+NQWWBsh0O+CNMYnG/tfkR0QQ64gjHVovj+ZW4tkuYC2icRHnu+kq211XaXQPPpbAZaTMEZxMqfZUyaoNFPVDKQA8coQB6Cj3/s2ustJ9rF">
+    <em:updates RDF:resource="rdf:#$xYokI1"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$BYokI1"
+                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+                   em:minVersion="2.0"
+                   em:maxVersion="3.0.*"
+                   em:updateLink="https://krdwrd.org/addon/krdwrd.xpi" />
+  <RDF:Description RDF:about="rdf:#$yYokI1"
+                   em:version="0.0.56">
+    <em:targetApplication RDF:resource="rdf:#$BYokI1"/>
   </RDF:Description>
 </RDF:RDF>
