@@ -4,13 +4,13 @@
   <script type="application/x-javascript" src="chrome://krdwrd/content/krdwrd.js" />
   
   <keyset id="mainKeyset">
-    <key id="kwkey_tag_1" modifiers="accel" key="1" 
+    <key id="kwkey_tag_1" modifiers="control alt" key="1" 
          oncommand="kw.onTag(1);"/>
-    <key id="kwkey_tag_2" modifiers="accel" key="2" 
+    <key id="kwkey_tag_2" modifiers="control alt" key="2" 
          oncommand="kw.onTag(2);"/>
-    <key id="kwkey_tag_3" modifiers="accel" key="3" 
+    <key id="kwkey_tag_3" modifiers="control alt" key="3" 
          oncommand="kw.onTag(3);"/>
-    <key id="kwkey_tag_none" modifiers="accel" key="4"
+    <key id="kwkey_tag_none" modifiers="control alt" key="4"
          oncommand="kw.onTag('none');"/>
     <key id="kwkey_submit" modifiers="accel shift" key="N"
          oncommand="kw.onCommandSubmit();"/>
