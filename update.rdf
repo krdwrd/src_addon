@@ -13,6 +13,7 @@
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="2.0"
                    em:maxVersion="3.0.*"
+                   em:updateHash="sha512:84e2eed7736277b7d19f85909ef4d5e366a9fc33eab21d190509a64d74535adf01b9bc0e95ffaa76a69d5b58715d0563d366f1c5b54e9a9f9640764d11232396"
                    em:updateLink="https://krdwrd.org/addon/krdwrd.xpi" />
   <RDF:Description RDF:about="rdf:#$yYokI1"
                    em:version="0.0.56">

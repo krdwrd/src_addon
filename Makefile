@@ -1,7 +1,8 @@
-TAGVER=sed -i 's/\(<em:version>\).*\(<\/em:version>\)/\10.0.'`cat .REV`'\2/'
-TXTVER=sed -i 's/\(Version: \).*\( @ svn\)/\10.0.'`cat .REV`'\2/'
 XPI=krdwrd.xpi
 REV=.REV
+TAGVER=sed -i 's/\(<em:version>\).*\(<\/em:version>\)/\10.0.'`cat .REV`'\2/'
+TXTVER=sed -i 's/\(Version: \).*\( @ svn\)/\10.0.'`cat .REV`'\2/'
+HASHVER=sed -i 's/\(em:updateHash=\"\).*/\1sha512:'`cat $(XPI).hash`'\"/'
 DEPLOY=/srv/www/projects/krdwrd/addon/
 
 default: $(XPI)
@@ -20,6 +21,7 @@ install.rdf: $(REV)
 
 update.rdf: install.rdf
 	$(TAGVER) update.rdf
+	$(HASHVER) update.rdf
 	
 skin: $(REV)
 	$(TXTVER) chrome/skin/about
@@ -28,9 +30,10 @@ tag: is-clean tag-revision skin update.rdf
 
 $(XPI):
 	zip $(XPI) chrome.manifest install.rdf -r chrome -x '*/.*'
+	sha512sum $(XPI) | sed -e 's/ \+krdwrd.xpi//' > $(XPI).hash 
 
 clean:
-	rm -f $(XPI) $(REV)
+	rm -f $(XPI) $(XPI).hash $(REV)
 
 deploy: $(XPI)
 	cp install.rdf update.rdf $(XPI) $(DEPLOY)
