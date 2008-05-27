@@ -7,13 +7,14 @@
 		<center>
 		<div id="aboutLogoContainer" align="center">
 			<embed src="krdwrd.svg" type="image/svg+xml" width="300" height="300" />
-			<p id="version">krdwrd version: 14 @ svn</p>
+			<p id="version">krdwrd version: 0.0.65</p>
 		</div>
 		</center>
 		<ul>
 		<li>Copyright &copy; 2008 by Egon Stemle, Johannes Steger</li>
 		<li>Visit the <a href="https://krdwrd.org/">Project Website</a>.</li>
 		<li>Read the <a href="LICENSE">licensing information</a> for this product.</li>
+		<li>Contact the developers by mail at <a href="mailto:krdwrd@krdwrd.org">krdwrd@krdwrd.org</a>.
 		<li>Thank you for tagging the web!</li>
 		</ul>
 	</div>

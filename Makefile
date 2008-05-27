@@ -3,7 +3,7 @@ HASH=$(XPI).hash
 REV=.REV
 em:version="0.0.56"
 TAGVER=sed -i 's/em:version="[^"]*"/em:version="0.0.'`cat .REV`'"/'
-TXTVER=sed -i 's/\(Version: \)[0-9\.]+\( @ svn\)/\10.0.'`cat .REV`'\2/'
+TXTVER=sed -i 's/version: 0.0.[0-9]\+/version: 0.0.'`cat .REV`'/'
 HASHVER=sed -i 's/em:updateHash="[^"]*"/em:updateHash="sha512:'`cat $(HASH)`'\"/'
 
 default: release
