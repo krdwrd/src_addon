@@ -255,6 +255,11 @@ function KrdWrd()
         rec(doc, "krdwrd-tag-2");
     };
 
+    // show window w/ annotated text
+    this.text = function()
+    {
+    }
+
     // update per-document tracker when the current page changes
     document.addEventListener("pageshow", this.onCommandTracking, false);
     document.addEventListener("focus", this.onCommandTracking, false);

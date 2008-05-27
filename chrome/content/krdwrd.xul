@@ -17,78 +17,92 @@
   </keyset>
   
   <popup id="contentAreaContextMenu">
-
-      <menu id="kwcontext" label="KrdWrd" accesskey="K" insertafter="context-selectall">
-
-        <menupopup>
-
-          <menuitem id="kwcontext_good" label="Tag Bad"
+    
+    <menu id="kwcontext" label="KrdWrd" accesskey="K" insertafter="context-selectall">
+      
+      <menupopup>
+        
+        <menuitem id="kwcontext_good" label="Tag Bad"
               accesskey="b" key="kwkey_tag_1"
               oncommand="kw.onTag(1)" />
-
-          <menuitem id="kwcontext_good" label="Tag Unknown"
+        
+        <menuitem id="kwcontext_good" label="Tag Unknown"
               accesskey="u" key="kwkey_tag_2"
               oncommand="kw.onTag(2)" />
-
-          <menuitem id="kwcontext_good" label="Tag Good"
+        
+        <menuitem id="kwcontext_good" label="Tag Good"
               accesskey="g" key="kwkey_tag_3"
               oncommand="kw.onTag(3)" />
-
-          <menuitem id="kwcontext_clear" label="Clear Tag"
+        
+        <menuitem id="kwcontext_clear" label="Clear Tag"
               accesskey="c" key="kwkey_tag_none"
               oncommand="kw.onTag('none')" />
-
-        </menupopup>
-
-      </menu>
-
+        
+      </menupopup>
+      
+    </menu>
+    
   </popup>
-   
+  
   <statusbar id="status-bar">
-    <statusbarpanel id="krdwrd-panel" class="statusbarpanel-menu-iconic" src="chrome://krdwrd/skin/kw-disabled.ico" tooltiptext="KrdWrd">
+
+    <statusbarpanel id="krdwrd-panel" class="statusbarpanel-menu-iconic"
+		    src="chrome://krdwrd/skin/kw-disabled.ico" tooltiptext="KrdWrd">
+
       <menupopup id="menu_ToolsPopup">
         
         <menuitem id="kwmenu_track" label="Tracking"
          accesskey="t" type="checkbox" 
          oncommand="kw.onCommandTracking();"/>
-
+        
         <menuitem id="kwmenu_submit" label="Submit"
          accesskey="s" key="kwkey_submit" disabled='true'
          oncommand="kw.onCommandSubmit();"/>
-
+        
         <menuitem id="kwmenu_grab" label="Grab Page"
          accesskey="g" disabled='true'
          oncommand="kw.onCommandGrab();"/>
-
+        
         <menu id="kwmenu_corpus" label="Corpus" accesskey="C">
-
-        <menupopup>
-
-          <menuitem id="kwcorpus_test" label="Test"
+          
+          <menupopup>
+            
+            <menuitem id="kwcorpus_test" label="Test"
               accesskey="t"
               oncommand="kw.setCorpus('test', this.label)" />
-
-          <menuitem id="kwcorpus_ggaze" label="GoodGaze"
+            
+            <menuitem id="kwcorpus_ggaze" label="GoodGaze"
               accesskey="g"
               oncommand="kw.setCorpus('ggaze', this.label)" />
-
-          <menuitem id="kwcorpus_cleaneval" label="CleanEval"
+            
+            <menuitem id="kwcorpus_cleaneval" label="CleanEval"
               accesskey="c"
               oncommand="kw.setCorpus('ceval', this.label)" />
-
-	    </menupopup>
-
-		</menu>
-
-        <menuitem id="kwmenu_test" label="Test"
+            
+          </menupopup>
+          
+        </menu>
+        
+        <menu id="kwmenu_utils" label="Utils" accesskey="U">
+          
+          <menupopup>
+            
+            <menuitem id="kwutil_propagate" label="Progagate"
             oncommand="kw.propagate();" />
-         
+            
+            <menuitem id="kwutil_text" label="Show Text"
+            oncommand="kw.text();" />
+            
+          </menupopup>
+          
+        </menu>
+        
         <menuitem id="kwmenu_about" label="My Stats"
          accesskey="m"
 		 oncommand="content.document.location = 'https://krdwrd.org/pages/bin/stat';"/>
-
+        
         <menuseparator/>
-         
+        
         <menuitem id="kwmenu_about" label="About"
          accesskey="a"
          oncommand="content.document.location = 'chrome://krdwrd/skin/about';"/>
