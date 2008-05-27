@@ -245,7 +245,7 @@ function KrdWrd()
             }
             if (node.nodeName == "#text")
             {
-                if (node.data.replace( / ^ \s + / g, "").replace( / \s + $ / g, ""))
+                if (node.data.replace( /^\s+/g, "").replace( /\s+$/g, ""))
                     node.parentNode.className = node.parentNode.className + " " + kw;
             }
             for (child in node.childNodes)
