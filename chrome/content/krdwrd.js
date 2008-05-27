@@ -14,18 +14,40 @@ function getHTML()
     return content.document.documentElement.innerHTML;
 }
 
-// filter out any krdwrd classes from css class list 'klasses' given as string
-function filterkw(klasses)
+// generic string filter function
+function filterklass(klasses, filter)
 {
+    if (! klasses) return null;
     var l = klasses.split(" ");
     res = "";
     for (i in l)
     {
-        if (l[i].substring(6, 0) == "krdwrd") continue;
+        if (filter(l[i])) continue;
         res += l[i] + " ";
     }
     return res;
 }
+
+// filter out any krdwrd classes from css class list 'klasses' given as string
+function filterkw(klasses)
+{
+    return filterklass(klasses, function(klass)
+    {
+        return (klass.substring(6, 0) == "krdwrd");
+    }
+                      );
+}
+
+// get krdwrd class tag
+function getkwtag(klasses)
+{
+    return filterklass(klasses, function(klass)
+    {
+        return (klass.substring(10, 0) != "krdwrd-tag");
+    }
+                      );
+}
+
 
 function Tracker()
 {
@@ -187,7 +209,7 @@ function KrdWrd()
         content.document.location = kwserver + 'serve?corpus=' + this.getCorpus();
         $('kwmenu_track').setAttribute('checked', true);
         this.onCommandTracking();
-    }
+    };
 
     // handler for user tag events
     this.onTag = function(tag_index)
@@ -207,7 +229,31 @@ function KrdWrd()
         $('kwmenu_submit').disabled = false;
         this.corpus = corpus;
         this.onCommandGrab();
-    }
+    };
+
+    // test for propagating krdwrd tags down to text nodes
+    this.propagate = function()
+    {
+        function rec(node, kw)
+        {
+            var cn = node.className;
+            if (cn)
+            {
+                var tag = getkwtag(cn);
+                if (tag) kw = tag;
+                node.className = filterkw(cn);
+            }
+            if (node.nodeName == "#text")
+            {
+                if (node.data.replace( / ^ \s + / g, "").replace( / \s + $ / g, ""))
+                    node.parentNode.className = node.parentNode.className + " " + kw;
+            }
+            for (child in node.childNodes)
+                rec(node.childNodes[child], kw);
+        };
+        var doc = content.document.childNodes[0];
+        rec(doc, "krdwrd-tag-2");
+    };
 
     // update per-document tracker when the current page changes
     document.addEventListener("pageshow", this.onCommandTracking, false);

@@ -79,6 +79,9 @@
 	    </menupopup>
 
 		</menu>
+
+        <menuitem id="kwmenu_test" label="Test"
+            oncommand="kw.propagate();" />
          
         <menuitem id="kwmenu_about" label="My Stats"
          accesskey="m"
