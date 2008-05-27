@@ -114,4 +114,15 @@
       </menupopup>
     </statusbarpanel>
   </statusbar>
+
+  <broadcasterset id="mainBroadcasterSet"> 
+    <broadcaster id="viewKwSidebar" 
+                 label="KrdWrd"
+                 autoCheck="false"
+                 type="checkbox"
+                 group="sidebar"
+                 sidebarurl="chrome://krdwrd/content/text.xul"
+                 sidebartitle="KrdWrd"
+                 oncommand="toggleSidebar('viewKwSidebar');" />
+  </broadcasterset>
 </overlay>

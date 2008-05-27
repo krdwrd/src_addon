@@ -17,7 +17,7 @@ function getHTML()
 // generic string filter function
 function filterklass(klasses, filter)
 {
-    if (! klasses) return null;
+    if (! klasses) return '';
     var l = klasses.split(" ");
     res = "";
     for (i in l)
@@ -232,7 +232,7 @@ function KrdWrd()
     };
 
     // test for propagating krdwrd tags down to text nodes
-    this.propagate = function()
+    do_propagate = function(cb)
     {
         function rec(node, kw)
         {
@@ -241,24 +241,44 @@ function KrdWrd()
             {
                 var tag = getkwtag(cn);
                 if (tag) kw = tag;
-                node.className = filterkw(cn);
+                //node.className = filterkw(cn);
             }
             if (node.nodeName == "#text")
             {
                 if (node.data.replace( /^\s+/g, "").replace( /\s+$/g, ""))
-                    node.parentNode.className = node.parentNode.className + " " + kw;
+                    cb(node, kw);
             }
             for (child in node.childNodes)
-                rec(node.childNodes[child], kw);
+            {
+                cnode = node.childNodes[child];
+                if (cnode.nodeName != "SCRIPT")
+                    rec(cnode, kw);
+            }
         };
-        var doc = content.document.childNodes[0];
+        var doc = content.document.body;
         rec(doc, "krdwrd-tag-2");
+    };
+
+    this.propagate = function()
+    {
+        do_propagate(function(node, kw) {
+                node.parentNode.className = filterkw(node.parentNode.className) + " " + kw;
+            });
     };
 
     // show window w/ annotated text
     this.text = function()
     {
-    }
+        toggleSidebar('viewKwSidebar');
+        var sb = $('sidebar').contentDocument;
+        do_propagate(function(node, kw){
+                var div = sb.createElement('html:div');
+                div.className = kw;
+                var txt = sb.createTextNode(node.data);
+                div.appendChild(txt);
+                sb.documentElement.appendChild(div);
+            });
+    };
 
     // update per-document tracker when the current page changes
     document.addEventListener("pageshow", this.onCommandTracking, false);
