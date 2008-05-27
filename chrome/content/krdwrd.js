@@ -269,14 +269,17 @@ function KrdWrd()
     // show window w/ annotated text
     this.text = function()
     {
-        toggleSidebar('viewKwSidebar');
-        var sb = $('sidebar').contentDocument;
+        toggleSidebar('viewKwSidebar', true);
+        var doc = $('sidebar').contentDocument;
+        var sb = doc.getElementById('kwsbcontent');
+        while (sb.hasChildNodes())
+            sb.removeChild(sb.lastChild);
         do_propagate(function(node, kw){
-                var div = sb.createElement('html:div');
+                var div = doc.createElement('html:div');
                 div.className = kw;
-                var txt = sb.createTextNode(node.data);
+                var txt = doc.createTextNode(node.data);
                 div.appendChild(txt);
-                sb.documentElement.appendChild(div);
+                sb.appendChild(div);
             });
     };
 
