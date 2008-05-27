@@ -30,7 +30,7 @@ tag: is-clean tag-revision skin update.rdf
 
 $(XPI):
 	zip $(XPI) chrome.manifest install.rdf -r chrome -x '*/.*'
-	sha512sum $(XPI) | sed -e 's/ \+krdwrd.xpi//' > $(XPI).hash 
+	sha512sum $(XPI) | cut -d ' ' -f 1 > $(XPI).hash 
 
 clean:
 	rm -f $(XPI) $(XPI).hash $(REV)
