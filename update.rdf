@@ -13,10 +13,10 @@
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="2.0"
                    em:maxVersion="3.0.*"
-                   em:updateHash="sha512:84e2eed7736277b7d19f85909ef4d5e366a9fc33eab21d190509a64d74535adf01b9bc0e95ffaa76a69d5b58715d0563d366f1c5b54e9a9f9640764d11232396"
+                   em:updateHash="sha512:90a360a46b4fb5a394fb35d8bb9a3ca31ad235a1ae61f7e0f6e9cb1842e168aa30145105b081532548af591624479ee476520dc78e528a0b64b22f5fe6ee526a"
                    em:updateLink="https://krdwrd.org/addon/krdwrd.xpi" />
   <RDF:Description RDF:about="rdf:#$yYokI1"
-                   em:version="0.0.56">
+                   em:version="0.0.62">
     <em:targetApplication RDF:resource="rdf:#$BYokI1"/>
   </RDF:Description>
 </RDF:RDF>

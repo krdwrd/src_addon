@@ -1,39 +1,38 @@
 XPI=krdwrd.xpi
+HASH=$(XPI).hash
 REV=.REV
-TAGVER=sed -i 's/\(<em:version>\).*\(<\/em:version>\)/\10.0.'`cat .REV`'\2/'
-TXTVER=sed -i 's/\(Version: \).*\( @ svn\)/\10.0.'`cat .REV`'\2/'
-HASHVER=sed -i 's/\(em:updateHash=\"\).*/\1sha512:'`cat $(XPI).hash`'\"/'
-DEPLOY=/srv/www/projects/krdwrd/addon/
+em:version="0.0.56"
+TAGVER=sed -i 's/em:version="[^"]*"/em:version="0.0.'`cat .REV`'"/'
+TXTVER=sed -i 's/\(Version: \)[0-9\.]+\( @ svn\)/\10.0.'`cat .REV`'\2/'
+HASHVER=sed -i 's/em:updateHash="[^"]*"/em:updateHash="sha512:'`cat $(HASH)`'\"/'
 
-default: $(XPI)
+default: release
 
 is-clean:
-	test -z "`svn st -q 2>&1 | head -n1`"
-	svn update
+	test -z "`svn st -q 2>&1 | head -n1`" || echo "WARNING: NO CLEAN CHECKOUT"
 
 tag-revision:
 	svn info | sed -n -e 's/^Last Changed Rev: \(.*\)$$/\1/p' > REV
 	diff REV $(REV) 2> /dev/null || cp REV $(REV)
 	rm REV
 
+$(REV): is-clean tag-revision
+
 install.rdf: $(REV)
 	$(TAGVER) install.rdf
 
-update.rdf: install.rdf
+update.rdf: $(XPI)
 	$(TAGVER) update.rdf
+	sha512sum $(XPI) | awk '{ print $$1; }' > $(HASH)
 	$(HASHVER) update.rdf
 	
 skin: $(REV)
 	$(TXTVER) chrome/skin/about
 
-tag: is-clean tag-revision skin update.rdf
-
-$(XPI):
+$(XPI): install.rdf skin
 	zip $(XPI) chrome.manifest install.rdf -r chrome -x '*/.*'
-	sha512sum $(XPI) | sed -e 's/ \+krdwrd.xpi//' > $(XPI).hash 
 
 clean:
-	rm -f $(XPI) $(XPI).hash $(REV)
+	rm -f $(XPI) $(HASH) $(REV)
 
-deploy: $(XPI)
-	cp install.rdf update.rdf $(XPI) $(DEPLOY)
+release: update.rdf
