@@ -276,9 +276,11 @@ function KrdWrd()
             sb.removeChild(sb.lastChild);
         do_propagate(function(node, kw){
                 var div = doc.createElement('html:div');
-                div.className = kw;
+                var span = doc.createElement('html:span');
+                span.className = kw;
                 var txt = doc.createTextNode(node.data);
-                div.appendChild(txt);
+                span.appendChild(txt);
+                div.appendChild(span);
                 sb.appendChild(div);
             });
     };

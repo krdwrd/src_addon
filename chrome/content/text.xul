@@ -6,7 +6,8 @@
 		 
     <html:link rel='stylesheet' href='chrome://krdwrd/content/krdwrd.css' type='text/css' />
 
-	<box orient="vertical" id="kwsbcontent" flex="1" style="overflow: auto">
+	<box orient="vertical" id="kwsbcontent" flex="1" style="overflow: auto; font-family: Arial; font-size: smaller; padding: 10px;">
+		Run KrdWrd Text Extraction first.
 	</box>
 
 </page>
