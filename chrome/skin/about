@@ -7,7 +7,7 @@
 		<center>
 		<div id="aboutLogoContainer" align="center">
 			<embed src="krdwrd.svg" type="image/svg+xml" width="300" height="300" />
-			<p id="version">krdwrd version: 0.0.66</p>
+			<p id="version">krdwrd version: 0.0.72</p>
 		</div>
 		</center>
 		<ul>

@@ -1,4 +1,5 @@
 XPI=krdwrd.xpi
+EXTR=krdwrd@krdwrd.org
 HASH=$(XPI).hash
 REV=.REV
 em:version="0.0.56"
@@ -34,5 +35,14 @@ $(XPI): install.rdf skin
 
 clean:
 	rm -f $(XPI) $(HASH) $(REV)
+	rm -rf $(EXTR)
 
+sign: update.rdf
+	rm -rf $(EXTR) || true
+	mkdir $(EXTR)
+	unzip $(XPI) -d $(EXTR)
+	signtool -d cert -k "krdwrd" -X -Z krdwrd.xpi $(EXTR) || rm $(XPI)
+
+#release: sign
 release: update.rdf
+
