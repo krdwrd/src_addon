@@ -93,13 +93,16 @@
             <menuitem id="kwutil_text" label="Show Text"
             oncommand="kw.text();" />
             
+            <menuitem id="kwutil_design" label="Design Mode"
+            oncommand="content.document.designMode = 'on';" />
+            
           </menupopup>
           
         </menu>
         
         <menuitem id="kwmenu_about" label="My Stats"
          accesskey="m"
-		 oncommand="content.document.location = 'https://krdwrd.org/pages/bin/stat';"/>
+		 oncommand="content.document.location = kw.kwserver + 'stat';"/>
         
         <menuseparator/>
         

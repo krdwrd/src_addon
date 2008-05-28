@@ -107,7 +107,7 @@ function Tracker()
  */
 function KrdWrd()
 {
-    kwserver = 'https://krdwrd.org/pages/bin/';
+    this.kwserver = 'https://krdwrd.org/pages/bin/';
     corpus = 'test';
 
     // inject stylesheet into current document
@@ -182,7 +182,7 @@ function KrdWrd()
         var request = new XMLHttpRequest();
         var ocg = this.onCommandGrab();
 
-        request.open('POST', kwserver + 'tagpage', true);
+        request.open('POST', this.kwserver + 'tagpage', true);
         request.onreadystatechange = function()
         {
             if (request.readyState == 4)
@@ -206,7 +206,7 @@ function KrdWrd()
     // grab page from corpus
     this.onCommandGrab = function()
     {
-        content.document.location = kwserver + 'serve?corpus=' + this.getCorpus();
+        content.document.location = this.kwserver + 'serve?corpus=' + this.getCorpus();
         $('kwmenu_track').setAttribute('checked', true);
         this.onCommandTracking();
     };
