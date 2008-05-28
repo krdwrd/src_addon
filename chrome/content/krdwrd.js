@@ -277,7 +277,7 @@ function KrdWrd()
         do_propagate(function(node, kw){
                 var div = doc.createElement('html:div');
                 var span = doc.createElement('html:span');
-                span.className = kw;
+                span.className = kw + " kwsb-tag";
                 var txt = doc.createTextNode(node.data);
                 span.appendChild(txt);
                 div.appendChild(span);
