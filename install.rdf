@@ -8,7 +8,7 @@
                    em:maxVersion="3.0.*" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="krdwrd@krdwrd.org"
-                   em:version="0.0.72"
+                   em:version="0.0.74"
                    em:type="2"
                    em:name="KrdWrd"
                    em:description="KrdWrd: Visual Annotation of DOM Trees"
@@ -17,6 +17,7 @@
                    em:updateURL="http://krdwrd.org/addon/update.rdf"
                    em:iconURL="chrome://krdwrd/skin/krdwrd.png"
                    em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCvh/ajSN4Qw+E4uVJ6gDHLfZut7d35ZHwqJNOUEgjNG4YckTyIBZqSKcPu5xT+KEkJ07LP+ICXY/1OJ/0Xid1k/tIXG0wvZ+koufaJPuaMACdjEnjzTVyetih4sKVKQfr8WW5VajsqXrEIIseR+PRJM5aS2Mq9o4QNt5k/wWKHiQIDAQAB"
+				   >
     <em:targetApplication RDF:resource="rdf:#$mYokI1"/>
   </RDF:Description>
 </RDF:RDF>

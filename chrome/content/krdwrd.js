@@ -48,6 +48,32 @@ function getkwtag(klasses)
                       );
 }
 
+// traverse the dom, call cb on text nodes
+function traverse(body, cb)
+{
+    function rec(node, kw)
+    {
+        var cn = node.className;
+        if (cn)
+        {
+            var tag = getkwtag(cn);
+            if (tag) kw = tag;
+        }
+        if (node.nodeName == "#text")
+        {
+            if (node.data.replace( /^\s+/g, "").replace( /\s+$/g, ""))
+                cb(node, kw);
+        }
+        for (child in node.childNodes)
+        {
+            cnode = node.childNodes[child];
+            if (cnode.nodeName != "SCRIPT")
+                rec(cnode, kw);
+        }
+    };
+    rec(body, "krdwrd-tag-2");
+};
+
 
 function Tracker()
 {
@@ -231,37 +257,10 @@ function KrdWrd()
         this.onCommandGrab();
     };
 
-    // test for propagating krdwrd tags down to text nodes
-    do_propagate = function(cb)
-    {
-        function rec(node, kw)
-        {
-            var cn = node.className;
-            if (cn)
-            {
-                var tag = getkwtag(cn);
-                if (tag) kw = tag;
-                //node.className = filterkw(cn);
-            }
-            if (node.nodeName == "#text")
-            {
-                if (node.data.replace( /^\s+/g, "").replace( /\s+$/g, ""))
-                    cb(node, kw);
-            }
-            for (child in node.childNodes)
-            {
-                cnode = node.childNodes[child];
-                if (cnode.nodeName != "SCRIPT")
-                    rec(cnode, kw);
-            }
-        };
-        var doc = content.document.body;
-        rec(doc, "krdwrd-tag-2");
-    };
-
     this.propagate = function()
     {
-        do_propagate(function(node, kw) {
+        var body = content.document.body;
+        traverse(body, function(node, kw) {
                 node.parentNode.className = filterkw(node.parentNode.className) + " " + kw;
             });
     };
@@ -269,12 +268,13 @@ function KrdWrd()
     // show window w/ annotated text
     this.text = function()
     {
+        var body = content.document.body;
         toggleSidebar('viewKwSidebar', true);
         var doc = $('sidebar').contentDocument;
         var sb = doc.getElementById('kwsbcontent');
         while (sb.hasChildNodes())
             sb.removeChild(sb.lastChild);
-        do_propagate(function(node, kw){
+        traverse(body, function(node, kw){
                 var div = doc.createElement('html:div');
                 var span = doc.createElement('html:span');
                 span.className = kw + " kwsb-tag";
