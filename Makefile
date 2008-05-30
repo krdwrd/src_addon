@@ -3,8 +3,9 @@ EXTR=krdwrd@krdwrd.org
 HASH=$(XPI).hash
 REV=.REV
 UPDATE=http://krdwrd.org/addon/krdwrd.xpi 
-TAGVER=sed -i 's/em:version="[^"]*"/em:version="0.0.'`cat .REV`'"/'
-TXTVER=sed -i 's/version: 0.0.[0-9]\+/version: 0.0.'`cat .REV`'/'
+MAJOR=0.0
+TAGVER=sed -i 's/em:version="[^"]*"/em:version="'$(MAJOR)'.'`cat .REV`'"/'
+TXTVER=sed -i 's/version: 0.[0-9]\+.[0-9]\+/version: '$(MAJOR)'.'`cat .REV`'/'
 HASHVER=sed -i 's/<em:updateHash>[^>]*<\/em:updateHash>/<em:updateHash>sha512:'`cat $(HASH)`'<\/em:updateHash>/'
 
 default: release
@@ -46,7 +47,7 @@ sign: $(XPI)
 	signtool -k krdwrd@krdwrd.org -d cert -X -Z $(XPI) $(EXTR) || rm -rf $(XPI) $(EXTR)
 
 update.rdf: update.rdf.in sign
-	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v 0.0.`cat $(REV)` -u $(UPDATE) -d cert > update.rdf
+	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v $(MAJOR).`cat $(REV)` -u $(UPDATE) -d cert > update.rdf
 
 release: clean update.rdf
 

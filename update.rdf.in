@@ -10,11 +10,11 @@
               <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
               <em:maxVersion>3.0.*</em:maxVersion>
               <em:minVersion>2.0</em:minVersion>
-              <em:updateHash>sha512:02a4e7e823c88bf382c676eab388cdb483b04156140dfce633a3fb76062cc4c9cd183d161579b4db1b1fb808d1b8534a6adfe728cc77744abdc8ceaa32740a46</em:updateHash>
+              <em:updateHash>sha512:</em:updateHash>
               <em:updateLink>set in Makefile</em:updateLink>
             </RDF:Description>
           </em:targetApplication>
-          <em:version>0.0.98</em:version>
+          <em:version>set in Makefile</em:version>
         </RDF:Description>
       </RDF:li>
     </RDF:Seq>
