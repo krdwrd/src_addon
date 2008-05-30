@@ -3,7 +3,7 @@ EXTR=krdwrd@krdwrd.org
 HASH=$(XPI).hash
 REV=.REV
 UPDATE=http://krdwrd.org/addon/krdwrd.xpi 
-MAJOR=0.0
+MAJOR=0.1
 TAGVER=sed -i 's/em:version="[^"]*"/em:version="'$(MAJOR)'.'`cat .REV`'"/'
 TXTVER=sed -i 's/version: 0.[0-9]\+.[0-9]\+/version: '$(MAJOR)'.'`cat .REV`'/'
 HASHVER=sed -i 's/<em:updateHash>[^>]*<\/em:updateHash>/<em:updateHash>sha512:'`cat $(HASH)`'<\/em:updateHash>/'
