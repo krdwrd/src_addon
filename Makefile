@@ -41,8 +41,7 @@ sign: update.rdf
 	rm -rf $(EXTR) || true
 	mkdir $(EXTR)
 	unzip $(XPI) -d $(EXTR)
-	signtool -d cert -k "krdwrd" -X -Z krdwrd.xpi $(EXTR) || rm $(XPI)
+	signtool -k krdwrd@krdwrd.org -d cert -X -Z $(XPI) $(EXTR) || rm -rf $(XPI) $(EXTR)
 
-#release: sign
-release: update.rdf
+release: sign
 
