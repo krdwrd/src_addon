@@ -8,28 +8,16 @@
 		For you to be a productive drone, all you need to do is:
 		<ul>
 			<li>
-				<b>select a corpus</b> using the krdwrd menu in your statusbar.
+				<b>Select a corpus</b> using the krdwrd menu in your status bar. A random page will be grabbed for you.
 			</li>
 			<li>
-			    <b>grab a page</b> from your current corpus.
+				<b>Annotate</b>
+				the entire page by hovering over the content. Use the context menu to annotate
+				the highlighted block.	Its color will change accordingly.
 			</li>
 			<li>
-				<b>enable tagging</b> -
-				Hovering over a webpage highlights
-				the element under the cursor.
-			</li>
-			<li>
-				<b>annotate</b>
-				the currently highlighted element. Use the context menu to
-				tag it.	The color will change accordingly.
-			</li>
-			<li>
-				<b>submit</b>
-				your annotation.
-			</li>
-			<li>
-				<b>repeat</b>
-				until you reach the end game monster.
+				<b>Submit</b>
+				your annotation. A new page will be grabbed automatically.
 			</li>
 		</ul>
 		<br />
@@ -37,6 +25,9 @@
 		Please note the keyboard shortcuts given next to the menu
 		items. They tend to make life a lot easier.
 		</i>
+
+		<br />
+		Also check the <a href="https://krdwrd.org/trac/wiki/AnnotationGuidelines">Annotation Guidelines</a> on the krdwrd website.
 	</div>
 </body>
 </html>
