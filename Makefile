@@ -48,5 +48,5 @@ sign: $(XPI)
 update.rdf: update.rdf.in sign
 	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v 0.0.`cat $(REV)` -u $(UPDATE) -d cert > update.rdf
 
-release: update.rdf
+release: clean update.rdf
 
