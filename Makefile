@@ -2,10 +2,10 @@ XPI=krdwrd.xpi
 EXTR=krdwrd@krdwrd.org
 HASH=$(XPI).hash
 REV=.REV
-em:version="0.0.56"
+UPDATE=http://krdwrd.org/addon/krdwrd.xpi 
 TAGVER=sed -i 's/em:version="[^"]*"/em:version="0.0.'`cat .REV`'"/'
 TXTVER=sed -i 's/version: 0.0.[0-9]\+/version: 0.0.'`cat .REV`'/'
-HASHVER=sed -i 's/em:updateHash="[^"]*"/em:updateHash="sha512:'`cat $(HASH)`'\"/'
+HASHVER=sed -i 's/<em:updateHash>[^>]*<\/em:updateHash>/<em:updateHash>sha512:'`cat $(HASH)`'<\/em:updateHash>/'
 
 default: release
 
@@ -22,10 +22,11 @@ $(REV): is-clean tag-revision
 install.rdf: $(REV)
 	$(TAGVER) install.rdf
 
-update.rdf: $(XPI)
-	$(TAGVER) update.rdf
+$(HASH): sign
 	sha512sum $(XPI) | awk '{ print $$1; }' > $(HASH)
-	$(HASHVER) update.rdf
+
+update.rdf.in: $(XPI) $(HASH) sign
+	$(HASHVER) update.rdf.in
 	
 skin: $(REV)
 	$(TXTVER) chrome/skin/about
@@ -34,14 +35,18 @@ $(XPI): install.rdf skin
 	zip $(XPI) chrome.manifest install.rdf -r chrome -x '*/.*'
 
 clean:
-	rm -f $(XPI) $(HASH) $(REV)
+	rm -f $(XPI) $(HASH) $(REV) update.rdf
 	rm -rf $(EXTR)
 
-sign: update.rdf
+sign: $(XPI)
 	rm -rf $(EXTR) || true
 	mkdir $(EXTR)
 	unzip $(XPI) -d $(EXTR)
+	rm $(XPI)
 	signtool -k krdwrd@krdwrd.org -d cert -X -Z $(XPI) $(EXTR) || rm -rf $(XPI) $(EXTR)
 
-release: sign
+update.rdf: update.rdf.in sign
+	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v 0.0.`cat $(REV)` -u $(UPDATE) -d cert > update.rdf
+
+release: update.rdf
 
