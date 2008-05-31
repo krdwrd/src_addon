@@ -49,3 +49,15 @@ ul {
 ul > li {
   margin-top: .5em;
 }
+
+ul > li.info
+{
+  list-style-image: url("chrome://global/skin/console/bullet-question.png");
+  font-style: italic;
+}
+
+ul > li.warn
+{
+  list-style-image: url("chrome://global/skin/console/bullet-warning.png");
+  font-style: italic;
+}
