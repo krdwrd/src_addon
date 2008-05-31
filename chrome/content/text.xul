@@ -6,8 +6,13 @@
 		 
     <html:link rel='stylesheet' href='chrome://krdwrd/content/krdwrd.css' type='text/css' />
 
+	<box orient="horizontal">
+	<button label="Extract Text" oncommand="kw.text();" />
+	<button label="-1" id="1" type="checkbox" oncommand="" checked="true" style="color: #F00" />
+	<button label="0" id="2" type="checkbox" oncommand="" checked="true" style="color: #FF0" />
+	<button label="1" id="3" type="checkbox" oncommand="" checked="true" style="color: #0F0" />
+	</box>
 	<box orient="vertical" id="kwsbcontent" flex="1" style="overflow: auto; font-family: Arial; font-size: smaller; padding: 10px;">
-		Run KrdWrd Text Extraction first.
 	</box>
 
 </page>
