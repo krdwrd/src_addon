@@ -95,7 +95,7 @@
             oncommand="kw.text();" />
             
             <menuitem id="kwutil_design" label="Design Mode"
-            oncommand="content.document.designMode = 'on';" />
+            oncommand="content.document.designMode = content.document.designMode == 'off' ? 'on' : 'off' ;" />
             
           </menupopup>
           
