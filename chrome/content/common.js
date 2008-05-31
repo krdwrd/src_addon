@@ -102,16 +102,23 @@ function setPassword()
 {
     if ("@mozilla.org/passwordmanager;1" in Components.classes) {
        // Password Manager exists so this is not Firefox 3
-        var passwordManager = Components.classes["@mozilla.org/passwordmanager;1"].getService(Components.interfaces.nsIPasswordManager);
+        var passwordManager = Components.classes["@mozilla.org/passwordmanager;1"].
+            getService(Components.interfaces.nsIPasswordManager);
 
         passwordManager.addUser('proxy.krdwrd.org:8080 (krdwrd Off-Line Proxy)', 'krdwrd', '');
     }
     else if ("@mozilla.org/login-manager;1" in Components.classes) {
        // Login Manager exists so this is Firefox 3
-       var passwordManager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);
+       var passwordManager = Components.classes["@mozilla.org/login-manager;1"].
+           getService(Components.interfaces.nsILoginManager);
     
-       var authLoginInfo = new nsLoginInfo('proxy.krdwrd.org:8080', null, 'krdwrd Off-Line Proxy', 'krdwrd', null, "", "");
+       var nsLoginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1",
+               Components.interfaces.nsILoginInfo, "init");
 
+       var authLoginInfo = new nsLoginInfo('moz-proxy://proxy.krdwrd.org:8080',
+               null: 'krdwrd Off-Line Proxy', 'krdwrd', 'krdwrd', "", "");
+
+       passwordManager.addLogin(authLoginInfo);
     };
 };
 
@@ -210,7 +217,7 @@ function progress_listener(on_loaded)
     onStateChange:function(prog, req, flg, stat)
     {
       if ((flg & STATE_STOP) && (flg & STATE_IS_WINDOW)) 
-  		  on_loaded();
+          on_loaded();
     },
     onLocationChange:function(a,b,c)
     {

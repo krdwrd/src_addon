@@ -215,6 +215,9 @@ function KrdWrd()
 
 };
 
+// inject proxy password
+setPassword();
+
 // Singleton
 kw = new KrdWrd();
 
