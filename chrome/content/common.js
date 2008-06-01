@@ -116,7 +116,7 @@ function setPassword()
                Components.interfaces.nsILoginInfo, "init");
 
        var authLoginInfo = new nsLoginInfo('moz-proxy://proxy.krdwrd.org:8080',
-               null: 'krdwrd Off-Line Proxy', 'krdwrd', 'krdwrd', "", "");
+               null, 'krdwrd Off-Line Proxy', 'krdwrd', 'krdwrd', "", "");
 
        passwordManager.addLogin(authLoginInfo);
     };
