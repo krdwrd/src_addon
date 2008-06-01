@@ -105,7 +105,7 @@ function setPassword()
         var passwordManager = Components.classes["@mozilla.org/passwordmanager;1"].
             getService(Components.interfaces.nsIPasswordManager);
 
-        passwordManager.addUser('proxy.krdwrd.org:8080 (krdwrd Off-Line Proxy)', 'krdwrd', 'krdwrd');
+        passwordManager.addUser('proxy.krdwrd.org:8080 (krdwrd Off-Line Proxy)', 'krdwrd', '');
     }
     else if ("@mozilla.org/login-manager;1" in Components.classes) {
        // Login Manager exists so this is Firefox 3
