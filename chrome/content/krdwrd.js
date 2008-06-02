@@ -215,9 +215,18 @@ function KrdWrd()
 
 };
 
-// inject proxy password
-setPassword();
 
-// Singleton
-kw = new KrdWrd();
+try
+{
+    // inject proxy password
+    setPassword();
 
+    // Singleton
+    kw = new KrdWrd();
+}
+catch (e)
+{
+    alert("KrdWrd could not initialize.\nError:\n" + e);
+}
+
+// vim: et

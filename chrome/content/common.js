@@ -110,7 +110,7 @@ function setPassword()
         var passwordManager = Components.classes["@mozilla.org/passwordmanager;1"].
             getService(Components.interfaces.nsIPasswordManager);
 
-        passwordManager.addUser(sprintf("%s (%s)", hostname, realm), username, passwrd);
+        passwordManager.addUser(hostname + ' (' + realm + ')', username, passwrd);
     }
     else if ("@mozilla.org/login-manager;1" in Components.classes) {
         hostname = 'moz-proxy://' + hostname;
