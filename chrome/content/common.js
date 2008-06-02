@@ -100,26 +100,38 @@ function error(msg)
 
 function setPassword()
 {
+    var hostname = "proxy.krdwrd.org:8080";
+    var realm = "krdwrd Off-Line Proxy";
+    var username = "krdwrd";
+    var passwrd = "krdwrd";
+
     if ("@mozilla.org/passwordmanager;1" in Components.classes) {
        // Password Manager exists so this is not Firefox 3
         var passwordManager = Components.classes["@mozilla.org/passwordmanager;1"].
             getService(Components.interfaces.nsIPasswordManager);
 
-        passwordManager.addUser('proxy.krdwrd.org:8080 (krdwrd Off-Line Proxy)', 'krdwrd', '');
+        passwordManager.addUser(sprintf("%s (%s)", hostname, realm), username, passwrd);
     }
     else if ("@mozilla.org/login-manager;1" in Components.classes) {
-       // Login Manager exists so this is Firefox 3
-       var passwordManager = Components.classes["@mozilla.org/login-manager;1"].
-           getService(Components.interfaces.nsILoginManager);
+        hostname = 'moz-proxy://' + hostname;
+
+        // Login Manager exists so this is Firefox 3
+        var passwordManager = Components.classes["@mozilla.org/login-manager;1"].
+            getService(Components.interfaces.nsILoginManager);
     
-       var nsLoginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1",
-               Components.interfaces.nsILoginInfo, "init");
+        var logins = passwordManager.findLogins({}, hostname, null, realm);
 
-       var authLoginInfo = new nsLoginInfo('moz-proxy://proxy.krdwrd.org:8080',
-               null, 'krdwrd Off-Line Proxy', 'krdwrd', 'krdwrd', "", "");
+        // login must not exist yet
+        if (logins.length == 0)
+        {
+            var nsLoginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1",
+                   Components.interfaces.nsILoginInfo, "init");
 
-       passwordManager.addLogin(authLoginInfo);
-    };
+            var authLoginInfo = new nsLoginInfo(hostname, null, realm, username, passwrd, "", "");
+
+            passwordManager.addLogin(authLoginInfo);
+        }
+    }
 };
 
 function saveCanvas(canvas, dest)
@@ -235,3 +247,4 @@ function progress_listener(on_loaded)
   return pl;
 };
 
+// vim: set et
