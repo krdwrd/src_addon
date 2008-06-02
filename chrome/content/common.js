@@ -32,20 +32,18 @@ function filterklass(klasses, filter)
 function filterkw(klasses)
 {
     return filterklass(klasses, function(klass)
-    {
-        return (klass.substring(6, 0) == "krdwrd");
-    }
-                      );
+        {
+            return (klass.substring(6, 0) == "krdwrd");
+        });
 }
 
 // get krdwrd class tag
 function getkwtag(klasses)
 {
     return filterklass(klasses, function(klass)
-    {
-        return (klass.substring(10, 0) != "krdwrd-tag");
-    }
-                      );
+        {
+            return (klass.substring(10, 0) != "krdwrd-tag");
+        });
 }
 
 // traverse the dom, call cb on text nodes
@@ -86,6 +84,7 @@ function quit(forced)
     appStartup.quit(quitSeverity);
 };
 
+// needs browser.dom.window.dump.enabled
 function print(msg)
 {
     dump(msg + '\n');
@@ -113,9 +112,9 @@ function setPassword()
         passwordManager.addUser(hostname + ' (' + realm + ')', username, passwrd);
     }
     else if ("@mozilla.org/login-manager;1" in Components.classes) {
+        // Login Manager exists so this is Firefox 3
         hostname = 'moz-proxy://' + hostname;
 
-        // Login Manager exists so this is Firefox 3
         var passwordManager = Components.classes["@mozilla.org/login-manager;1"].
             getService(Components.interfaces.nsILoginManager);
     
@@ -132,6 +131,24 @@ function setPassword()
             passwordManager.addLogin(authLoginInfo);
         }
     }
+};
+
+// create a new browser object load url, call onload on completion
+function mkBrowser(url, onload)
+{
+    var browser = document.createElement('browser');
+
+    browser.setAttribute('src', url);
+    browser.setAttribute('height', 1);
+    browser.setAttribute('width', 1);
+
+    // need to append to a document to become available
+    document.documentElement.appendChild(browser);
+
+    // hook into onload
+    browser.addProgressListener(progress_listener(onload));
+
+    return browser;
 };
 
 function saveCanvas(canvas, dest)
@@ -181,43 +198,39 @@ function grabSource(doc)
     return doc.documentElement.innerHTML;
 };
 
-function grabRect(x, y, w, h)
+function grabRect(win, doc, x, y, w, h)
 {
-      // get references to the source browser and target canvas
-      var doc = $('browse');
-      var canvas = $('rendercanvas');
+    // get references to the target canvas
+    var canvas = doc.createElement('canvas');
+    doc.documentElement.appendChild(canvas);
 
-      canvas.width = w;
-      canvas.height = h;
+    canvas.width = w;
+    canvas.height = h;
 
-      // get a fresh drawing context
-      var context = canvas.getContext('2d');
+    // get a fresh drawing context
+    var context = canvas.getContext('2d');
 
-      // draw portion of window
-      context.drawWindow(doc.contentWindow, x, y, w, h, 'rgb(128,128,128);');
-      return canvas;
+    // draw portion of window
+    context.drawWindow(win, x, y, w, h, 'rgb(128,128,128);');
+    return canvas;
 };
 
-function grabScreen(doc)
+function grabScreen(win, doc)
 {
-      // grab whole document.
-      var h = doc.height;
-      // FIXME there are pages that wont give us any height info :/
-      if (h < 10) h = 768;
-      return grabRect(0, 0, doc.width, h);
+    // grab whole document
+    return grabRect(win, doc, 0, 0, doc.width, doc.height);
 };
 
 // progress listener implementing nsIWebProgressListener
-
-const STATE_STOP =
-  Components.interfaces.nsIWebProgressListener.STATE_STOP;
-const STATE_IS_WINDOW = 
-  Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
-
 function progress_listener(on_loaded)
 {
+  const STATE_STOP =
+    Components.interfaces.nsIWebProgressListener.STATE_STOP;
+  const STATE_IS_WINDOW = 
+    Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
   var pl = 
   {
+    handler : on_loaded, 
     QueryInterface : function(aIID)
     {
     if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
@@ -229,7 +242,14 @@ function progress_listener(on_loaded)
     onStateChange:function(prog, req, flg, stat)
     {
       if ((flg & STATE_STOP) && (flg & STATE_IS_WINDOW)) 
-          on_loaded();
+      {
+          var doc = prog.DOMWindow.document;
+
+          if (doc.location != "about:blank")
+          {
+              this.handler(doc, prog.DOMWindow);
+          }
+      }
     },
     onLocationChange:function(a,b,c)
     {
@@ -247,4 +267,4 @@ function progress_listener(on_loaded)
   return pl;
 };
 
-// vim: set et
+// vim: et
