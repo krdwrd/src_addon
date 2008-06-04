@@ -97,12 +97,29 @@ function error(msg)
     quit(true);
 };
 
-function setPassword()
+// returns details about exception e as string
+function format_exception(e)
 {
-    var hostname = "proxy.krdwrd.org:8080";
-    var realm = "krdwrd Off-Line Proxy";
-    var username = "krdwrd";
-    var passwrd = "krdwrd";
+	return e.name + ": " + e.message + "\nStack:\n" + e.stack;
+};
+
+function setProxy(hostname, port)
+{
+	var prefs = Components.classes["@mozilla.org/preferences-service;1"].
+		getService(Components.interfaces.nsIPrefBranch);
+
+	prefs.setCharPref("network.proxy.http", hostname);
+	prefs.setIntPref ("network.proxy.http_port", port);
+	prefs.setBoolPref("network.negotiate-auth.allow-proxies", true);
+	prefs.setBoolPref("network.proxy.share_proxy_settings", true);
+	prefs.setIntPref ("network.proxy.type", 1);
+
+	prefs.setCharPref("network.proxy.no_proxies_on", "krdwrd.org");
+};
+
+// set the proxy password
+function setPassword(hostname, realm, username, passwrd)
+{
 
     if ("@mozilla.org/passwordmanager;1" in Components.classes) {
        // Password Manager exists so this is not Firefox 3
@@ -132,3 +149,16 @@ function setPassword()
         }
     }
 };
+
+function kwProxy()
+{
+    var hostname = "proxy.krdwrd.org";
+	var port = 8080;
+    var realm = "krdwrd Off-Line Proxy";
+    var username = "krdwrd";
+    var passwrd = "krdwrd";
+
+	setProxy(hostname, port);
+	setPassword(hostname + ":" + port, realm, username, passwrd);
+};
+

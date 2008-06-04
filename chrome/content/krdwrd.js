@@ -218,8 +218,8 @@ function KrdWrd()
 
 try
 {
-    // inject proxy password
-    setPassword();
+    // inject proxy settings, login, password
+    kwProxy();
 
     // Singleton
     kw = new KrdWrd();
