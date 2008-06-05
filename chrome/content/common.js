@@ -153,12 +153,12 @@ function setPassword(hostname, realm, username, passwrd)
 function kwProxy()
 {
     var hostname = "proxy.krdwrd.org";
-	var port = 8080;
+    var port = 8080;
     var realm = "krdwrd Off-Line Proxy";
     var username = "krdwrd";
     var passwrd = "krdwrd";
 
-	setProxy(hostname, port);
-	setPassword(hostname + ":" + port, realm, username, passwrd);
+    setProxy(hostname, port);
+    setPassword(hostname + ":" + port, realm, username, passwrd);
 };
 
