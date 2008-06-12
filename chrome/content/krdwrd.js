@@ -192,19 +192,21 @@ function KrdWrd()
     // show window w/ annotated text
     this.text = function()
     {
-        var body = content.document.body;
-        toggleSidebar('viewKwSidebar', true);
-        var doc = $('sidebar').contentDocument;
         var sb = doc.getElementById('kwsbcontent');
+
         while (sb.hasChildNodes())
             sb.removeChild(sb.lastChild);
+
+        var doc = document;
+        var body = content.document.body;
+
         traverse(body, function(node, kw){
-                var div = doc.createElement('html:div');
-                var span = doc.createElement('html:span');
-                span.className = kw + " kwsb-tag";
                 var txt = doc.createTextNode(node.data);
+                var span = doc.createElement('html:span');
                 span.appendChild(txt);
+                var div = doc.createElement('html:div');
                 div.appendChild(span);
+                span.className = kw + " kwsb-tag";
                 sb.appendChild(div);
             });
     };

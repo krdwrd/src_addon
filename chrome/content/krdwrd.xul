@@ -92,8 +92,8 @@
             <menuitem id="kwutil_propagate" label="Progagate"
             oncommand="kw.propagate();" />
             
-            <menuitem id="kwutil_text" label="Show Text"
-            oncommand="kw.text();" />
+            <menuitem id="kwutil_text" label="Toggle Sidebar"
+            oncommand="toggleSidebar('viewKwSidebar');" />
             
             <menuitem id="kwutil_design" label="Design Mode"
             oncommand="content.document.designMode = content.document.designMode == 'off' ? 'on' : 'off' ;" />

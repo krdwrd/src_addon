@@ -1,19 +1,37 @@
-<?xml version="1.0"?> 
-
-<page id="KrdwrdSidebar" title="KrdWrd"
-         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://krdwrd/content/krdwrd.css" type="text/css"?>
+<toolbox id="KrdwrdSidebar" title="KrdWrd"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
          xmlns:html="http://www.w3.org/1999/xhtml">
-		 
-    <html:link rel='stylesheet' href='chrome://krdwrd/content/krdwrd.css' type='text/css' />
+        
+  <script type="application/x-javascript" src="chrome://krdwrd/content/common.js" />
+  <script type="application/x-javascript" src="chrome://krdwrd/content/browse.js" />
+  <script type="application/x-javascript" src="chrome://krdwrd/content/krdwrd.js" />
+   
 
-	<box orient="horizontal">
-	<button label="Extract Text" oncommand="kw.text();" />
-	<button label="-1" id="1" type="checkbox" oncommand="" checked="true" style="color: #F00" />
-	<button label="0" id="2" type="checkbox" oncommand="" checked="true" style="color: #FF0" />
-	<button label="1" id="3" type="checkbox" oncommand="" checked="true" style="color: #0F0" />
-	</box>
-	<box orient="vertical" id="kwsbcontent" flex="1" style="overflow: auto; font-family: Arial; font-size: smaller; padding: 10px;">
-	</box>
+  <hbox flex="0">
 
-</page>
+    <button id="toolid" label="Extract" oncommand="kw.text();" tooltiptext="Extract Text from Page, show in Sidebar with KrdWrd Tags"/>
+
+    <spacer flex="1" />
+
+    <checkbox label="-1" id="1" type="checkbox" oncommand="" checked="true" style="color: #F00; width: 3em;" />
+    <checkbox label="0" id="2" type="checkbox" oncommand="" checked="true" style="color: #FF0; width: 3em;" />
+    <checkbox label="1" id="3" type="checkbox" oncommand="" checked="true" style="color: #0F0; width: 3em;" />
+
+  </hbox>
+   
+
+
+  <box orient="vertical" flex="1" style="overflow: auto; font-family: Arial; font-size: smaller; padding: 10px;">
+    <html:html id="kwsbcontent">
+      <html:div>
+        <html:span>
+            Hit 'Extract' to display annotated text.
+        </html:span>
+      </html:div>
+    </html:html>
+  </box>
+
+</toolbox>
 
