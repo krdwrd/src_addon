@@ -15,22 +15,21 @@
 
     <spacer flex="1" />
 
-    <checkbox label="-1" id="1" type="checkbox" oncommand="" checked="true" style="color: #F00; width: 3em;" />
-    <checkbox label="0" id="2" type="checkbox" oncommand="" checked="true" style="color: #FF0; width: 3em;" />
-    <checkbox label="1" id="3" type="checkbox" oncommand="" checked="true" style="color: #0F0; width: 3em;" />
+    <box class="krdwrd-tag-1">
+        <button type="checkbox" checked="true" label="bad" flex="1" id="show1" oncommand="kw.updatetext(this);" />
+    </box>
+    <box class="krdwrd-tag-2">
+        <button type="checkbox" checked="true" label="unknown" flex="1" id="show2" oncommand="kw.updatetext(this);" />
+    </box>
+    <box class="krdwrd-tag-3">
+        <button type="checkbox" checked="true" label="good" flex="1" id="show3" oncommand="kw.updatetext(this);" />
+    </box>
 
   </hbox>
-   
 
 
   <box orient="vertical" flex="1" style="overflow: auto; font-family: Arial; font-size: smaller; padding: 10px;">
-    <html:html id="kwsbcontent">
-      <html:div>
-        <html:span>
-            Hit 'Extract' to display annotated text.
-        </html:span>
-      </html:div>
-    </html:html>
+      <browser id="kwsbcontent" src="about:blank" type="content" flex="1"/>
   </box>
 
 </toolbox>

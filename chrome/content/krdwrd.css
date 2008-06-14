@@ -33,6 +33,21 @@
 	background: #5A5 !important;
 }
 
+.krdwrd-hidden-1 .krdwrd-tag-1 
+{
+	display: none;
+}
+
+.krdwrd-hidden-2 .krdwrd-tag-2
+{
+	display: none;
+}
+
+.krdwrd-hidden-3 .krdwrd-tag-3 
+{
+	display: none;
+}
+
 .kwsb-tag 
 {
 	margin: 2px;

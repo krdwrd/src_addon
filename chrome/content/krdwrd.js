@@ -195,24 +195,31 @@ function KrdWrd()
     // show window w/ annotated text
     this.text = function()
     {
-        var sb = doc.getElementById('kwsbcontent');
+        var doc = $('kwsbcontent').contentDocument;
+        var sb = doc.body;
 
         while (sb.hasChildNodes())
             sb.removeChild(sb.lastChild);
 
-        var doc = document;
-        var body = content.document.body;
+        addStyle(doc, "chrome://krdwrd/content/krdwrd.css");
 
-        traverse(body, function(node, kw){
+        traverse(content.document.body, function(node, kw){
                 var txt = doc.createTextNode(node.data);
-                var span = doc.createElement('html:span');
+                var span = doc.createElement('div');
                 span.appendChild(txt);
-                var div = doc.createElement('html:div');
-                div.appendChild(span);
                 span.className = kw + " kwsb-tag";
-                sb.appendChild(div);
+                sb.appendChild(span);
             });
     };
+
+    this.updatetext = function(caller)
+    {
+        var style = "";
+        for (var i = 1; i < 4; i++)
+            if (! $('show' + i).getAttribute('checked'))
+                style = style + " krdwrd-hidden-" + i; 
+        $('kwsbcontent').contentDocument.body.className = style;
+    }
 
     // update per-document tracker when the current page changes
     document.addEventListener("pageshow", this.onCommandTracking, false);
