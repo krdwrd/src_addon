@@ -49,20 +49,23 @@
   <statusbar id="status-bar">
 
     <statusbarpanel id="krdwrd-panel" class="statusbarpanel-menu-iconic"
-		    src="chrome://krdwrd/skin/kw-disabled.ico" tooltiptext="KrdWrd">
+                   src="chrome://krdwrd/skin/kw-disabled.ico" tooltiptext="KrdWrd">
 
       <menupopup id="menu_ToolsPopup">
         
         <menuitem id="kwmenu_track" label="Tracking"
          accesskey="t" type="checkbox" 
+         tooltiptext="Toggle highlighting of document elements for annotation"
          oncommand="kw.onCommandTracking();"/>
         
         <menuitem id="kwmenu_submit" label="Submit"
          accesskey="s" key="kwkey_submit" disabled='true'
+         tooltiptext="Submit an annotated page to the KrdWrd server"
          oncommand="kw.onCommandSubmit();"/>
         
         <menuitem id="kwmenu_grab" label="Grab Page"
          accesskey="g" disabled='true'
+         tooltiptext="Request a fresh page for tagging from the KrdWrd server"
          oncommand="kw.onCommandGrab();"/>
         
         <menu id="kwmenu_corpus" label="Corpus" accesskey="C">
@@ -90,12 +93,15 @@
           <menupopup>
             
             <menuitem id="kwutil_propagate" label="Progagate"
+            tooltiptext="Propagate annotations downwards in the DOM tree into the leaf nodes containing text"
             oncommand="kw.propagate();" />
             
             <menuitem id="kwutil_text" label="Toggle Sidebar"
+            tooltiptext="show/hide the KrdWrd sidebar for text extraction"
             oncommand="toggleSidebar('viewKwSidebar');" />
             
             <menuitem id="kwutil_design" label="Design Mode"
+            tooltiptext="Toggle edit mode on current document. DO NOT USE ON CORPUS SUBMISSIONS."
             oncommand="content.document.designMode = content.document.designMode == 'off' ? 'on' : 'off' ;" />
             
           </menupopup>
@@ -104,16 +110,19 @@
         
         <menuitem id="kwmenu_about" label="My Stats"
          accesskey="m"
-		 oncommand="content.document.location = kw.kwserver + 'stat';"/>
+         tooltiptext="Show my personal  tagging statistics on the KrdWrd web site"
+         oncommand="content.document.location = kw.kwserver + 'stat';"/>
         
         <menuseparator/>
         
         <menuitem id="kwmenu_about" label="About"
          accesskey="a"
+         tooltiptext="About the KrdWrd Firefox AddOn"
          oncommand="content.document.location = 'chrome://krdwrd/skin/about';"/>
         
         <menuitem id="kwmenu_help" label="Help"
          accesskey="h"
+         tooltiptext="Help on AddOn usage and workflow."
          oncommand="content.document.location = 'chrome://krdwrd/skin/help';"/>
         
       </menupopup>
