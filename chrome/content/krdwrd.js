@@ -103,16 +103,19 @@ function KrdWrd()
     // all according to the tracking menu checkbox
     this.onCommandTracking = function()
     {
-        if ($('kwmenu_track').hasAttribute('checked'))
+        var checked = $('kwmenu_track').hasAttribute('checked');
+        $('kwcontext').hidden = ! checked;
+        var tracker = getTracker(checked);
+
+        if (checked)
         {
-            $('kwcontext').hidden = false;
-            getTracker(true).startTracking();
+            tracker.startTracking()
             $('krdwrd-panel').src = 'chrome://krdwrd/skin/kw-enabled.ico';
         }
         else
         {
-            $('kwcontext').hidden = true;
-            getTracker(false).stopTracking();
+            if (tracker)
+                tracker.stopTracking();
             $('krdwrd-panel').src = 'chrome://krdwrd/skin/kw-disabled.ico';
         }
     };
@@ -175,8 +178,8 @@ function KrdWrd()
     this.setCorpus = function(corpus, label)
     {
         $('kwmenu_grab').label = "Grab from " + label;
-        $('kwmenu_grab').disabled = false;
-        $('kwmenu_submit').disabled = false;
+        $('kwmenu_grab').setAttribute('disabled', false);
+        $('kwmenu_submit').setAttribute('disabled', false);
         this.corpus = corpus;
         this.onCommandGrab();
     };
