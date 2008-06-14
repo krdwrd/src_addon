@@ -63,6 +63,8 @@ function progress_listener(on_loaded)
 {
   const STATE_STOP =
     Components.interfaces.nsIWebProgressListener.STATE_STOP;
+  const STATE_IS_DOCUMENT = 
+    Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT;
   const STATE_IS_WINDOW = 
     Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
   var pl = 
@@ -79,7 +81,7 @@ function progress_listener(on_loaded)
     }, 
     onStateChange:function(prog, req, flg, stat)
     {
-      if ((flg & STATE_STOP) && (flg & STATE_IS_WINDOW)) 
+      if ((flg & STATE_STOP) && (flg & STATE_IS_DOCUMENT)) 
       {
           var doc = prog.DOMWindow.document;
 
@@ -104,7 +106,7 @@ function progress_listener(on_loaded)
                               error("Error handling onLoad of " + doc.location 
                                   + ": " + format_exception(e));
                           }
-                      }, 1000);
+                      }, 5000);
               }
           }
       }
