@@ -51,7 +51,7 @@
     <statusbarpanel id="krdwrd-panel" class="statusbarpanel-menu-iconic"
                    src="chrome://krdwrd/skin/kw-disabled.ico" tooltiptext="KrdWrd">
 
-      <menupopup id="menu_ToolsPopup">
+      <menupopup id="menu_ToolsPopup" onpopupshowing="kw.updateContext()">
         
         <menuitem id="kwmenu_track" label="Tracking"
          accesskey="t" type="checkbox" 

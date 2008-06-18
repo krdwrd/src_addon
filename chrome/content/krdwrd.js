@@ -219,7 +219,16 @@ function KrdWrd()
             if (! $('show' + i).getAttribute('checked'))
                 style = style + " krdwrd-hidden-" + i; 
         $('kwsbcontent').contentDocument.body.className = style;
-    }
+    };
+
+    this.updateContext = function()
+    {
+        // strip the /bin part
+        var kws = this.kwserver.substr(0, this.kwserver.length-4);
+        var loc = "" + content.document.location;
+        var iskw = (loc.substr(0, kws.length) != kws);
+        $('kwmenu_submit').setAttribute('disabled', iskw);
+    };
 
     // update per-document tracker when the current page changes
     document.addEventListener("pageshow", this.onCommandTracking, false);
