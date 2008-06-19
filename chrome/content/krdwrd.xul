@@ -104,6 +104,10 @@
             tooltiptext="Toggle edit mode on current document. DO NOT USE ON CORPUS SUBMISSIONS."
             oncommand="content.document.designMode = content.document.designMode == 'off' ? 'on' : 'off' ;" />
             
+            <menuitem id="kwutil_kwtags" label="kw Tags"
+            tooltiptext="Insert kw tags around all text blocks."
+            oncommand="kw.insertKW();" />
+            
           </menupopup>
           
         </menu>

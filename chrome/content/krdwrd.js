@@ -230,6 +230,11 @@ function KrdWrd()
         $('kwmenu_submit').setAttribute('disabled', iskw);
     };
 
+    this.insertKW = function()
+    {
+        kwtext(content.document);
+    };
+
     // update per-document tracker when the current page changes
     document.addEventListener("pageshow", this.onCommandTracking, false);
     document.addEventListener("focus", this.onCommandTracking, false);
