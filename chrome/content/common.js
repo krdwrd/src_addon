@@ -59,8 +59,9 @@ function traverse(body, cb)
         }
         if (node.nodeName == "#text")
         {
-            if (node.data.replace( /^\s+/g, "").replace( /\s+$/g, ""))
-                cb(node, kw);
+            var tx = node.data.replace( /^\s+/g, "").replace( /\s+$/g, "");
+            if (tx)
+                cb(node, kw, tx);
         }
         for (child in node.childNodes)
         {
