@@ -108,6 +108,10 @@
             tooltiptext="Insert kw tags around all text blocks."
             oncommand="kw.insertKW();" />
             
+            <menuitem id="kwutil_reproxy" label="Reset Proxy Settings"
+            tooltiptext=".. to your original Configuration"
+            oncommand="restoreProxy();" />
+            
           </menupopup>
           
         </menu>

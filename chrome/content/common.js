@@ -125,17 +125,63 @@ function format_exception(e)
     return e.name + ": " + e.message + "\nStack:\n" + e.stack;
 };
 
+function getPref()
+{
+    return Components.classes["@mozilla.org/preferences-service;1"].
+        getService(Components.interfaces.nsIPrefBranch);
+}
+
+function saveProxy()
+{
+    var prefs = getPref();
+
+    prefs.setCharPref("krdwrd.proxy.http",
+            prefs.getCharPref("network.proxy.http"));
+    prefs.setIntPref("krdwrd.proxy.http_port",
+            prefs.getIntPref("network.proxy.http_port"));
+    prefs.setBoolPref("krdwrd.negotiate-auth.allow-proxies",
+            prefs.getBoolPref("network.negotiate-auth.allow-proxies"));
+    prefs.setBoolPref("krdwrd.proxy.share_proxy_settings",
+            prefs.getBoolPref("network.proxy.share_proxy_settings"));
+    prefs.setIntPref("krdwrd.proxy.type",
+            prefs.getIntPref("network.proxy.type"));
+    prefs.setCharPref("krdwrd.proxy.no_proxies_on",
+            prefs.getCharPref("network.proxy.no_proxies_on", "krdwrd.org"));
+}
+
+function restoreProxy()
+{
+    var prefs = getPref();
+
+    prefs.setCharPref("network.proxy.http",
+            prefs.getCharPref("krdwrd.proxy.http"));
+    prefs.setIntPref("network.proxy.http_port",
+            prefs.getIntPref("krdwrd.proxy.http_port"));
+    prefs.setBoolPref("network.negotiate-auth.allow-proxies",
+            prefs.getBoolPref("krdwrd.negotiate-auth.allow-proxies"));
+    prefs.setBoolPref("network.proxy.share_proxy_settings",
+            prefs.getBoolPref("krdwrd.proxy.share_proxy_settings"));
+    prefs.setIntPref("network.proxy.type",
+            prefs.getIntPref("krdwrd.proxy.type"));
+    prefs.setCharPref("network.proxy.no_proxies_on",
+            prefs.getCharPref("krdwrd.proxy.no_proxies_on", "krdwrd.org"));
+}
+
+function haveProxy(hostname)
+{
+    var prefs = getPref();
+    return prefs.getCharPref("network.proxy.http") == hostname;
+}
+
 function setProxy(hostname, port)
 {
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"].
-                getService(Components.interfaces.nsIPrefBranch);
+    var prefs = getPref();
 
     prefs.setCharPref("network.proxy.http", hostname);
     prefs.setIntPref("network.proxy.http_port", port);
     prefs.setBoolPref("network.negotiate-auth.allow-proxies", true);
     prefs.setBoolPref("network.proxy.share_proxy_settings", true);
     prefs.setIntPref("network.proxy.type", 1);
-
     prefs.setCharPref("network.proxy.no_proxies_on", "krdwrd.org");
 };
 
@@ -182,7 +228,12 @@ function kwProxy()
     var username = "krdwrd";
     var passwrd = "krdwrd";
 
-    setProxy(hostname, port);
+    if (! haveProxy(hostname))
+    {
+        saveProxy();
+        setProxy(hostname, port);
+    }
+
     setPassword(hostname + ":" + port, realm, username, passwrd);
 };
 
