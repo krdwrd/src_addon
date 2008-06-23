@@ -7,7 +7,10 @@ function Tracker()
     // handle document's mousemove events
     doTrackEvent = function(event)
     {
-        doTrack(event.target);
+        var src = event.target;
+        if (src == content.document.documentElement)
+            src = src.body;
+        doTrack(src);
     };
 
     // update (un)selected element's css class names
