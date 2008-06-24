@@ -3,6 +3,7 @@
    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="chrome://krdwrd/content/common.js" />
   <script type="application/x-javascript" src="chrome://krdwrd/content/browse.js" />
+  <script type="application/x-javascript" src="chrome://krdwrd/content/tracker.js" />
   <script type="application/x-javascript" src="chrome://krdwrd/content/krdwrd.js" />
   
   <keyset id="mainKeyset">
