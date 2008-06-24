@@ -4,7 +4,8 @@
 function KrdWrd()
 {
     this.kwserver = 'https://krdwrd.org/pages/bin/';
-    corpus = 'test';
+    this.corpus = 'test';
+    this.is_tutorial = false;
 
     // inject stylesheet into current document
     addStyle = function(doc, href)
@@ -92,6 +93,8 @@ function KrdWrd()
                 else
                 {
                     notify("Upload complete.");
+                    //if (self.is_tutorial)
+                    //TODO
                     self.onCommandGrab();
                 }
             }
@@ -105,7 +108,9 @@ function KrdWrd()
     // grab page from corpus
     this.onCommandGrab = function()
     {
-        content.document.location = this.kwserver + 'serve?corpus=' + this.getCorpus();
+        content.document.location = this.kwserver + 'serve?' + 
+            'corpus=' + this.corpus +
+            (this.is_tutorial ? '&serial=true' : '');
         $('kwmenu_track').setAttribute('checked', true);
         this.onCommandTracking();
     };
@@ -127,6 +132,7 @@ function KrdWrd()
         $('kwmenu_grab').setAttribute('disabled', false);
         $('kwmenu_submit').setAttribute('disabled', false);
         this.corpus = corpus;
+        this.is_tutorial = corpus == 'tutorial';
         this.onCommandGrab();
     };
 

@@ -44,7 +44,7 @@ Tracker.prototype.doTrack =
 Tracker.prototype.startTracking =
     function()
     {
-		var self = this;
+        var self = this;
         content.document.addEventListener("mouseover", function (e) { self._doTrackEvent(e); }, false);
     };
 
@@ -55,3 +55,4 @@ Tracker.prototype.stopTracking =
         this._doTrack(null);
     };
 
+// vim: et

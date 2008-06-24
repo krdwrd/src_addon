@@ -134,6 +134,11 @@
          tooltiptext="Help on AddOn usage and workflow."
          oncommand="content.document.location = 'chrome://krdwrd/skin/help';"/>
         
+        <menuitem id="kwmenu_tutorial" label="Start Tutorial"
+         accesskey="s"
+         tooltiptext="Guided Tour thru sample Annotation with instant feedback"
+         oncommand="kw.setCorpus('tutorial', 'Tutorial')" />
+        
       </menupopup>
     </statusbarpanel>
   </statusbar>
