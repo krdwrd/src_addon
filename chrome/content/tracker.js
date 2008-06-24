@@ -4,8 +4,6 @@ function Tracker()
     this.tracked = null;
 }
 
-Tracker.prototype.tracked_class;
-Tracker.prototype.tracked;
 
 // handle document's mousemove events
 Tracker.prototype._doTrackEvent =
@@ -14,11 +12,11 @@ Tracker.prototype._doTrackEvent =
         var src = event.target;
         if (src == content.document.documentElement)
             src = src.body;
-        doTrack(src);
+        this.doTrack(src);
     };
 
 // update (un)selected element's css class names
-Tracker.prototype._doTrack =
+Tracker.prototype.doTrack =
     function(tracked, tag_index)
     {
         // unhighlight old
@@ -43,16 +41,11 @@ Tracker.prototype._doTrack =
         }
     };
 
-Tracker.prototype.doTag =
-    function(tag_index)
-    {
-        this._doTrack(null, tag_index);
-    };
-
 Tracker.prototype.startTracking =
     function()
     {
-        content.document.addEventListener("mouseover", this._doTrackEvent, false);
+		var self = this;
+        content.document.addEventListener("mouseover", function (e) { self._doTrackEvent(e); }, false);
     };
 
 Tracker.prototype.stopTracking =

@@ -79,7 +79,7 @@ function KrdWrd()
         var url = encodeURIComponent(content.document.location.href);
         var params = "url=" + url + "&html=" + html;
         var request = new XMLHttpRequest();
-        var ocg = this.onCommandGrab();
+        var self = this;
 
         request.open('POST', this.kwserver + 'tagpage', true);
         request.onreadystatechange = function()
@@ -92,7 +92,7 @@ function KrdWrd()
                 else
                 {
                     notify("Upload complete.");
-                    ocg();
+                    self.onCommandGrab();
                 }
             }
         };
@@ -116,7 +116,7 @@ function KrdWrd()
         var t;
         if (t = getTracker(false))
         {
-            t.doTag(tag_index);
+            t.doTrack(null, tag_index);
         }
     };
 
