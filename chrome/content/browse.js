@@ -61,70 +61,100 @@ function open_documents(filelist, callback)
 // progress listener implementing nsIWebProgressListener
 function progress_listener(on_loaded)
 {
-  const STATE_STOP =
-    Components.interfaces.nsIWebProgressListener.STATE_STOP;
-  const STATE_IS_DOCUMENT = 
-    Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT;
-  const STATE_IS_WINDOW = 
-    Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
-  var pl = 
-  {
-    handler : on_loaded, 
-    once : false,
-    QueryInterface : function(aIID)
-    {
-    if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
-        aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
-        aIID.equals(Components.interfaces.nsISupports))
-      return this;
-    throw Components.results.NS_NOINTERFACE;
-    }, 
-    onStateChange:function(prog, req, flg, stat)
-    {
-      if ((flg & STATE_STOP) && (flg & STATE_IS_DOCUMENT)) 
-      {
-          var doc = prog.DOMWindow.document;
+    const STATE_STOP =
+        Components.interfaces.nsIWebProgressListener.STATE_STOP;
+    const STATE_IS_DOCUMENT =
+        Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT;
+    const STATE_IS_WINDOW =
+        Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
 
-          if (doc.location != "about:blank")
-          {
-              if (this.once)
-              {
-                  print("WARN: double-loaded " + doc.location);
-              }
-              else
-              {
-                  this.once = true;
-                  var handler = this.handler;
-                  // wait a second for the engine to settle
-                  setTimeout(function() {
-                          try
-                          {
-                              handler(doc, prog.DOMWindow);
-                          }
-                          catch (e)
-                          {
-                              error("Error handling onLoad of " + doc.location 
-                                  + ": " + format_exception(e));
-                          }
-                      }, 5000);
-              }
-          }
-      }
-    },
-    onLocationChange:function(a,b,c)
-    {
-    },
-    onProgressChange:function(a,b,c,d,e,f)
-    {
-    },
-    onStatusChange:function(a,b,c,d)
-    {
-    },
-    onSecurityChange:function(a,b,c)
-    {
-    },
-  };
-  return pl;
+    var pl =
+        {
+        handler :
+            on_loaded,
+        once :
+            false,
+        QueryInterface :
+            function(aIID)
+            {
+                if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+                        aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+                        aIID.equals(Components.interfaces.nsISupports))
+                    return this;
+                throw Components.results.NS_NOINTERFACE;
+            },
+        onStateChange:
+            function(prog, req, flg, stat)
+            {
+                if ((flg & STATE_STOP) && (flg & STATE_IS_DOCUMENT))
+                {
+                    var doc = prog.DOMWindow.document;
+
+                    if (doc.location != "about:blank")
+                    {
+                        if (this.once)
+                        {
+                            print("WARN: double-loaded " + doc.location);
+                        }
+                        else
+                        {
+                            this.once = true;
+                            var handler = this.handler;
+                            // wait a second for the engine to settle
+                            setTimeout(function()
+                                       {
+                                           try
+                                           {
+                                               handler(doc, prog.DOMWindow);
+                                           }
+                                           catch (e)
+                                           {
+                                               error("Error handling onLoad of " + doc.location
+                                                     + ": " + format_exception(e));
+                                           }
+                                       }
+                                       , 5000);
+                        }
+                    }
+                }
+            },
+        onLocationChange:
+            function(a, b, c)
+            {}
+            ,
+        onProgressChange:
+            function(a, b, c, d, e, f)
+            {}
+            ,
+        onStatusChange:
+            function(a, b, c, d)
+            {}
+            ,
+        onSecurityChange:
+            function(a, b, c)
+            {}
+            ,
+        };
+    return pl;
+};
+
+function post_request(url, data, callback)
+{
+    var request = new XMLHttpRequest();
+    request.open('POST', url, true);
+    request.onreadystatechange = function()
+                                 {
+                                     if (request.readyState == 4)
+                                     {
+                                         var response = request.responseText;
+                                         var status = request.status;
+                                         callback(response, status);
+                                     };
+                                 };
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.setRequestHeader('Content-Encoding', 'multipart/form-data')
+    request.setRequestHeader("Content-length", data.length);
+    request.send(data);
 };
 
 // vim: et
