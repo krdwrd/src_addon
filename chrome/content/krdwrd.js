@@ -70,7 +70,7 @@ function KrdWrd()
     notify = function(txt)
     {
         var nb = gBrowser.getNotificationBox();
-        nb.appendNotification(txt, "default", null, 1);
+        nb.appendNotification(txt, "default", 'chrome://krdwrd/skin/kw-enabled.ico', 1);
     };
 
     this.validate = function()
