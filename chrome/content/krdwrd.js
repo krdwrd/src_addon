@@ -67,41 +67,67 @@ function KrdWrd()
         }
     };
 
-    notify = function(txt, buttons)
+    this.notify = function(txt, buttons)
     {
         var nb = gBrowser.getNotificationBox();
         const priority = nb.PRIORITY_INFO_MEDIUM;
-        nb.appendNotification(txt, "default", 'chrome://krdwrd/skin/kw-enabled.ico', priority, buttons);
+        return nb.appendNotification(txt, "default", 'chrome://krdwrd/skin/kw-enabled.ico', priority, buttons);
     };
 
-    this.validate = function()
+    this.doValidate = function()
     {
         var self = this;
-        var btns = [{ callback: function() { self.onCommandGrab(); }, 
-            label: 'Next Page', accessKey: 'a'}];
-        notify("Check validation results and continue to ...", btns); 
+
+        var waiter = this.notify("Validating ..."); 
+
+        var url = 'url=' + encodeURIComponent(content.document.location.href);
+        var tags = 'tags=' + encodeURIComponent(tags);
+        var params = url + "&" + tags;
+
+        post_request(this.kwserver + 'validate', params, function(response, stat)
+        {
+            waiter.close();
+            if (stat != 200)
+                self.notify("Validation failed. " + response);
+            else
+            {
+                var lst = response.split(" ");
+                var i = 0;
+
+                traverse(content.document.body, function(node, kw)
+                {
+                    node.parentNode.className = filterkw(node.parentNode.className) +
+                        "krdwrd-tag-" + lst[i++];
+                });
+
+                var btns = [{ callback: function() { self.onCommandGrab(); }, 
+                    label: 'Next Page', accessKey: 'a'}];
+
+                self.notify("Check validation results and continue to ...", btns); 
+            }
+        });
     };
 
     // submit tagged html to server
     this.onCommandSubmit = function()
     {
-        var html = encodeURIComponent(getHTML());
-        var url = encodeURIComponent(content.document.location.href);
-        var params = "url=" + url + "&html=" + html;
-        var request = new XMLHttpRequest();
         var self = this;
+
+        var url = 'url=' + encodeURIComponent(content.document.location.href);
+        var html = 'html=' + encodeURIComponent(getHTML());
+        var params = url + "&" + html;
 
         post_request(this.kwserver + 'tagpage', params, function(response, stat)
         {
             if (stat != 200)
-                notify("Upload failed. " + response);
+                self.notify("Upload failed. " + response);
             else
             {
                 if (self.is_tutorial)
-                    self.validate();
+                    self.doValidate();
                 else
                 {
-                    notify("Upload complete.");
+                    self.notify("Upload complete.");
                     self.onCommandGrab();
                 }
             }
@@ -111,6 +137,9 @@ function KrdWrd()
     // grab page from corpus
     this.onCommandGrab = function()
     {
+        // inject proxy settings, login, password
+        kwProxy();
+
         content.document.location = this.kwserver + 'serve?' + 
             'corpus=' + this.corpus +
             (this.is_tutorial ? '&serial=true' : '');
@@ -199,9 +228,6 @@ function KrdWrd()
 
 try
 {
-    // inject proxy settings, login, password
-    kwProxy();
-
     // Singleton
     kw = new KrdWrd();
 }
