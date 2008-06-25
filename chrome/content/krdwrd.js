@@ -73,6 +73,11 @@ function KrdWrd()
         nb.appendNotification(txt, "default", null, 1);
     };
 
+    this.validate = function()
+    {
+
+    };
+
     // submit tagged html to server
     this.onCommandSubmit = function()
     {
@@ -82,27 +87,19 @@ function KrdWrd()
         var request = new XMLHttpRequest();
         var self = this;
 
-        request.open('POST', this.kwserver + 'tagpage', true);
-        request.onreadystatechange = function()
+        post_request(this.kwserver + 'tagpage', params, function(response, stat)
         {
-            if (request.readyState == 4)
+            if (stat != 200)
+                notify("Upload failed. " + response);
+            else
             {
-                var response = request.responseText;
-                if (request.status != 200)
-                    notify("Upload failed. " + response);
+                notify("Upload complete.");
+                if (self.is_tutorial)
+                    self.validate();
                 else
-                {
-                    notify("Upload complete.");
-                    //if (self.is_tutorial)
-                    //TODO
                     self.onCommandGrab();
-                }
             }
-        };
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.setRequestHeader('Content-Encoding', 'multipart/form-data')
-        request.setRequestHeader("Content-length", params.length);
-        request.send(params);
+        });
     };
 
     // grab page from corpus
