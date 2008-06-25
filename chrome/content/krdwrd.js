@@ -67,15 +67,19 @@ function KrdWrd()
         }
     };
 
-    notify = function(txt)
+    notify = function(txt, buttons)
     {
         var nb = gBrowser.getNotificationBox();
-        nb.appendNotification(txt, "default", 'chrome://krdwrd/skin/kw-enabled.ico', 1);
+        const priority = nb.PRIORITY_INFO_MEDIUM;
+        nb.appendNotification(txt, "default", 'chrome://krdwrd/skin/kw-enabled.ico', priority, buttons);
     };
 
     this.validate = function()
     {
-
+        var self = this;
+        var btns = [{ callback: function() { self.onCommandGrab(); }, 
+            label: 'Next Page', accessKey: 'a'}];
+        notify("Check validation results and continue to ...", btns); 
     };
 
     // submit tagged html to server
@@ -93,11 +97,13 @@ function KrdWrd()
                 notify("Upload failed. " + response);
             else
             {
-                notify("Upload complete.");
                 if (self.is_tutorial)
                     self.validate();
                 else
+                {
+                    notify("Upload complete.");
                     self.onCommandGrab();
+                }
             }
         });
     };
