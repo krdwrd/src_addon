@@ -107,7 +107,7 @@ function KrdWrd()
                 });
 
                 var btns = [{ callback: function() { self.onCommandGrab(); }, 
-                    label: 'Next Page', accessKey: 'a'}];
+                    label: 'Next Page', accessKey: 'n'}];
 
                 self.notify("Check validation results and continue to ...", btns); 
             }
