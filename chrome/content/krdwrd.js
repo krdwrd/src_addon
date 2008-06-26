@@ -186,12 +186,10 @@ function KrdWrd()
     this.text = function()
     {
         var doc = $('kwsbcontent').contentDocument;
-        var sb = doc.body;
+        var sb = doc.getElementById("content");
 
         while (sb.hasChildNodes())
             sb.removeChild(sb.lastChild);
-
-        addStyle(doc, "chrome://krdwrd/content/krdwrd.css");
 
         traverse(content.document.body, function(node, kw){
                 var txt = doc.createTextNode(node.data);

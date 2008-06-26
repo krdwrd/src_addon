@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://krdwrd/content/krdwrd.css" type="text/css"?>
-<toolbox id="KrdwrdSidebar" title="KrdWrd"
+<toolbox id="KrdwrdSidebar" title="KrdWrd" class="kw-sidebar"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
          xmlns:html="http://www.w3.org/1999/xhtml">
         
@@ -11,7 +12,7 @@
 
   <hbox flex="0">
 
-    <button id="toolid" label="Extract" oncommand="kw.text();" tooltiptext="Extract Text from Page, show in Sidebar with KrdWrd Tags"/>
+    <button id="toolid" label="Update" oncommand="kw.text();" tooltiptext="Extract Text from Page, show in Sidebar with KrdWrd Tags"/>
 
     <spacer flex="1" />
 
@@ -28,8 +29,8 @@
   </hbox>
 
 
-  <box orient="vertical" flex="1" style="overflow: auto; font-family: Arial; font-size: smaller; padding: 10px;">
-      <browser id="kwsbcontent" src="about:blank" type="content" flex="1"/>
+  <box orient="vertical" flex="1" style="overflow: auto;">
+	  <browser id="kwsbcontent" src="chrome://krdwrd/content/textextract" type="content" flex="1"/>
   </box>
 
 </toolbox>

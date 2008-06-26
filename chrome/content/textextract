@@ -1,0 +1,8 @@
+<link rel="stylesheet" type="text/css" href="chrome://krdwrd/content/krdwrd.css"/>
+<div id="content" class="kw-sidebar">
+<h4>KrdWrd Text Extraction</h4>
+
+Click on 'Update' above to extract all textual content from the page and display here with the propagated annotations.
+<br />
+Use the bad/unknown/good buttons to toggle display of the different tags.
+</div>
