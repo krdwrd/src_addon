@@ -59,7 +59,7 @@ function traverse(body, cb)
         }
         if (node.nodeName == "#text")
         {
-            var tx = node.data.replace( /^\s+/g, "").replace( /\s+$/g, "");
+            var tx = node.data.replace( /^\s+/g, "").replace( /\s+$/g, "").replace( /\n/g, " ").replace(/  +/g, " ");
             if (tx)
                 cb(node, kw, tx);
         }
