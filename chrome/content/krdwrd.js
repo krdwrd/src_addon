@@ -80,8 +80,14 @@ function KrdWrd()
 
         var waiter = this.notify("Validating ..."); 
 
+        var taglist = "";
+        traverse(content.document.body, function(node, kw)
+        {
+            taglist += kw.split("-")[2] + " ";
+        });
+
         var url = 'url=' + encodeURIComponent(content.document.location.href);
-        var tags = 'tags=' + encodeURIComponent(tags);
+        var tags = 'tags=' + encodeURIComponent(taglist);
         var params = url + "&" + tags;
 
         post_request(this.kwserver + 'validate', params, function(response, stat)
