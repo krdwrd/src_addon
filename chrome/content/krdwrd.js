@@ -119,6 +119,11 @@ function KrdWrd()
     {
         var self = this;
 
+        var track = $('kwmenu_track');
+        if (track.hasAttribute('checked'))
+            track.removeAttribute('checked');
+        this.onCommandTracking();
+
         var url = 'url=' + encodeURIComponent(content.document.location.href);
         var html = 'html=' + encodeURIComponent(getHTML());
         var params = url + "&" + html;

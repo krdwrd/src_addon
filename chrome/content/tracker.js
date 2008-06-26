@@ -32,10 +32,11 @@ Tracker.prototype.doTrack =
         if (! $('kwmenu_track').hasAttribute('checked'))
             return false;
 
+        this.tracked = tracked;
+
         // highlight new
         if (tracked)
         {
-            this.tracked = tracked;
             this.tracked_class = tracked.className;
             tracked.className = "krdwrd-highlighted " + tracked.className;
         }
@@ -52,7 +53,7 @@ Tracker.prototype.stopTracking =
     function()
     {
         content.document.removeEventListener("mouseover", this._doTrackEvent, false);
-        this._doTrack(null);
+        this.doTrack(null);
     };
 
 // vim: et
