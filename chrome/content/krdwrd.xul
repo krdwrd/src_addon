@@ -77,12 +77,12 @@
               accesskey="t"
               oncommand="kw.setCorpus('test', this.label)" />
             
-            <menuitem id="kwcorpus_ggaze" label="GoodGaze"
-              accesskey="g"
-              oncommand="kw.setCorpus('ggaze', this.label)" />
+            <menuitem id="kwcorpus_canola" label="Canola"
+              accesskey="c"
+              oncommand="kw.setCorpus('canola', this.label)" />
             
             <menuitem id="kwcorpus_cleaneval" label="CleanEval"
-              accesskey="c"
+              accesskey="e"
               oncommand="kw.setCorpus('ceval', this.label)" />
             
           </menupopup>
