@@ -28,21 +28,25 @@ function KrdWrd()
             addStyle(doc, "chrome://krdwrd/content/krdwrd.css");
         }
         return doc.tracker;
-    }
+    };
 
     this.getCorpus = function()
     {
         return this.corpus;
-    }
+    };
 
     // keyboard short cut handler: invert checkbox state
     this.onToggleTracking = function()
     {
         var track = $('kwmenu_track');
         if (track.hasAttribute('checked'))
+        {
             track.removeAttribute('checked');
+        }
         else
+        {
             track.setAttribute('checked', true);
+        }
         this.onCommandTracking();
     };
 
@@ -56,13 +60,15 @@ function KrdWrd()
 
         if (checked)
         {
-            tracker.startTracking()
+            tracker.startTracking();
             $('krdwrd-panel').src = 'chrome://krdwrd/skin/kw-enabled.ico';
         }
         else
         {
             if (tracker)
+            {
                 tracker.stopTracking();
+            }
             $('krdwrd-panel').src = 'chrome://krdwrd/skin/kw-disabled.ico';
         }
     };
@@ -70,7 +76,7 @@ function KrdWrd()
     this.notify = function(txt, buttons)
     {
         var nb = gBrowser.getNotificationBox();
-        const priority = nb.PRIORITY_INFO_MEDIUM;
+        var priority = nb.PRIORITY_INFO_MEDIUM;
         return nb.appendNotification(txt, "default", 'chrome://krdwrd/skin/kw-enabled.ico', priority, buttons);
     };
 
@@ -94,7 +100,9 @@ function KrdWrd()
         {
             waiter.close();
             if (stat != 200)
+            {
                 self.notify("Validation failed. " + response);
+            }
             else
             {
                 var lst = response.split(" ");
@@ -121,8 +129,10 @@ function KrdWrd()
 
         var track = $('kwmenu_track');
         if (track.hasAttribute('checked'))
+        {
             track.removeAttribute('checked');
-        this.onCommandTracking();
+            this.onCommandTracking();
+        }
 
         var url = 'url=' + encodeURIComponent(content.document.location.href);
         var html = 'html=' + encodeURIComponent(getHTML());
@@ -131,11 +141,15 @@ function KrdWrd()
         post_request(this.kwserver + 'tagpage', params, function(response, stat)
         {
             if (stat != 200)
+            {
                 self.notify("Upload failed. " + response);
+            }
             else
             {
                 if (self.is_tutorial)
+                {
                     self.doValidate();
+                }
                 else
                 {
                     self.notify("Upload complete.");
@@ -161,8 +175,8 @@ function KrdWrd()
     // handler for user tag events
     this.onTag = function(tag_index)
     {
-        var t;
-        if (t = getTracker(false))
+        var t = getTracke(false);
+        if (t)
         {
             t.doTrack(null, tag_index);
         }
@@ -194,7 +208,9 @@ function KrdWrd()
         var sb = doc.getElementById("content");
 
         while (sb.hasChildNodes())
+        {
             sb.removeChild(sb.lastChild);
+        }
 
         traverse(content.document.body, function(node, kw){
                 var txt = doc.createTextNode(node.data);
@@ -209,8 +225,12 @@ function KrdWrd()
     {
         var style = "";
         for (var i = 1; i < 4; i++)
+        {
             if (! $('show' + i).getAttribute('checked'))
+            {
                 style = style + " krdwrd-hidden-" + i; 
+            }
+        }
         $('kwsbcontent').contentDocument.body.className = style;
     };
 
@@ -232,7 +252,7 @@ function KrdWrd()
     document.addEventListener("pageshow", this.onCommandTracking, false);
     document.addEventListener("focus", this.onCommandTracking, false);
 
-};
+}
 
 
 try
