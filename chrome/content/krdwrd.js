@@ -175,7 +175,7 @@ function KrdWrd()
     // handler for user tag events
     this.onTag = function(tag_index)
     {
-        var t = getTracke(false);
+        var t = getTracker(false);
         if (t)
         {
             t.doTrack(null, tag_index);
