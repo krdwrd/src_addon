@@ -29,10 +29,8 @@ Tracker.prototype.doTrack =
                 this.tracked.className = this.tracked_class;
         }
 
-        if (! $('kwmenu_track').hasAttribute('checked'))
-            return false;
-
-        this.tracked = tracked;
+        if (! tag_index)
+            this.tracked = tracked;
 
         // highlight new
         if (tracked)
@@ -46,14 +44,15 @@ Tracker.prototype.startTracking =
     function()
     {
         var self = this;
-        content.document.addEventListener("mouseover", function (e) { self._doTrackEvent(e); }, false);
+        this.listen = function (e) { self._doTrackEvent(e); };
+        content.document.addEventListener("mouseover", this.listen, false);
     };
 
 Tracker.prototype.stopTracking =
     function()
     {
-        content.document.removeEventListener("mouseover", this._doTrackEvent, false);
-        this.doTrack(null);
+        this.doTrack(null, null);
+        content.document.removeEventListener("mouseover", this.listen, false);
     };
 
 // vim: et
