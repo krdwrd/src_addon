@@ -116,11 +116,11 @@
             oncommand="toggleSidebar('viewKwSidebar');" />
             
             <menuitem id="kwutil_design" label="Design Mode" type="checkbox" disabled="true"
-            tooltiptext="Toggle edit mode on current document. DO NOT USE ON CORPUS SUBMISSIONS."
+            tooltiptext="Toggle edit mode on current document. DO NOT USE ON CORPUS SUBMISSIONS!"
             oncommand="content.document.designMode = this.getAttribute('checked') ? 'on' : 'off' ;" />
             
             <menuitem id="kwutil_kwtags" label="kw Tags" disabled="true"
-            tooltiptext="Insert kw tags around all text blocks."
+            tooltiptext="Insert kw tags around all text blocks"
             oncommand="kw.insertKW();" />
             
           </menupopup>
@@ -129,19 +129,19 @@
         
         <menuitem id="kwmenu_about" label="My Stats"
          accesskey="m"
-         tooltiptext="Show my personal  tagging statistics on the KrdWrd web site"
+         tooltiptext="Show my personal tagging statistics on the KrdWrd web site"
          oncommand="content.document.location = kw.kwserver + 'stat';"/>
         
         <menuseparator/>
         
         <menuitem id="kwmenu_about" label="About"
          accesskey="a"
-         tooltiptext="About the KrdWrd Firefox AddOn"
+         tooltiptext="About the KrdWrd Firefox Add-on"
          oncommand="content.document.location = 'chrome://krdwrd/skin/about';"/>
         
         <menuitem id="kwmenu_help" label="Help"
          accesskey="h"
-         tooltiptext="Help on AddOn usage and workflow."
+         tooltiptext="Help on Add-on usage and workflow"
          oncommand="content.document.location = 'chrome://krdwrd/skin/help';"/>
         
         <menuitem id="kwmenu_tutorial" label="Start Tutorial"
