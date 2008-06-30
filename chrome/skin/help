@@ -4,6 +4,7 @@
 </head>
 <body>
 	<div id="aboutPageContainer">
+		Please check the complete <a href="https://krdwrd.org/trac/wiki/AddonManual">Add-on Manual</a> on the krdwrd website!
 		<h2>krdwrd basics</h2>
 		For you to be a productive drone, all you need to do is:
 		<ul>
@@ -24,29 +25,7 @@
         		items. They tend to make life a lot easier.
 			</li>
 		</ul>
-		<br />
-		Also check the <a href="https://krdwrd.org/trac/wiki/AnnotationGuidelines">Annotation Guidelines</a> on the krdwrd website.
 
-		<h2>krdwrd utils</h2>
-
-		The status bar pop-up offers some additional functionality:
-
-		<ul>
-            <li class="warn">
-                Warning: These commands are highly experimental.
-            </li>
-			<li>
-				<b>Propagate</b> traverses the document and moves annotations downwards to the leaf nodes.
-			</li>
-			<li>
-				<b>Show Text</b> extracts all text from the current page and displays it in the sidebar, together with 
-				the usual color annotation.
-			</li>
-			<li>
-				<b>Design Mode</b> allows editing the current page.
-				Please do not use this on corpus data, as your submission will be rejected.
-			</li>
-		</ul>
 	</div>
 </body>
 <!-- vim: filetype=html:et:ts=4
