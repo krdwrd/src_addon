@@ -95,6 +95,21 @@ function kwtext(doc, start)
     }
 };
 
+
+function extractText(doc, withtags)
+{
+    var res = '';
+    if (withtags)
+    {
+        f = function (n, t, txt) { res += t[t.length-1] + " " + txt + "\n"; };
+    } else
+    {
+        f = function (n, t, txt) { res += txt + "\n"; };
+    }
+    traverse(doc, f);
+    return res;
+};
+
 // quit the application
 function quit(forced)
 {
