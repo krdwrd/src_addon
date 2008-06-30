@@ -264,7 +264,7 @@ function KrdWrd()
             content.document.blocked = true;
         }, false);
     $('contentAreaContextMenu').addEventListener("popuphiding", function() {
-            content.document.blocked = false;}, false);
+            setTimeout(function () { content.document.blocked = false;}, 100); }, false);
 
 }
 
