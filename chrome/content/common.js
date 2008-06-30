@@ -152,7 +152,8 @@ function saveProxy()
             prefs.getCharPref("network.proxy.no_proxies_on", "krdwrd.org"));
     }
     catch (e)
-    { // fail silently }
+    { // fail silently 
+    }
 }
 
 function restoreProxy()
@@ -175,7 +176,8 @@ function restoreProxy()
             prefs.getCharPref("krdwrd.proxy.no_proxies_on", "krdwrd.org"));
     }
     catch (e)
-    { // fail silently }
+    { // fail silently 
+    }
 }
 
 function haveProxy(hostname)
