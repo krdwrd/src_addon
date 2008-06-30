@@ -136,42 +136,59 @@ function saveProxy()
 {
     var prefs = getPref();
 
-    prefs.setCharPref("krdwrd.proxy.http",
+    try
+    {
+        prefs.setCharPref("krdwrd.proxy.http",
             prefs.getCharPref("network.proxy.http"));
-    prefs.setIntPref("krdwrd.proxy.http_port",
+        prefs.setIntPref("krdwrd.proxy.http_port",
             prefs.getIntPref("network.proxy.http_port"));
-    prefs.setBoolPref("krdwrd.negotiate-auth.allow-proxies",
+        prefs.setBoolPref("krdwrd.negotiate-auth.allow-proxies",
             prefs.getBoolPref("network.negotiate-auth.allow-proxies"));
-    prefs.setBoolPref("krdwrd.proxy.share_proxy_settings",
+        prefs.setBoolPref("krdwrd.proxy.share_proxy_settings",
             prefs.getBoolPref("network.proxy.share_proxy_settings"));
-    prefs.setIntPref("krdwrd.proxy.type",
+        prefs.setIntPref("krdwrd.proxy.type",
             prefs.getIntPref("network.proxy.type"));
-    prefs.setCharPref("krdwrd.proxy.no_proxies_on",
+        prefs.setCharPref("krdwrd.proxy.no_proxies_on",
             prefs.getCharPref("network.proxy.no_proxies_on", "krdwrd.org"));
+    }
+    catch (e)
+    { // fail silently }
 }
 
 function restoreProxy()
 {
     var prefs = getPref();
 
-    prefs.setCharPref("network.proxy.http",
+    try 
+    {
+        prefs.setCharPref("network.proxy.http",
             prefs.getCharPref("krdwrd.proxy.http"));
-    prefs.setIntPref("network.proxy.http_port",
+        prefs.setIntPref("network.proxy.http_port",
             prefs.getIntPref("krdwrd.proxy.http_port"));
-    prefs.setBoolPref("network.negotiate-auth.allow-proxies",
+        prefs.setBoolPref("network.negotiate-auth.allow-proxies",
             prefs.getBoolPref("krdwrd.negotiate-auth.allow-proxies"));
-    prefs.setBoolPref("network.proxy.share_proxy_settings",
+        prefs.setBoolPref("network.proxy.share_proxy_settings",
             prefs.getBoolPref("krdwrd.proxy.share_proxy_settings"));
-    prefs.setIntPref("network.proxy.type",
+        prefs.setIntPref("network.proxy.type",
             prefs.getIntPref("krdwrd.proxy.type"));
-    prefs.setCharPref("network.proxy.no_proxies_on",
+        prefs.setCharPref("network.proxy.no_proxies_on",
             prefs.getCharPref("krdwrd.proxy.no_proxies_on", "krdwrd.org"));
+    }
+    catch (e)
+    { // fail silently }
 }
 
 function haveProxy(hostname)
 {
     var prefs = getPref();
-    return prefs.getCharPref("network.proxy.http") == hostname;
+    try
+    {
+        return prefs.getCharPref("network.proxy.http") == hostname;
+    }
+    catch (e)
+    {
+        return false;
+    }
 }
 
 function setProxy(hostname, port)
