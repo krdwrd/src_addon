@@ -73,11 +73,12 @@ function traverse(body, cb, defaulttag)
     rec(body, defaulttag || "krdwrd-tag-2");
 };
 
+
 // insert kw tags around text blocks
-function kwtext(doc)
+function kwtext(doc, start)
 {
     var nodes = [];
-    traverse(doc, function(node, kw)
+    traverse(start || doc, function(node, kw)
     {
         nodes[nodes.length] = node;
     });
