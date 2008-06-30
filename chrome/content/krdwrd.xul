@@ -41,6 +41,12 @@
               accesskey="c" key="kwkey_tag_none"
               oncommand="kw.onTag('none')" />
         
+        <menuseparator />
+
+        <menuitem id="kwcontext_propagate" label="Propagate downwards"
+              accesskey="p"
+              oncommand="kw.propagate()" />
+        
       </menupopup>
       
     </menu>
@@ -93,7 +99,11 @@
           
           <menupopup>
             
-            <menuitem id="kwutil_propagate" label="Progagate"
+            <menuitem id="kwutil_reproxy" label="Reset Proxy Settings"
+            tooltiptext=".. to your original Configuration"
+            oncommand="restoreProxy();" />
+            
+            <menuitem id="kwutil_propagate" label="Progagate All"
             tooltiptext="Propagate annotations downwards in the DOM tree into the leaf nodes containing text"
             oncommand="kw.propagate();" />
             
@@ -101,17 +111,13 @@
             tooltiptext="show/hide the KrdWrd sidebar for text extraction"
             oncommand="toggleSidebar('viewKwSidebar');" />
             
-            <menuitem id="kwutil_design" label="Design Mode" type="checkbox" 
+            <menuitem id="kwutil_design" label="Design Mode" type="checkbox" disabled="true"
             tooltiptext="Toggle edit mode on current document. DO NOT USE ON CORPUS SUBMISSIONS."
             oncommand="content.document.designMode = this.getAttribute('checked') ? 'on' : 'off' ;" />
             
-            <menuitem id="kwutil_kwtags" label="kw Tags"
+            <menuitem id="kwutil_kwtags" label="kw Tags" disabled="true"
             tooltiptext="Insert kw tags around all text blocks."
             oncommand="kw.insertKW();" />
-            
-            <menuitem id="kwutil_reproxy" label="Reset Proxy Settings"
-            tooltiptext=".. to your original Configuration"
-            oncommand="restoreProxy();" />
             
           </menupopup>
           

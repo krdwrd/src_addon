@@ -47,7 +47,7 @@ function getkwtag(klasses)
 }
 
 // traverse the dom, call cb on text nodes
-function traverse(body, cb)
+function traverse(body, cb, defaulttag)
 {
     function rec(node, kw)
     {
@@ -70,7 +70,7 @@ function traverse(body, cb)
                 rec(cnode, kw);
         }
     };
-    rec(body, "krdwrd-tag-2");
+    rec(body, defaulttag || "krdwrd-tag-2");
 };
 
 // insert kw tags around text blocks

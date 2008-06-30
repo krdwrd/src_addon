@@ -55,7 +55,6 @@ function KrdWrd()
     this.onCommandTracking = function()
     {
         var checked = $('kwmenu_track').hasAttribute('checked');
-        $('kwcontext').hidden = ! checked;
         var tracker = getTracker(checked);
 
         if (checked)
@@ -195,7 +194,7 @@ function KrdWrd()
 
     this.propagate = function()
     {
-        var body = content.document.body;
+        var body = content.document.tracker.tracked || content.document.body;
         traverse(body, function(node, kw) {
                 node.parentNode.className = filterkw(node.parentNode.className) + " " + kw;
             });
@@ -252,17 +251,29 @@ function KrdWrd()
     document.addEventListener("pageshow", this.onCommandTracking, false);
     document.addEventListener("focus", this.onCommandTracking, false);
 
+    // block tracking when popup is active
+    $('contentAreaContextMenu').addEventListener("popupshowing", function() {
+            if ($('kwmenu_track').hasAttribute('checked'))
+            {
+                $('kwcontext').removeAttribute('hidden');
+            }
+            else
+            {
+                $('kwcontext').setAttribute('hidden', true);
+            }
+            content.document.blocked = true;
+        }, false);
+    $('contentAreaContextMenu').addEventListener("popuphiding", function() {
+            content.document.blocked = false;}, false);
+
 }
 
+var kw = null;
 
-try
+window.addEventListener("load", function()
 {
     // Singleton
     kw = new KrdWrd();
-}
-catch (e)
-{
-    alert("KrdWrd could not initialize.\nError:\n" + e);
-}
+}, false);
 
 // vim: et

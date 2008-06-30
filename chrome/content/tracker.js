@@ -44,7 +44,10 @@ Tracker.prototype.startTracking =
     function()
     {
         var self = this;
-        this.listen = function (e) { self._doTrackEvent(e); };
+        this.listen = function (e) { 
+            if (! content.document.blocked)
+                self._doTrackEvent(e);
+        };
         content.document.addEventListener("mouseover", this.listen, false);
     };
 
