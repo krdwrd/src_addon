@@ -247,12 +247,14 @@ function KrdWrd()
         kwtext(content.document);
     };
 
-    // update per-document tracker when the current page changes
-    document.addEventListener("pageshow", this.onCommandTracking, false);
-    document.addEventListener("focus", this.onCommandTracking, false);
+    this.init = function()
+    {
+        // update per-document tracker when the current page changes
+        document.addEventListener("pageshow", this.onCommandTracking, false);
+        document.addEventListener("focus", this.onCommandTracking, false);
 
-    // block tracking when popup is active
-    $('contentAreaContextMenu').addEventListener("popupshowing", function() {
+        // block tracking when popup is active
+        $('contentAreaContextMenu').addEventListener("popupshowing", function() {
             if ($('kwmenu_track').hasAttribute('checked'))
             {
                 $('kwcontext').removeAttribute('hidden');
@@ -263,17 +265,17 @@ function KrdWrd()
             }
             content.document.blocked = true;
         }, false);
-    $('contentAreaContextMenu').addEventListener("popuphiding", function() {
+        $('contentAreaContextMenu').addEventListener("popuphiding", function() {
             setTimeout(function () { content.document.blocked = false;}, 100); }, false);
+    };
 
 }
 
-var kw = null;
+// Singleton
+var kw = new KrdWrd();
 
 window.addEventListener("load", function()
-{
-    // Singleton
-    kw = new KrdWrd();
+{ kw.init();
 }, false);
 
 // vim: et
