@@ -89,7 +89,9 @@ function KrdWrd()
         traverse(content.document.body, function(node, kw)
         {
             taglist += kw.split("-")[2] + " ";
-        });
+        }, "krdwrd-tag-0");
+
+        clearkw(content.document.body);
 
         var url = 'url=' + encodeURIComponent(content.document.location.href);
         var tags = 'tags=' + encodeURIComponent(taglist);

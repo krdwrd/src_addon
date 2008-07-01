@@ -18,6 +18,21 @@
 	background: #0F0 !important;
 }
 
+.krdwrd-tag-1-l
+{
+	background: #FCC !important;
+}
+
+.krdwrd-tag-2-l
+{
+	background: #FFC !important;
+}
+
+.krdwrd-tag-3-l
+{
+	background: #CFC !important;
+}
+
 .krdwrd-highlighted.krdwrd-tag-1 
 {
 	background: #A55 !important;

@@ -46,6 +46,19 @@ function getkwtag(klasses)
     });
 }
 
+// remove all krdwrd-* tags from node and silblings
+function clearkw(node)
+{
+    if (node.className)
+    {
+        node.className = filterkw(node.className);
+    }
+    for (child in node.childNodes)
+    {
+        clearkw(node.childNodes[child]);
+    }
+}
+
 // traverse the dom, call cb on text nodes
 function traverse(body, cb, defaulttag)
 {
@@ -74,7 +87,7 @@ function traverse(body, cb, defaulttag)
         }
     };
     rec(body, defaulttag || "krdwrd-tag-2");
-};
+}
 
 
 // insert kw tags around text blocks
@@ -96,7 +109,7 @@ function kwtext(doc, start)
         span.appendChild(txt);
         p.insertBefore(span, node);
     }
-};
+}
 
 
 function extractText(doc, withtags)
@@ -111,7 +124,7 @@ function extractText(doc, withtags)
     }
     traverse(doc, f);
     return res;
-};
+}
 
 // quit the application
 function quit(forced)
@@ -123,26 +136,26 @@ function quit(forced)
                        Components.interfaces.nsIAppStartup.eAttemptQuit;
 
     appStartup.quit(quitSeverity);
-};
+}
 
 // needs browser.dom.window.dump.enabled
 function print(msg)
 {
     dump(msg + '\n');
-};
+}
 
 // print error to stdout and quit
 function error(msg)
 {
     print("RES: ERR " + msg);
     quit(true);
-};
+}
 
 // returns details about exception e as string
 function format_exception(e)
 {
     return e.name + ": " + e.message + "\nStack:\n" + e.stack;
-};
+}
 
 function getPref()
 {
@@ -221,7 +234,7 @@ function setProxy(hostname, port)
     prefs.setBoolPref("network.proxy.share_proxy_settings", true);
     prefs.setIntPref("network.proxy.type", 1);
     prefs.setCharPref("network.proxy.no_proxies_on", "krdwrd.org");
-};
+}
 
 // set the proxy password
 function setPassword(hostname, realm, username, passwrd)
@@ -256,7 +269,7 @@ function setPassword(hostname, realm, username, passwrd)
             passwordManager.addLogin(authLoginInfo);
         }
     }
-};
+}
 
 function kwProxy()
 {
@@ -273,5 +286,6 @@ function kwProxy()
     }
 
     setPassword(hostname + ":" + port, realm, username, passwrd);
-};
+}
 
+// vim: et
