@@ -55,7 +55,10 @@ function traverse(body, cb, defaulttag)
         if (cn)
         {
             var tag = getkwtag(cn);
-            if (tag) kw = tag;
+            if (tag) 
+            {
+                kw = tag.replace(' ', '');
+            }
         }
         if (node.nodeName == "#text")
         {

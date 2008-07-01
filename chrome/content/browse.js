@@ -12,7 +12,8 @@ function mkBrowser(url, onload)
     document.documentElement.appendChild(browser);
 
     // hook into onload
-    browser.addProgressListener(progress_listener(onload));
+    browser.listen = progress_listener(browser, onload);
+    browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_STATE_DOCUMENT);
 
     return browser;
 };
@@ -59,7 +60,7 @@ function open_documents(filelist, callback)
 }
 
 // progress listener implementing nsIWebProgressListener
-function progress_listener(on_loaded)
+function progress_listener(browser, on_loaded)
 {
     const STATE_STOP =
         Components.interfaces.nsIWebProgressListener.STATE_STOP;
@@ -68,12 +69,10 @@ function progress_listener(on_loaded)
     const STATE_IS_WINDOW =
         Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
 
+    var brow = browser;
+    var handler = on_loaded;
     var pl =
         {
-        handler :
-            on_loaded,
-        once :
-            false,
         QueryInterface :
             function(aIID)
             {
@@ -88,52 +87,33 @@ function progress_listener(on_loaded)
             {
                 if ((flg & STATE_STOP) && (flg & STATE_IS_DOCUMENT))
                 {
-                    var doc = prog.DOMWindow.document;
-
-                    if (doc.location != "about:blank")
-                    {
-                        if (this.once)
-                        {
-                            print("WARN: double-loaded " + doc.location);
-                        }
-                        else
-                        {
-                            this.once = true;
-                            var handler = this.handler;
-                            // wait a second for the engine to settle
-                            setTimeout(function()
-                                       {
-                                           try
-                                           {
-                                               handler(doc, prog.DOMWindow);
-                                           }
-                                           catch (e)
-                                           {
-                                               error("Error handling onLoad of " + doc.location
-                                                     + ": " + format_exception(e));
-                                           }
-                                       }
-                                       , 5000);
-                        }
-                    }
+                    var doc = brow.contentDocument;
+                    brow.removeProgressListener(brow.listen);
+                        // wait a second for the engine to settle
+                        setTimeout(function()
+                            {
+                                try
+                                {
+                                    handler(doc, prog.DOMWindow);
+                                }
+                                catch (e)
+                                {
+                                    error("Error handling onLoad of " + doc.location
+                                          + ": " + format_exception(e));
+                                }
+                             },
+                             5000);
                 }
+                return 0;
             },
         onLocationChange:
-            function(a, b, c)
-            {}
-            ,
+            function() { return 0; },
         onProgressChange:
-            function(a, b, c, d, e, f)
-            {}
-            ,
+            function() { return 0; },
         onStatusChange:
-            function(a, b, c, d)
-            {}
-            ,
+            function() { return 0; },
         onSecurityChange:
-            function(a, b, c)
-            {}
-            ,
+            function() { return 0; },
         };
     return pl;
 };
