@@ -1,4 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
+<!-- vim: filetype=html
+-->
 <head>
 	<link rel="stylesheet" type="text/css" href="about.css" />
 </head>
@@ -7,14 +9,16 @@
 		<center>
 		<div id="aboutLogoContainer" align="center">
 			<embed src="krdwrd.svg" type="image/svg+xml" width="300" height="300" />
-			<p id="version">krdwrd version: 0.1.267-rc1</p>
+			<p id="version">
+				krdwrd version: 0.1.267-rc1 
+			</p>
 		</div>
 		</center>
 		<ul>
 		<li>Copyright &copy; 2008 by Egon Stemle, Johannes Steger</li>
 		<li>Visit the <a href="https://krdwrd.org/">Project Website</a>.</li>
 		<li>Read the <a href="LICENSE">licensing information</a> for this product.</li>
-		<li>Contact the developers by mail at <a href="mailto:krdwrd@krdwrd.org">krdwrd@krdwrd.org</a>.
+		<li>Contact the developers by mail at <a href="mailto:krdwrd@krdwrd.org">krdwrd@krdwrd.org</a>.</li>
 		<li>Thank you for tagging the web!</li>
 		</ul>
 	</div>
