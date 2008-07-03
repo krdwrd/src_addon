@@ -2,6 +2,7 @@ function Tracker()
 {
     this.tracked_class = null;
     this.tracked = null;
+    this.listen = null;
 }
 
 
@@ -44,6 +45,8 @@ Tracker.prototype.startTracking =
     function()
     {
         var self = this;
+        if (this.listen)
+            return;
         this.listen = function (e) { 
             if (! content.document.blocked)
                 self._doTrackEvent(e);
@@ -56,6 +59,7 @@ Tracker.prototype.stopTracking =
     {
         this.doTrack(null, null);
         content.document.removeEventListener("mouseover", this.listen, false);
+        this.listen = null;
     };
 
 // vim: et
