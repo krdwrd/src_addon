@@ -8,7 +8,7 @@
                    em:maxVersion="3.0.*" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="krdwrd@krdwrd.org"
-                   em:version="0.1.267"
+                   em:version="0.2.273"
                    em:type="2"
                    em:name="KrdWrd"
                    em:description="KrdWrd: Visual Annotation of DOM Trees"
