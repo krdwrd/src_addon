@@ -17,6 +17,8 @@
          oncommand="kw.onTag('none');"/>
     <key id="kwkey_submit" modifiers="accel shift" key="N"
          oncommand="kw.onCommandSubmit();"/>
+    <key id="kwkey_track" modifiers="accel shift" key="K"
+         oncommand="kw.onToggleTracking();"/>
   </keyset>
   
   <popup id="contentAreaContextMenu">
@@ -61,7 +63,7 @@
       <menupopup id="menu_ToolsPopup" onpopupshowing="kw.updateContext()">
         
         <menuitem id="kwmenu_track" label="Tracking"
-         accesskey="t" type="checkbox" 
+         accesskey="t" key="kwkey_track" type="checkbox" 
          tooltiptext="Toggle highlighting of document elements for annotation"
          oncommand="kw.onCommandTracking();"/>
         
