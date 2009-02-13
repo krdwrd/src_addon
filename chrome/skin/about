@@ -11,7 +11,14 @@
 			<embed src="krdwrd.svg" type="image/svg+xml" width="300" height="300" />
 			<p id="version">
 				krdwrd version: 0.2.273
+			    on
 			</p>
+            <script type="application/javascript">
+                document.getElementById('version').appendChild(document.createTextNode(navigator.userAgent));
+            </script>
+            <noscript>
+                <p>No Browser Version availbale because the JavaScript Engine is disabled.</p>
+            </noscript>
 		</div>
 		</center>
 		<ul>
