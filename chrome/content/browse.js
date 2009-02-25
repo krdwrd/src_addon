@@ -4,6 +4,7 @@ function mkBrowser(url, onload)
     var browser = document.createElement('browser');
 
     browser.setAttribute('flex', 0);
+    browser.setAttribute('disablehistory', true);
     browser.setAttribute('src', url);
     browser.setAttribute('height', 1);
     browser.setAttribute('width', 1);
@@ -13,8 +14,8 @@ function mkBrowser(url, onload)
 
     // hook into onload
     browser.listen = progress_listener(browser, onload);
-    browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_STATE_DOCUMENT);
-
+    browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_STATE_NETWORK);
+    
     return browser;
 };
 
@@ -64,8 +65,8 @@ function progress_listener(browser, on_loaded)
 {
     const STATE_STOP =
         Components.interfaces.nsIWebProgressListener.STATE_STOP;
-    const STATE_IS_DOCUMENT =
-        Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT;
+    const STATE_IS_NETWORK =
+        Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK;
     const STATE_IS_WINDOW =
         Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
 
@@ -85,10 +86,12 @@ function progress_listener(browser, on_loaded)
         onStateChange:
             function(prog, req, flg, stat)
             {
-                if ((flg & STATE_STOP) && (flg & STATE_IS_DOCUMENT))
+                if ((flg & STATE_STOP) && (flg & STATE_IS_NETWORK))
                 {
                     var doc = brow.contentDocument;
-                    brow.removeProgressListener(brow.listen);
+                    if ((prog.DOMWindow == brow.contentWindow) && req)
+                    {
+                        brow.removeProgressListener(brow.listen);
                         // wait a second for the engine to settle
                         setTimeout(function()
                             {
@@ -102,7 +105,8 @@ function progress_listener(browser, on_loaded)
                                           + ": " + format_exception(e));
                                 }
                              },
-                             5000);
+                        500);
+                    }
                 }
                 return 0;
             },
