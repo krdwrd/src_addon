@@ -129,11 +129,15 @@
           
         </menu>
         
-        <menuitem id="kwmenu_about" label="My Stats"
+        <menuitem id="kwmenu_mystat" label="My Stats"
          accesskey="m"
          tooltiptext="Show my personal tagging statistics on the KrdWrd web site"
          oncommand="content.document.location = kw.kwserver + 'stat';"/>
         
+        <menuitem id="kwmenu_allstat" label="All Stats"
+         tooltiptext="Show tagging statistics on the KrdWrd web site"
+         oncommand="content.document.location = kw.kwserver + 'allstat';"/>
+
         <menuseparator/>
         
         <menuitem id="kwmenu_about" label="About"
