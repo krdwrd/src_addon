@@ -115,7 +115,7 @@ function kwtext(doc, start)
 function extractTags(doc)
 {
     var res = '';
-    f = function (n, t, txt) { print(t[11]); res += t[11] + "\n"; };
+    f = function (n, t, txt) { res += t[11] + "\n"; };
     traverse(doc, f);
     return res;
 }
