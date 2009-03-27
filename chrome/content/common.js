@@ -131,7 +131,7 @@ function extractViz(doc)
 {
     var res = '';
     props = ['offsetHeight', 'offsetLeft', 'offsetTop', 'offsetWidth', 'scrollHeight', 'scrollWidth'];
-    fl = 20;
+    max_treelen = 20;
 
     function nn2id(str)
     {
@@ -151,18 +151,16 @@ function extractViz(doc)
         if ((node.nodeName == "#text") &&
             node.data.replace( /^\s+/g, "").replace( /\s+$/g, "").replace( /\n/g, " ").replace(/  +/g, " "))
         {
-            for (p = 0; p < parn.length, p < pl; p++)
+            for (p = 0; p < paren.length, p < max_treelen; p++)
                 r[r.length] = paren[p];
-            if (p == pl)
+            if (p == max_treelen)
                 r[r.length-1] = 0;
-            for (p = r.length; p<fl; p++)
+            for (p = r.length; p < max_treelen; p++)
                 r[r.length] = -1;
             for (p in props)
                 r[r.length] = node.parentNode[props[p]];
             r[r.length] = paren.length;
             r[r.length] = node.childNodes.length;
-            if (node.previousSilbling)
-                print("PREV\n");
             res += r.join(' ') + "\n";
         }
         // recurse to children
