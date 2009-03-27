@@ -126,6 +126,59 @@ function extractText(doc, withtags)
     return res;
 }
 
+
+function extractViz(doc)
+{
+    var res = '';
+    props = ['offsetHeight', 'offsetLeft', 'offsetTop', 'offsetWidth', 'scrollHeight', 'scrollWidth'];
+    fl = 20;
+
+    function nn2id(str)
+    {
+        if (typeof(str) != 'string')
+            return -1
+        // crude hash for strings
+        hasch = 0;
+        for (i = 0; i < 4, i < str.length; i++)
+           hasch += str.charCodeAt(0) * Math.pow(2, 7 * i);
+        return hasch;
+    }
+
+    function rec(node, paren)
+    {
+        // extract features
+        r = [];
+        if ((node.nodeName == "#text") &&
+            node.data.replace( /^\s+/g, "").replace( /\s+$/g, "").replace( /\n/g, " ").replace(/  +/g, " "))
+        {
+            for (p = 0; p < parn.length, p < pl; p++)
+                r[r.length] = paren[p];
+            if (p == pl)
+                r[r.length-1] = 0;
+            for (p = r.length; p<fl; p++)
+                r[r.length] = -1;
+            for (p in props)
+                r[r.length] = node.parentNode[props[p]];
+            r[r.length] = paren.length;
+            r[r.length] = node.childNodes.length;
+            if (node.previousSilbling)
+                print("PREV\n");
+            res += r.join(' ') + "\n";
+        }
+        // recurse to children
+        paren[paren.length] = nn2id(node.nodeName);
+        for (child in node.childNodes)
+        {
+            cnode = node.childNodes[child];
+            if (cnode.nodeName != "SCRIPT")
+                rec(cnode, paren);
+        }
+    };
+    rec(doc, []);
+
+    return res;
+}
+
 // quit the application
 function quit(forced)
 {
