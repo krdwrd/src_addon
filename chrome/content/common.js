@@ -129,23 +129,56 @@ function extractText(doc)
     return res;
 }
 
-
-function extractViz(doc)
+function extractCoord(doc)
 {
     var res = '';
-    props = ['offsetHeight', 'offsetLeft', 'offsetTop', 'offsetWidth', 'scrollHeight', 'scrollWidth'];
-    max_treelen = 20;
 
-    function nn2id(str)
+    function rec(node)
     {
-        if (typeof(str) != 'string')
-            return -1
-        // crude hash for strings
-        hasch = 0;
-        for (i = 0; i < 4, i < str.length; i++)
-           hasch += str.charCodeAt(0) * Math.pow(2, 7 * i);
-        return hasch;
-    }
+        // extract coordinates
+        if ((node.nodeName == "#text") &&
+            node.data.replace( /^\s+/g, "").replace( /\s+$/g, "").replace( /\n/g, " ").replace(/  +/g, " "))
+        {
+            // enumerate client rects
+            r = [];
+            var pn = node.parentNode;
+            var brect = pn.getBoundingClientRect();
+            var rects = pn.getClientRects();
+            function addrect(re)
+            {
+                r[r.length] = re.left;
+                r[r.length] = re.top;
+                r[r.length] = re.width || pn.clientWidth;
+                r[r.length] = re.height || pn.clientHeight;
+            }
+            addrect(brect);
+            for (p in rects)
+            {
+                re = rects[p];
+                if (re && (re.left > -1))
+                    addrect(re);
+            }
+            res += r.join(' ') + "\n";
+        }
+        // recurse to children
+        for (child in node.childNodes)
+        {
+            cnode = node.childNodes[child];
+            if (cnode.nodeName != "SCRIPT")
+                rec(cnode);
+        }
+    };
+    rec(doc)
+
+    return res;
+}
+
+
+function extractDom(doc)
+{
+    var res = '';
+    //max_treelen = 20;
+    //max_clientrect = 10;
 
     function rec(node, paren)
     {
@@ -154,28 +187,47 @@ function extractViz(doc)
         if ((node.nodeName == "#text") &&
             node.data.replace( /^\s+/g, "").replace( /\s+$/g, "").replace( /\n/g, " ").replace(/  +/g, " "))
         {
-            for (p = 0; p < paren.length, p < max_treelen; p++)
-                r[r.length] = paren[p];
-            if (p == max_treelen)
-                r[r.length-1] = 0;
-            for (p = r.length; p < max_treelen; p++)
-                r[r.length] = -1;
-            for (p in props)
-                r[r.length] = node.parentNode[props[p]];
+            // node / parent properties (5x)
+
+            // distance from root node
             r[r.length] = paren.length;
-            r[r.length] = node.childNodes.length;
+            // number of neighbouring nodes
+            r[r.length] = pnn.childNodes.length;
+            // text length
+            r[r.length] = node.data.length / 100;
+            // node type (=html tag)
+            r[r.length] = (pnn.nodeType - 5) / 10;
+            // ratio text characters / html characters
+            r[r.length] = node.data.length / pnn.innerHTML.length;
+            
+            // generic document properties (8x)
+            d = doc.parentNode.parentNode;
+            // coun number of contained elements by type
+            r[r.length] = d.styleSheets.length / 5;
+            r[r.length] = d.links.length / 10;
+            r[r.length] = d.images.length / 10;
+            r[r.length] = d.forms.length;
+            r[r.length] = d.embeds.length;
+            r[r.length] = d.anchors.length / 10;
+            // title length
+            r[r.length] = d.title.length / 50;
+            // total html source character count
+            r[r.length] = doc.innerHTML.length / 10000;
+
             res += r.join(' ') + "\n";
         }
         // recurse to children
-        paren[paren.length] = nn2id(node.nodeName);
+        var nparen = paren.slice();
+        if (node.nodeType)
+            nparen[nparen.length] = node.nodeType;
         for (child in node.childNodes)
         {
             cnode = node.childNodes[child];
             if (cnode.nodeName != "SCRIPT")
-                rec(cnode, paren);
+                rec(cnode, nparen);
         }
     };
-    rec(doc, []);
+    rec(doc.QueryInterface(Components.interfaces.nsIDOMNSElement), []);
 
     return res;
 }
