@@ -3,11 +3,11 @@ function mkBrowser(url, onload)
 {
     var browser = document.createElement('browser');
 
-    browser.setAttribute('flex', 0);
+    browser.setAttribute('flex', 1);
     browser.setAttribute('disablehistory', true);
     browser.setAttribute('src', url);
-    browser.setAttribute('height', 1);
-    browser.setAttribute('width', 1);
+    browser.setAttribute('height', 1024);
+    browser.setAttribute('width', 1024);
 
     // need to append to a document to become available
     document.documentElement.appendChild(browser);
