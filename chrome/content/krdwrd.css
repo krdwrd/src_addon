@@ -3,6 +3,29 @@
 	background: #F0F !important;
 }
 
+.victor_other
+{
+	background: #F00 !important;
+}
+
+.victor_paragraph
+{
+	background: #FF0 !important;
+}
+
+.victor_continuation
+{
+	background: #0F0 !important;
+}
+.victor_header
+{
+	background: #0FF !important;
+}
+.victor_list
+{
+	background: #00F !important;
+}
+
 .krdwrd-tag-1
 {
 	background: #F00 !important;
