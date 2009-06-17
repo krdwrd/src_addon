@@ -15,7 +15,7 @@
          oncommand="kw.onTag(3);"/>
     <key id="kwkey_tag_none" modifiers="control alt" key="4"
          oncommand="kw.onTag('none');"/>
-    <key id="kwkey_submit" modifiers="accel shift" key="N"
+    <key id="kwkey_submit" modifiers="accel shift" key="S"
          oncommand="kw.onCommandSubmit();"/>
     <key id="kwkey_track" modifiers="accel shift" key="K"
          oncommand="kw.onToggleTracking();"/>
@@ -93,9 +93,8 @@
               accesskey="f" disabled="true"
               oncommand="kw.setCorpus('fiasco', this.label)" />
             
-            <menuitem id="kwcorpus_ggaze" label="GoodGaze"
-              accesskey="g" disabled="true"
-              oncommand="kw.setCorpus('ggaze', this.label)" />
+            <menuitem id="kwcorpus_ggaze" label="Kappa"
+              oncommand="kw.setCorpus('kappa', this.label)" />
             
           </menupopup>
           
