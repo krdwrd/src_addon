@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<corpora>
+    <corpus name="canola" label="Canola" />
+    <corpus name="fiasco" label="Fiasco" />
+    <!-- 
+    <corpus name="victor_ceval" label="CleanEval" />
+     -->
+    <corpus name="kappa" label="Kappa" />
+    <corpus name="iota" label="Iota" />
+</corpora>
