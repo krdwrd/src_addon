@@ -76,28 +76,18 @@
          accesskey="g" disabled='true'
          tooltiptext="Request a fresh page for tagging from the KrdWrd server"
          oncommand="kw.onCommandGrab();"/>
+
+        <menu datasources="https://krdwrd.org/addon/corpora.xml" ref="*" querytype="xml"
+         id="kwmenu_corpus" label="Corpus" accesskey="C">
         
-        <menu id="kwmenu_corpus" label="Corpus" accesskey="C">
-          
-          <menupopup>
-            
-            <menuitem id="kwcorpus_canola" label="Canola"
-              accesskey="c"
-              oncommand="kw.setCorpus('canola', this.label)" />
-            
-            <menuitem id="kwcorpus_cleaneval" label="CleanEval"
-              accesskey="e" disabled="true"
-              oncommand="kw.setCorpus('ceval', this.label)" />
-            
-            <menuitem id="kwcorpus_cleaneval" label="Fiasco"
-              accesskey="f" disabled="true"
-              oncommand="kw.setCorpus('fiasco', this.label)" />
-            
-            <menuitem id="kwcorpus_ggaze" label="Kappa"
-              oncommand="kw.setCorpus('kappa', this.label)" />
-            
-          </menupopup>
-          
+          <template>
+            <query expr="corpus" />
+              <action>
+                <menupopup>
+                  <menuitem uri="?" label="?label" cpname="?name" oncommand="kw.setCorpus(this.getAttribute('cpname'), this.label)"/>
+                </menupopup>
+              </action>
+          </template>
         </menu>
         
         <menu id="kwmenu_utils" label="Utils" accesskey="U">
