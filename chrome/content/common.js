@@ -188,7 +188,7 @@ function extractDom(doc)
             node.data.replace( /^\s+/g, "").replace( /\s+$/g, "").replace( /\n/g, " ").replace(/  +/g, " "))
         {
             // node / parent properties (5x)
-
+            var pnn = node.parentNode.parentNode;
             // distance from root node
             r[r.length] = paren.length;
             // number of neighbouring nodes
@@ -202,7 +202,7 @@ function extractDom(doc)
             
             // generic document properties (8x)
             d = doc.parentNode.parentNode;
-            // coun number of contained elements by type
+            // number of contained elements by type
             r[r.length] = d.styleSheets.length / 5;
             r[r.length] = d.links.length / 10;
             r[r.length] = d.images.length / 10;
