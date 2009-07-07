@@ -17,7 +17,8 @@
                 document.getElementById('version').appendChild(document.createTextNode(navigator.userAgent));
             </script>
             <noscript>
-                <p>No Browser Version availbale because the JavaScript Engine is disabled.</p>
+                <p>No Browser Version availbale: the JavaScript Engine is disabled. <br />
+                Please use the &uml;Help/About Mozilla Firefox&uml; Menu.</p>
             </noscript>
 		</div>
 		</center>
