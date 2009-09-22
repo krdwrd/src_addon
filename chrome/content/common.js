@@ -203,14 +203,14 @@ function extractDom(doc)
             // generic document properties (8x)
             d = doc.parentNode.parentNode;
             // number of contained elements by type
-            r[r.length] = d.styleSheets.length / 5;
-            r[r.length] = d.links.length / 10;
-            r[r.length] = d.images.length / 10;
-            r[r.length] = d.forms.length;
-            r[r.length] = d.embeds.length;
-            r[r.length] = d.anchors.length / 10;
+            r[r.length] = d.styleSheets.length != null ? d.styleSheets.length/5 : 0;
+            r[r.length] = d.links.length != null ? d.links.length/10 : 0;
+            r[r.length] = d.images.length != null ? d.images.length/10 : 0;
+            r[r.length] = d.forms.length != null ? d.forms.length : 0;
+            r[r.length] = d.embeds.length != null ? d.embeds.length : 0;
+            r[r.length] = d.anchors.length != null ? d.anchors.length/10 : 0;
             // title length
-            r[r.length] = d.title.length / 50;
+            r[r.length] = d.title.length != null ? d.title.length/50 : 0;
             // total html source character count
             r[r.length] = doc.innerHTML.length / 10000;
 
