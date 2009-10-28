@@ -345,18 +345,8 @@ function setProxy(hostname, port)
 // set the proxy password
 function setPassword(hostname, realm, username, passwrd)
 {
-
-    if ("@mozilla.org/passwordmanager;1" in Components.classes)
+    try
     {
-        // Password Manager exists so this is not Firefox 3
-        var passwordManager = Components.classes["@mozilla.org/passwordmanager;1"].
-                              getService(Components.interfaces.nsIPasswordManager);
-
-        passwordManager.addUser(hostname + ' (' + realm + ')', username, passwrd);
-    }
-    else if ("@mozilla.org/login-manager;1" in Components.classes)
-    {
-        // Login Manager exists so this is Firefox 3
         hostname = 'moz-proxy://' + hostname;
 
         var passwordManager = Components.classes["@mozilla.org/login-manager;1"].
@@ -374,6 +364,10 @@ function setPassword(hostname, realm, username, passwrd)
 
             passwordManager.addLogin(authLoginInfo);
         }
+    }
+    catch(ex) 
+    {
+        // This will only happen if there is no Login Manager - and this should /not/ happen!
     }
 }
 
