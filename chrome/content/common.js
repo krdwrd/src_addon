@@ -146,6 +146,13 @@ function error(msg)
     quit(true);
 }
 
+// print debug messages - only when verbose
+function verbose(msg)
+{
+    if (KrdWrdApp.param.verbose)
+        print("VRB: "+msg);
+}
+
 // returns details about exception e as string
 function format_exception(e)
 {
@@ -168,6 +175,10 @@ function saveProxy()
             prefs.getCharPref("network.proxy.http"));
         prefs.setIntPref("krdwrd.proxy.http_port",
             prefs.getIntPref("network.proxy.http_port"));
+        prefs.setCharPref("krdwrd.proxy.https",
+            prefs.getCharPref("network.proxy.https"));
+        prefs.setIntPref("krdwrd.proxy.https_port",
+            prefs.getIntPref("network.proxy.https_port"));
         prefs.setBoolPref("krdwrd.negotiate-auth.allow-proxies",
             prefs.getBoolPref("network.negotiate-auth.allow-proxies"));
         prefs.setBoolPref("krdwrd.proxy.share_proxy_settings",
@@ -192,6 +203,10 @@ function restoreProxy()
             prefs.getCharPref("krdwrd.proxy.http"));
         prefs.setIntPref("network.proxy.http_port",
             prefs.getIntPref("krdwrd.proxy.http_port"));
+        prefs.setCharPref("network.proxy.https",
+            prefs.getCharPref("krdwrd.proxy.https"));
+        prefs.setIntPref("network.proxy.https_port",
+            prefs.getIntPref("krdwrd.proxy.https_port"));
         prefs.setBoolPref("network.negotiate-auth.allow-proxies",
             prefs.getBoolPref("krdwrd.negotiate-auth.allow-proxies"));
         prefs.setBoolPref("network.proxy.share_proxy_settings",
@@ -225,10 +240,20 @@ function setProxy(hostname, port)
 
     prefs.setCharPref("network.proxy.http", hostname);
     prefs.setIntPref("network.proxy.http_port", port);
+    prefs.setCharPref("network.proxy.https", hostname);
+    prefs.setIntPref("network.proxy.https_port", port);
     prefs.setBoolPref("network.negotiate-auth.allow-proxies", true);
     prefs.setBoolPref("network.proxy.share_proxy_settings", true);
     prefs.setIntPref("network.proxy.type", 1);
-    prefs.setCharPref("network.proxy.no_proxies_on", "krdwrd.org");
+    prefs.setCharPref("network.proxy.no_proxies_on", "localhost, krdwrd.org");
+    
+}
+
+function setProxyType(proxytype)
+{
+    var prefs = getPref();
+
+    prefs.setIntPref("network.proxy.type", proxytype);
 }
 
 // set the proxy password
@@ -268,7 +293,11 @@ function kwProxy()
     var username = "krdwrd";
     var passwrd = "krdwrd";
 
-    if (! haveProxy(hostname))
+    if (KrdWrdApp.param.proxyenv) {
+        verbose("proxy settings from ENV");
+        setProxyType(5);
+    } 
+    else if (! haveProxy(hostname))
     {
         saveProxy();
         setProxy(hostname, port);

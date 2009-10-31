@@ -16,6 +16,9 @@ function mkBrowser(url, onload)
     browser.listen = progress_listener(browser, onload);
     browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_STATE_NETWORK);
     
+    // timeoutid = setTimeout(function() {
+    //         print("APP: STOP");browser.stop();
+    //         }, 60000);
     return browser;
 };
 
@@ -74,6 +77,12 @@ function progress_listener(browser, on_loaded)
     var handler = on_loaded;
     var pl =
         {
+
+        _requestsStarted: 0,
+        _requestsFinished: 0,
+        _pageFuzzyFinished: 0,
+        _timeoutid: 0, 
+
         QueryInterface :
             function(aIID)
             {
@@ -86,8 +95,69 @@ function progress_listener(browser, on_loaded)
         onStateChange:
             function(prog, req, flg, stat)
             {
+
+                var args = '[';
+                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_IS_REQUEST) {
+                        args += 'R';
+                }
+                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT) {
+                        args += 'D';
+                }
+                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK) {
+                        args += 'N';
+                }
+                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW) {
+                        args += 'W';
+                }
+                args += '][';
+                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_START) {
+                        args += 'Start';
+                        this._requestsStarted++;
+                }
+                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_REDIRECTING) {
+                        args += 'Redir';
+                }
+                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_TRANSFERRING) {
+                        args += 'Trans';
+                }
+                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_NEGOTIATING) {
+                        args += 'Negot';
+                }
+                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_STOP) {
+                        args += 'Stop';
+                        this._requestsFinished++;
+                }
+                args += ']';
+                verbose(args + ' ' + this._requestsStarted  + '/' + this._requestsFinished);
+               
                 if ((flg & STATE_STOP) && (flg & STATE_IS_NETWORK))
                 {
+                    if (this._timeoutid) 
+                    { 
+                        clearTimeout(this._timeoutid);
+                        this._timeoutid = null;
+                    } 
+
+                    fetchGrabDo(prog,req);
+                } 
+                else if (flg & STATE_STOP && this._requestsStarted > 1 && this._requestsStarted - this._requestsFinished <= 1) 
+                {
+                    if (this._timeoutid) 
+                    { 
+                        clearTimeout(this._timeoutid);
+                        this._timeoutid = null;
+                    } 
+
+                    this._timeoutid = setTimeout(function(){ 
+                            this._pageFuzzyFinished = 1; 
+                            fetchGrabDo(prog,req);
+                            },5000);
+                }
+
+                function fetchGrabDo(prog,req)
+                {
+                    print('FUZ: ' + this._pageFuzzyFinished );
+
                     var doc = brow.contentDocument;
                     if ((prog.DOMWindow == brow.contentWindow) && req)
                     {
