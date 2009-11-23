@@ -1,4 +1,5 @@
 XPI=krdwrd.xpi
+TRUNK=krdwrd_trunk.xpi
 EXTR=krdwrd@krdwrd.org
 HASH=$(XPI).hash
 REV=.REV
@@ -33,7 +34,10 @@ skin: $(REV)
 	$(TXTVER) chrome/skin/about
 
 $(XPI): install.rdf skin
-	zip $(XPI) chrome.manifest install.rdf -r chrome -x '*/.*'
+	zip $(XPI) chrome.manifest install.rdf -r chrome defaults -x '*/.*'
+
+$(TRUNK): install.rdf skin
+	zip $(TRUNK) chrome.manifest install.rdf -r chrome defaults -x '*/.*'
 
 clean:
 	rm -f $(XPI) $(HASH) $(REV) update.rdf
@@ -45,6 +49,13 @@ sign: $(XPI)
 	unzip $(XPI) -d $(EXTR)
 	rm $(XPI)
 	signtool -k krdwrd@krdwrd.org -d cert -X -Z $(XPI) $(EXTR) || rm -rf $(XPI) $(EXTR)
+
+trunk: $(TRUNK)
+	rm -rf $(EXTR) || true
+	mkdir $(EXTR)
+	unzip $(TRUNK) -d $(EXTR)
+	rm $(TRUNK)
+	signtool -k krdwrd@krdwrd.org -d cert -X -Z $(TRUNK) $(EXTR) || rm -rf $(TRUNK) $(EXTR)
 
 update.rdf: update.rdf.in sign
 	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v $(MAJOR).`cat $(REV)` -u $(UPDATE) -d cert > update.rdf
