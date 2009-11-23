@@ -6,5 +6,4 @@
     <corpus name="victor_ceval" label="CleanEval" />
      -->
     <corpus name="kappa" label="Kappa" />
-    <corpus name="iota" label="Iota" />
 </corpora>
