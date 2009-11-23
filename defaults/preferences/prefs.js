@@ -1,1 +1,0 @@
-pref("javascript.enabled", false);
