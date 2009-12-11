@@ -128,7 +128,7 @@ function progress_listener(browser, on_loaded)
                         this._requestsFinished++;
                 }
                 args += ']';
-                verbose(args + ' ' + this._requestsStarted  + '/' + this._requestsFinished);
+                // verbose(args + ' ' + this._requestsStarted  + '/' + this._requestsFinished);
                
                 if ((flg & STATE_STOP) && (flg & STATE_IS_NETWORK))
                 {
