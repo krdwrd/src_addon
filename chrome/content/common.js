@@ -295,7 +295,7 @@ function kwProxy()
 
     if (typeof(KrdWrdApp) != null && KrdWrdApp.param.proxyenv != null)
     {
-        verbose("proxy settings from ENV");
+        print("PXY: proxy settings from ENV");
         setProxyType(5);
     } 
     else if (! haveProxy(hostname))
