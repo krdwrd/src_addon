@@ -293,7 +293,7 @@ function kwProxy()
     var username = "krdwrd";
     var passwrd = "krdwrd";
 
-    if (typeof(KrdWrdApp) == "function" && KrdWrdApp.param.proxyenv != null)
+    if (typeof(KrdWrdApp) != null && KrdWrdApp.param.proxyenv != null)
     {
         verbose("proxy settings from ENV");
         setProxyType(5);
