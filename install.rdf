@@ -2,21 +2,23 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="rdf:#$mYokI1"
-                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                   em:minVersion="3.0"
-                   em:maxVersion="3.6.*" />
-  <RDF:Description RDF:about="urn:mozilla:install-manifest"
-                   em:id="krdwrd@krdwrd.org"
-                   em:version="0.2.273"
-                   em:type="2"
-                   em:name="KrdWrd"
-                   em:description="KrdWrd: Visual Annotation of DOM Trees"
-                   em:creator="Egon Stemle, Johannes Steger"
-                   em:homepageURL="https://krdwrd.org/"
-                   em:updateURL="http://krdwrd.org/addon/update.rdf"
-                   em:iconURL="chrome://krdwrd/skin/krdwrd.png"
-                   em:updateKey="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy0vkGnA+kgm8BOQoazlshRK71irIEchoFcFdvX2LEXt15MtVReOc3ZzCNmgtW/Fb9+/EYmTym+rCBGUlcR5cinlKhHclBr7kS3lXtSMMZClt6QAzxdcRNqHdZsmCTMdcobNqnAHp7bXFyG2PDnWnOEqGW3/kJlIeNwh0MMGgZ67xPdagp07xImESZhi9SPq9ZS+VF+e7a81gifVyQCIR4nTbLXq3YIPonTZw3e5lvfg1Qogy9k6q5A9cQyNDgL9iSbhgjGDruk2CVwkzVf+DCB1/Xv6y6ZrH9HohhKK/nOtLywlcgveT5QcbIk1FJFRCDy8K7LlT3Zy+BGF8qpu4GwIDAQAB">
-    <em:targetApplication RDF:resource="rdf:#$mYokI1"/>
-  </RDF:Description>
+    <RDF:Description RDF:about="urn:mozilla:install-manifest">
+        <em:id>krdwrd@krdwrd.org</em:id>
+        <em:version>0.2.529pre</em:version>
+        <em:type>2</em:type>
+        <em:name>KrdWrd</em:name>
+        <em:description>KrdWrd: Visual Annotation of DOM Trees</em:description>
+        <em:creator>Egon Stemle, Johannes Steger</em:creator>
+        <em:homepageURL>https://krdwrd.org/</em:homepageURL>
+        <em:iconURL>chrome://krdwrd/skin/krdwrd.png</em:iconURL>
+<!-- <em:updateURL>http://krdwrd.org/addon/update.rdf</em:updateURL>   -->
+<!-- <em:updateKey>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy0vkGnA+kgm8BOQoazlshRK71irIEchoFcFdvX2LEXt15MtVReOc3ZzCNmgtW/Fb9+/EYmTym+rCBGUlcR5cinlKhHclBr7kS3lXtSMMZClt6QAzxdcRNqHdZsmCTMdcobNqnAHp7bXFyG2PDnWnOEqGW3/kJlIeNwh0MMGgZ67xPdagp07xImESZhi9SPq9ZS+VF+e7a81gifVyQCIR4nTbLXq3YIPonTZw3e5lvfg1Qogy9k6q5A9cQyNDgL9iSbhgjGDruk2CVwkzVf+DCB1/Xv6y6ZrH9HohhKK/nOtLywlcgveT5QcbIk1FJFRCDy8K7LlT3Zy+BGF8qpu4GwIDAQAB</em:updateKey>   -->
+        <em:targetApplication>
+             <Description>
+                  <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> 
+                  <em:minVersion>3.0</em:minVersion>
+                  <em:maxVersion>3.6.*</em:maxVersion>
+            </Description>
+        </em:targetApplication>
+    </RDF:Description>
 </RDF:RDF>

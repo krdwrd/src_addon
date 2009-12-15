@@ -5,8 +5,15 @@ HASH=$(XPI).hash
 REV=.REV
 UPDATE=http://krdwrd.org/addon/krdwrd.xpi 
 MAJOR=0.2
-TAGVER=sed -i 's/em:version="[^"]*"/em:version="'$(MAJOR)'.'`cat .REV`'"/'
-TXTVER=sed -i 's/version: 0.[0-9]\+.[0-9]\+/version: '$(MAJOR)'.'`cat .REV`'/'
+ifeq ($(findstring addonpre,$(MAKECMDGOALS)),addonpre)
+	VER='$(MAJOR)'.$$(cat .REV)pre
+	RMUPDT=sed -i -e 's/^\(<em:updateURL.*\)/<!-- \1 -->/' -e 's/^\(<em:updateKey.*\)/<!-- \1 -->/'
+else
+	VER='$(MAJOR)'.$$(cat .REV)
+	RMUPDT=sed -i -e 's/^<!-- \(<em:updateURL>.*\) -->/\1/' -e 's/^<!-- \(<em:updateKey>.*\) -->/\1/'
+endif
+TAGVER=sed -i 's/em:version>[^<]*/em:version>'$(VER)'/'
+TXTVER=sed -i 's/version: 0.[0-9]\+.[0-9]\+/version: '$(VER)'/'
 HASHVER=sed -i 's/<em:updateHash>[^>]*<\/em:updateHash>/<em:updateHash>sha512:'`cat $(HASH)`'<\/em:updateHash>/'
 
 default: release
@@ -23,6 +30,7 @@ $(REV): is-clean tag-revision
 
 install.rdf: $(REV)
 	$(TAGVER) install.rdf
+	$(RMUPDT) install.rdf
 
 $(HASH): sign
 	sha512sum $(XPI) | awk '{ print $$1; }' > $(HASH)
@@ -57,8 +65,11 @@ trunk: $(TRUNK)
 	rm $(TRUNK)
 	signtool -k krdwrd@krdwrd.org -d cert -X -Z $(TRUNK) $(EXTR) || rm -rf $(TRUNK) $(EXTR)
 
+addonpre: trunk
+
 update.rdf: update.rdf.in sign
 	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v $(MAJOR).`cat $(REV)` -u $(UPDATE) -d cert > update.rdf
 
 release: clean update.rdf
 
+# vim:noexpandtab:
