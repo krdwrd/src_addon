@@ -13,7 +13,7 @@ else
 	RMUPDT=sed -i -e 's/^<!-- \(<em:updateURL>.*\) -->/\1/' -e 's/^<!-- \(<em:updateKey>.*\) -->/\1/'
 endif
 TAGVER=sed -i 's/em:version>[^<]*/em:version>'$(VER)'/'
-TXTVER=sed -i 's/version: 0.[0-9]\+.[0-9]\+/version: '$(VER)'/'
+TXTVER=sed -i 's/version: 0.[0-9]\+.[0-9]\+\(pre\)\?/version: '$(VER)'/'
 HASHVER=sed -i 's/<em:updateHash>[^>]*<\/em:updateHash>/<em:updateHash>sha512:'`cat $(HASH)`'<\/em:updateHash>/'
 
 default: release
