@@ -1,22 +1,27 @@
-XPI=krdwrd.xpi
-TRUNK=krdwrd_trunk.xpi
-EXTR=krdwrd@krdwrd.org
-HASH=$(XPI).hash
-REV=.REV
-UPDATE=http://krdwrd.org/addon/krdwrd.xpi 
 MAJOR=0.2
-ifeq ($(findstring addonpre,$(MAKECMDGOALS)),addonpre)
-	VER='$(MAJOR)'.$$(cat .REV)pre
-	RMUPDT=sed -i -e 's/^\(<em:updateURL.*\)/<!-- \1 -->/' -e 's/^\(<em:updateKey.*\)/<!-- \1 -->/'
-else
-	VER='$(MAJOR)'.$$(cat .REV)
-	RMUPDT=sed -i -e 's/^<!-- \(<em:updateURL>.*\) -->/\1/' -e 's/^<!-- \(<em:updateKey>.*\) -->/\1/'
-endif
-TAGVER=sed -i 's/em:version>[^<]*/em:version>'$(VER)'/'
-TXTVER=sed -i 's/version: 0.[0-9]\+.[0-9]\+\(pre\)\?/version: '$(VER)'/'
-HASHVER=sed -i 's/<em:updateHash>[^>]*<\/em:updateHash>/<em:updateHash>sha512:'`cat $(HASH)`'<\/em:updateHash>/'
+REV=.REV
 
-default: release
+ifeq ($(findstring release,$(MAKECMDGOALS)),release)
+XPI=krdwrd.xpi
+UPDATE=update.rdf
+VER := $(MAJOR).$(shell cat .REV)
+else
+XPI=krdwrd_trunk.xpi
+UPDATE=update_trunk.rdf
+VER := $(MAJOR).$(shell cat .REV)trunk
+endif
+
+UPDATEURL := http://krdwrd.org/addon/$(UPDATE)
+INSTALL=install.rdf
+HASH=$(XPI).hash
+EXTR=krdwrd@krdwrd.org
+
+TAGVER=sed -i 's/^[[:space:]]\+<em:version>.*<\/em:version>/        <em:version>$(VER)<\/em:version>/'
+TXTVER=sed -i 's/version: [0-2].[0-9]\+.[0-9]\+\(trunk\)\?/version: $(VER)/'
+HASHVER=sed -i 's/<em:updateHash>[^>]*<\/em:updateHash>/<em:updateHash>sha512:'`cat $(HASH)`'<\/em:updateHash>/'
+UPDATEVER=sed -i 's@^[[:space:]]\+<em:updateURL>.*</em:updateURL>@        <em:updateURL>$(UPDATEURL)</em:updateURL>@'
+
+default: trunk 
 
 is-clean:
 	test -z "`svn st -q 2>&1 | head -n1`" || echo "WARNING: NO CLEAN CHECKOUT"
@@ -29,8 +34,8 @@ tag-revision:
 $(REV): is-clean tag-revision
 
 install.rdf: $(REV)
-	$(TAGVER) install.rdf
-	$(RMUPDT) install.rdf
+	$(TAGVER) $(INSTALL) 
+	$(UPDATEVER) $(INSTALL)
 
 $(HASH): sign
 	sha512sum $(XPI) | awk '{ print $$1; }' > $(HASH)
@@ -41,14 +46,11 @@ update.rdf.in: $(XPI) $(HASH) sign
 skin: $(REV)
 	$(TXTVER) chrome/skin/about
 
-$(XPI): install.rdf skin
-	zip $(XPI) chrome.manifest install.rdf -r chrome defaults -x '*/.*'
-
-$(TRUNK): install.rdf skin
-	zip $(TRUNK) chrome.manifest install.rdf -r chrome defaults -x '*/.*'
+$(XPI): $(INSTALL) skin
+	zip $(XPI) chrome.manifest $(INSTALL) -r chrome defaults -x '*/.*'
 
 clean:
-	rm -f $(XPI) $(HASH) $(REV) update.rdf
+	rm -f $(XPI) $(HASH) $(REV) $(UPDATE)
 	rm -rf $(EXTR)
 
 sign: $(XPI)
@@ -58,18 +60,11 @@ sign: $(XPI)
 	rm $(XPI)
 	signtool -k krdwrd@krdwrd.org -d cert -X -Z $(XPI) $(EXTR) || rm -rf $(XPI) $(EXTR)
 
-trunk: $(TRUNK)
-	rm -rf $(EXTR) || true
-	mkdir $(EXTR)
-	unzip $(TRUNK) -d $(EXTR)
-	rm $(TRUNK)
-	signtool -k krdwrd@krdwrd.org -d cert -X -Z $(TRUNK) $(EXTR) || rm -rf $(TRUNK) $(EXTR)
+$(UPDATE): update.rdf.in sign
+	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v $(VER) -u $(UPDATEURL) -d cert > $(UPDATE)
 
-addonpre: trunk
+release: clean $(UPDATE)
 
-update.rdf: update.rdf.in sign
-	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v $(MAJOR).`cat $(REV)` -u $(UPDATE) -d cert > update.rdf
-
-release: clean update.rdf
+trunk: clean $(UPDATE)
 
 # vim:noexpandtab:

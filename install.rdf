@@ -4,15 +4,15 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <RDF:Description RDF:about="urn:mozilla:install-manifest">
         <em:id>krdwrd@krdwrd.org</em:id>
-        <em:version>0.2.529pre</em:version>
+        <em:version>0.2.531</em:version>
         <em:type>2</em:type>
         <em:name>KrdWrd</em:name>
         <em:description>KrdWrd: Visual Annotation of DOM Trees</em:description>
         <em:creator>Egon Stemle, Johannes Steger</em:creator>
         <em:homepageURL>https://krdwrd.org/</em:homepageURL>
         <em:iconURL>chrome://krdwrd/skin/krdwrd.png</em:iconURL>
-<!-- <em:updateURL>http://krdwrd.org/addon/update.rdf</em:updateURL>   -->
-<!-- <em:updateKey>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy0vkGnA+kgm8BOQoazlshRK71irIEchoFcFdvX2LEXt15MtVReOc3ZzCNmgtW/Fb9+/EYmTym+rCBGUlcR5cinlKhHclBr7kS3lXtSMMZClt6QAzxdcRNqHdZsmCTMdcobNqnAHp7bXFyG2PDnWnOEqGW3/kJlIeNwh0MMGgZ67xPdagp07xImESZhi9SPq9ZS+VF+e7a81gifVyQCIR4nTbLXq3YIPonTZw3e5lvfg1Qogy9k6q5A9cQyNDgL9iSbhgjGDruk2CVwkzVf+DCB1/Xv6y6ZrH9HohhKK/nOtLywlcgveT5QcbIk1FJFRCDy8K7LlT3Zy+BGF8qpu4GwIDAQAB</em:updateKey>   -->
+        <em:updateURL>http://krdwrd.org/addon/update.rdf</em:updateURL>  
+        <em:updateKey>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy0vkGnA+kgm8BOQoazlshRK71irIEchoFcFdvX2LEXt15MtVReOc3ZzCNmgtW/Fb9+/EYmTym+rCBGUlcR5cinlKhHclBr7kS3lXtSMMZClt6QAzxdcRNqHdZsmCTMdcobNqnAHp7bXFyG2PDnWnOEqGW3/kJlIeNwh0MMGgZ67xPdagp07xImESZhi9SPq9ZS+VF+e7a81gifVyQCIR4nTbLXq3YIPonTZw3e5lvfg1Qogy9k6q5A9cQyNDgL9iSbhgjGDruk2CVwkzVf+DCB1/Xv6y6ZrH9HohhKK/nOtLywlcgveT5QcbIk1FJFRCDy8K7LlT3Zy+BGF8qpu4GwIDAQAB</em:updateKey>  
         <em:targetApplication>
              <Description>
                   <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> 
