@@ -293,7 +293,7 @@ function kwProxy()
     var username = "krdwrd";
     var passwrd = "krdwrd";
 
-    if (typeof(KrdWrdApp) != 'undefined' && KrdWrdApp.param.proxyenv != null)
+    if (typeof(KrdWrdApp) != 'undefined' && KrdWrdApp.param.proxyenv != false)
     {
         print("PXY: proxy settings from ENV");
         setProxyType(5);
