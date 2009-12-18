@@ -46,6 +46,12 @@ function getkwtag(klasses)
     });
 }
 
+// get krdwrd class tag number
+function getkwtagnum(klasses)
+{
+    return (getkwtag(klasses))?getkwtag(klasses).substring(11):"";
+}
+
 // remove all krdwrd-* tags from node and silblings
 function clearkw(node)
 {

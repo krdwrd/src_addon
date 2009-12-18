@@ -11,9 +11,28 @@ Tracker.prototype._doTrackEvent =
     function(event)
     {
         var src = event.target;
-        if (src == content.document.documentElement)
-            src = src.body;
-        this.doTrack(src);
+        var type = event.type;
+
+        if (type == 'mouseover')
+        {
+            if (src == content.document.documentElement)
+                src = src.body;
+
+            this.doTrack(src);
+        }
+        else if (type == 'click' && event.button == 0)
+        {
+            curti = parseInt(getkwtagnum(this.tracked_class));
+
+            if (curti > 0)
+                // tag_index = (( curti + 1) % 3 ) + 1;
+                tag_index = ( (curti-1) % 3 ) == 0 ? 3 : (curti+2) % 3 ;
+            else
+                tag_index = 3;
+
+            this.doTrack(null, tag_index);
+        }
+
     };
 
 // update (un)selected element's css class names
@@ -52,12 +71,14 @@ Tracker.prototype.startTracking =
                 self._doTrackEvent(e);
         };
         content.document.addEventListener("mouseover", this.listen, false);
+        content.document.addEventListener("click", this.listen, false);
     };
 
 Tracker.prototype.stopTracking =
     function()
     {
         this.doTrack(null, null);
+        content.document.removeEventListener("click", this.listen, false);
         content.document.removeEventListener("mouseover", this.listen, false);
         this.listen = null;
     };
