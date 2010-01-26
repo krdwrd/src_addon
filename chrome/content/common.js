@@ -88,7 +88,7 @@ function traverse(body, cb, defaulttag)
         for (child in node.childNodes)
         {
             cnode = node.childNodes[child];
-            if (cnode.nodeName != "SCRIPT")
+            if (cnode != undefined && cnode.nodeName != "SCRIPT")
                 rec(cnode, kw);
         }
     };
