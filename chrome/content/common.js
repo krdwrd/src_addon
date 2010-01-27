@@ -127,6 +127,29 @@ function extractTags(doc)
 }
 
 
+// filter out any node with node.nodeName is nName within doc
+function filterNodes(doc, nName)
+{
+    var nodeIterator = document.createNodeIterator(  
+        doc,  
+        NodeFilter.SHOW_ELEMENT,  
+        { acceptNode: function(nd) 
+            { 
+                if (nd.nodeName == nName) return NodeFilter.FILTER_ACCEPT;
+                else return NodeFilter.FILTER_REJECT; 
+            } 
+        },  
+        false  
+    );  
+       
+    for (var currentNode; currentNode = nodeIterator.nextNode();) {  
+        pn = currentNode.parentNode;
+        if (pn)
+            pn.removeChild(currentNode);
+    } 
+}
+
+
 // quit the application
 function quit(forced)
 {
