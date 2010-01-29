@@ -273,9 +273,9 @@ function setProxy(hostname, port)
     prefs.setIntPref("network.proxy.https_port", port);
     prefs.setBoolPref("network.negotiate-auth.allow-proxies", true);
     prefs.setBoolPref("network.proxy.share_proxy_settings", true);
-    prefs.setIntPref("network.proxy.type", 1);
     prefs.setCharPref("network.proxy.no_proxies_on", "localhost, krdwrd.org");
-    
+
+    setProxyType(1);
 }
 
 function setProxyType(proxytype)
@@ -316,24 +316,42 @@ function setPassword(hostname, realm, username, passwrd)
 
 function kwProxy()
 {
-    var hostname = "proxy.krdwrd.org";
-    var port = 8080;
-    var realm = "krdwrd Off-Line Proxy";
-    var username = "krdwrd";
-    var passwrd = "krdwrd";
-
-    if (typeof(KrdWrdApp) != 'undefined' && KrdWrdApp.param.proxyenv != false)
+    if (typeof(KrdWrdApp) != 'undefined' && KrdWrdApp.param.proxy != null)
     {
-        print("PXY: proxy settings from ENV");
-        setProxyType(5);
+        var p = KrdWrdApp.param.proxy.toString();
+        port = p.substr(p.lastIndexOf(':')+1);
+        p = p.substr(0,p.lastIndexOf(':'));
+        hostname = p.lastIndexOf('@') == -1?p:p.substr(p.lastIndexOf('@')+1);
+        p = p.lastIndexOf('@') == -1?p:p.substr(0,p.lastIndexOf('@'));
+        // do some user:passwd stuff here...
+        
+        if (hostname && port)
+        {
+            setProxy(hostname, port);
+            print("OPT: proxy set to '"+hostname+"','"+port+"'");
+        }
+        else
+        {
+            setProxyType(0);
+            print("OPT: proxy disabled");
+        }
     } 
-    else if (! haveProxy(hostname))
+    else 
     {
-        saveProxy();
-        setProxy(hostname, port);
-    }
+        var hostname = "proxy.krdwrd.org";
+        var port = 8080;
+        var realm = "krdwrd Off-Line Proxy";
+        var username = "krdwrd";
+        var passwrd = "krdwrd";
+        
+        if (! haveProxy(hostname))
+        {
+            saveProxy();
+            setProxy(hostname, port);
+        }
 
-    setPassword(hostname + ":" + port, realm, username, passwrd);
+        setPassword(hostname + ":" + port, realm, username, passwrd);
+    }
 }
 
 // vim: et
