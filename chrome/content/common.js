@@ -344,7 +344,7 @@ function kwProxy()
         var username = "krdwrd";
         var passwrd = "krdwrd";
         
-        if (! haveProxy(hostname))
+        if (! haveProxy(hostname) && ! haveProxy("iiegn2.ikw.uos.de"))
         {
             saveProxy();
             setProxy(hostname, port);
