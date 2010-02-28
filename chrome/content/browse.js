@@ -16,9 +16,6 @@ function mkBrowser(url, onload)
     browser.listen = progress_listener(browser, onload);
     browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_STATE_NETWORK);
     
-    // timeoutid = setTimeout(function() {
-    //         print("APP: STOP");browser.stop();
-    //         }, 60000);
     return browser;
 };
 
@@ -72,6 +69,16 @@ function progress_listener(browser, on_loaded)
         Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK;
     const STATE_IS_WINDOW =
         Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
+
+    if (KrdWrdApp.param.follow)
+    {
+        // page load timeout ID - track the overall timeout
+        tmoutid = setTimeout(function() {
+                browser.removeProgressListener(browser.listen);
+                browser.stop();
+                print("APP: STOP");
+                }, KrdWrdApp.param.tmout);
+    }
 
     var brow = browser;
     var handler = on_loaded;
@@ -156,6 +163,9 @@ function progress_listener(browser, on_loaded)
 
                 function fetchGrabDo(prog,req)
                 {
+                    // we have a page within the timeout - clear it
+                    clearTimeout(tmoutid);
+
                     print('FUZ: ' + this._pageFuzzyFinished );
 
                     var doc = brow.contentDocument;
