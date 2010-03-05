@@ -1,6 +1,9 @@
 // create a new browser object load url, call onload on completion
 function mkBrowser(url, onload)
 {
+    // make sure there is handle onto the HTTP Response Header
+    httpRequestObserver.register();
+    
     var browser = document.createElement('browser');
 
     browser.setAttribute('flex', 1);
@@ -15,7 +18,7 @@ function mkBrowser(url, onload)
     // hook into onload
     browser.listen = progress_listener(browser, onload);
     browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_STATE_NETWORK);
-    
+
     return browser;
 };
 
@@ -137,6 +140,18 @@ function progress_listener(browser, on_loaded)
                 args += ']';
                 // verbose(args + ' ' + this._requestsStarted  + '/' + this._requestsFinished);
                
+                // now we know about the HTTP Response for the document
+                // no more responses needed (img, etc...)
+                if ((flg & Components.interfaces.nsIWebProgressListener
+                            .STATE_IS_REQUEST) && 
+                        (flg & Components.interfaces.nsIWebProgressListener.
+                         STATE_IS_DOCUMENT) && 
+                        (flg & Components.interfaces.nsIWebProgressListener.
+                         STATE_TRANSFERRING))
+                {
+                    httpRequestObserver.unregister();
+                }
+
                 if ((flg & STATE_STOP) && (flg & STATE_IS_NETWORK))
                 {
                     if (this._timeoutid) 
@@ -200,6 +215,49 @@ function progress_listener(browser, on_loaded)
             function() { return 0; },
         };
     return pl;
+};
+
+// self-contained object to observe nsIHttpChannel to have a handle onto 
+// the HTTP Response Status
+// use: register() and unregister()
+var httpRequestObserver =
+{
+    observe: function(subject, topic, data)
+    {
+        if (topic == "http-on-examine-response" ||
+                topic == "http-on-examine-cached-response")
+        {
+            try {
+                var httpChannel = subject.QueryInterface(Components.interfaces.nsIHttpChannel);
+                // Http Response Status
+                hrs = httpChannel.responseStatus;
+                // don't bother about redirect
+                if (hrs != 302) print("HRS: "+httpChannel.responseStatus);
+            } catch (err) {
+                // this should not happen
+            }
+        } else {
+            // print(topic);
+        }
+    },
+
+    get observerService() 
+    {
+        return Components.classes["@mozilla.org/observer-service;1"]
+            .getService(Components.interfaces.nsIObserverService);
+    },
+
+    register: function()
+    {
+        this.observerService.addObserver(this, "http-on-examine-response", false);
+        this.observerService.addObserver(this, "http-on-examine-cached-response", false);
+    },
+
+    unregister: function()
+    {
+        this.observerService.removeObserver(this, "http-on-examine-cached-response");
+        this.observerService.removeObserver(this, "http-on-examine-response");
+    }
 };
 
 function post_request(url, data, callback)
