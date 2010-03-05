@@ -164,7 +164,7 @@ function progress_listener(browser, on_loaded)
                 function fetchGrabDo(prog,req)
                 {
                     // we have a page within the timeout - clear it
-                    clearTimeout(tmoutid);
+                    if (this.tmoutid) clearTimeout(tmoutid);
 
                     print('FUZ: ' + this._pageFuzzyFinished );
 
