@@ -8,9 +8,9 @@ function mkBrowser(url, onload)
 
     browser.setAttribute('flex', 1);
     browser.setAttribute('disablehistory', true);
-    browser.setAttribute('src', url);
     browser.setAttribute('height', 768);
     browser.setAttribute('width', 1024);
+    browser.setAttribute('src', url);
 
     // need to append to a document to become available
     document.documentElement.appendChild(browser);
@@ -66,12 +66,29 @@ function open_documents(filelist, callback)
 // progress listener implementing nsIWebProgressListener
 function progress_listener(browser, on_loaded)
 {
-    const STATE_STOP =
-        Components.interfaces.nsIWebProgressListener.STATE_STOP;
+    const STATE_IS_REQUEST = 
+        Components.interfaces.nsIWebProgressListener.STATE_IS_REQUEST;
+    const STATE_IS_DOCUMENT = 
+        Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT;
     const STATE_IS_NETWORK =
         Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK;
     const STATE_IS_WINDOW =
         Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
+
+    const STATE_START =
+        Components.interfaces.nsIWebProgressListener.STATE_START;
+    const STATE_REDIRECTING =
+        Components.interfaces.nsIWebProgressListener.STATE_REDIRECTING;
+    const STATE_TRANSFERRING =
+        Components.interfaces.nsIWebProgressListener.STATE_TRANSFERRING;
+    const STATE_NEGOTIATING =
+        Components.interfaces.nsIWebProgressListener.STATE_NEGOTIATING;
+    const STATE_STOP =
+        Components.interfaces.nsIWebProgressListener.STATE_STOP;
+
+    const STATUS_RESOLVING =
+        Components.interfaces.nsISocketTransport.STATUS_RESOLVING;
+
 
     if (KrdWrdApp.param.follow)
     {
@@ -92,6 +109,7 @@ function progress_listener(browser, on_loaded)
         _requestsFinished: 0,
         _pageFuzzyFinished: 0,
         _timeoutid: 0, 
+        _statusChange: null,
 
         QueryInterface :
             function(aIID)
@@ -107,33 +125,33 @@ function progress_listener(browser, on_loaded)
             {
 
                 var args = '[';
-                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_IS_REQUEST) {
+                if (flg   & STATE_IS_REQUEST) {
                         args += 'R';
                 }
-                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT) {
+                if (flg   & STATE_IS_DOCUMENT) {
                         args += 'D';
                 }
-                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK) {
+                if (flg   & STATE_IS_NETWORK) {
                         args += 'N';
                 }
-                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW) {
+                if (flg   & STATE_IS_WINDOW) {
                         args += 'W';
                 }
                 args += '][';
-                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_START) {
+                if (flg   & STATE_START) {
                         args += 'Start';
                         this._requestsStarted++;
                 }
-                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_REDIRECTING) {
+                if (flg   & STATE_REDIRECTING) {
                         args += 'Redir';
                 }
-                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_TRANSFERRING) {
+                if (flg   & STATE_TRANSFERRING) {
                         args += 'Trans';
                 }
-                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_NEGOTIATING) {
+                if (flg   & STATE_NEGOTIATING) {
                         args += 'Negot';
                 }
-                if (flg   & Components.interfaces.nsIWebProgressListener.STATE_STOP) {
+                if (flg   & STATE_STOP) {
                         args += 'Stop';
                         this._requestsFinished++;
                 }
@@ -142,12 +160,9 @@ function progress_listener(browser, on_loaded)
                
                 // now we know about the HTTP Response for the document
                 // no more responses needed (img, etc...)
-                if ((flg & Components.interfaces.nsIWebProgressListener
-                            .STATE_IS_REQUEST) && 
-                        (flg & Components.interfaces.nsIWebProgressListener.
-                         STATE_IS_DOCUMENT) && 
-                        (flg & Components.interfaces.nsIWebProgressListener.
-                         STATE_TRANSFERRING))
+                if ((flg & STATE_IS_REQUEST) && 
+                        (flg & STATE_IS_DOCUMENT) && 
+                        (flg & STATE_TRANSFERRING))
                 {
                     httpRequestObserver.unregister();
                 }
@@ -181,17 +196,20 @@ function progress_listener(browser, on_loaded)
                     // we have a page within the timeout - clear it
                     if (this.tmoutid) clearTimeout(tmoutid);
 
-                    print('FUZ: ' + this._pageFuzzyFinished );
+                    if (this._statusChange == undefined) {
+                        error("DNS - server not found");
+                    }
 
                     var doc = brow.contentDocument;
-                    if ((prog.DOMWindow == brow.contentWindow) && req)
+                    if ((prog.DOMWindow == brow.contentWindow) && req && 
+                            (brow.removeProgressListener(brow.listen) || true))
                     {
-                        brow.removeProgressListener(brow.listen);
                         // wait a second for the engine to settle
                         setTimeout(function()
                             {
                                 try
                                 {
+                                    print('FUZ: ' + this._pageFuzzyFinished );
                                     handler(doc, prog.DOMWindow);
                                 }
                                 catch (e)
@@ -210,7 +228,14 @@ function progress_listener(browser, on_loaded)
         onProgressChange:
             function() { return 0; },
         onStatusChange:
-            function() { return 0; },
+            function(aWebProgress, aRequest, aStatus, aMessage)
+            { 
+                if (aStatus !== STATUS_RESOLVING) 
+                    { 
+                        _statusChange = aStatus;
+                        verbose(aMessage);
+                    }; 
+            },
         onSecurityChange:
             function() { return 0; },
         };
@@ -234,10 +259,11 @@ var httpRequestObserver =
                 // don't bother about redirect
                 if (hrs != 302) print("HRS: "+httpChannel.responseStatus);
             } catch (err) {
+                verbose(err);
                 // this should not happen
             }
         } else {
-            // print(topic);
+            verbose(topic);
         }
     },
 
