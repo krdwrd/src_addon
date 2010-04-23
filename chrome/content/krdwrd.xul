@@ -12,8 +12,18 @@
     <key id="kwkey_tag_2" modifiers="control alt" key="2" 
          oncommand="kw.onTag(2);"/>
     <key id="kwkey_tag_3" modifiers="control alt" key="3" 
+         oncommand="kw.onTag(4);"/>
+    <key id="kwkey_tag_1" modifiers="control alt" key="4" 
          oncommand="kw.onTag(3);"/>
-    <key id="kwkey_tag_none" modifiers="control alt" key="4"
+    <key id="kwkey_tag_2" modifiers="control alt" key="5" 
+         oncommand="kw.onTag(5);"/>
+    <key id="kwkey_tag_3" modifiers="control alt" key="6" 
+         oncommand="kw.onTag(6);"/>
+    <key id="kwkey_tag_2" modifiers="control alt" key="7" 
+         oncommand="kw.onTag(7);"/>
+    <key id="kwkey_tag_3" modifiers="control alt" key="8" 
+         oncommand="kw.onTag(8);"/>
+    <key id="kwkey_tag_none" modifiers="control alt" key="9"
          oncommand="kw.onTag('none');"/>
     <key id="kwkey_submit" modifiers="accel shift" key="S"
          oncommand="kw.onCommandSubmit();"/>
@@ -77,19 +87,58 @@
          tooltiptext="Request a fresh page for tagging from the KrdWrd server"
          oncommand="kw.onCommandGrab();"/>
 
-        <menu datasources="https://krdwrd.org/addon/corpora.xml" ref="*" querytype="xml"
-         id="kwmenu_corpus" label="Corpus" accesskey="C">
-        
-          <template>
-            <query expr="corpus" />
-              <action>
-                <menupopup>
-                  <menuitem uri="?" label="?label" cpname="?name" oncommand="kw.setCorpus(this.getAttribute('cpname'), this.label)"/>
-                </menupopup>
-              </action>
-          </template>
+        <script type="application/x-javascript">
+function gen_corpus_popup() {
+    function createMenuItem(cLabel,cName) {
+        const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+        var item = document.createElementNS(XUL_NS, "menuitem");
+        item.setAttribute("label", cLabel);
+        item.setAttribute("oncommand", "kw.setCorpus(\"" + cName + "\", \"" + cLabel + "\")");
+        return item;
+    }
+    var popup = document.getElementById("kwmenu_corpus_popup");
+
+    var req = new XMLHttpRequest();
+    req.open("GET", "https://krdwrd.org/addon/corpora.json", false);
+    req.overrideMimeType("application/json");
+    req.send(null);
+
+    cnums = 0;
+    // Remove all of the existing buttons
+    for(i=popup.childNodes.length; i > 0; i--)
+    {
+        popup.removeChild(popup.childNodes[0]);
+    }
+
+    if(req.status == 200)
+    {
+        var nativeJSON = Components.classes["@mozilla.org/dom/json;1"]
+            .createInstance(Components.interfaces.nsIJSON);
+
+        try
+        {
+            var corpora = nativeJSON.decode(req.responseText);
+
+            for(corpus in corpora)
+            {
+                var mitem = createMenuItem(corpora[corpus].label,corpora[corpus].name);
+                popup.appendChild(mitem);
+                cnums++;
+            }
+        } catch (err) {} 
+    }
+
+    if (cnums == 0) popup.appendChild(createMenuItem("Canola","canola")); 
+}
+        </script>
+        <menu id="kwmenu_corpus" label="Corpus" accesskey="C">
+            <menupopup id="kwmenu_corpus_popup" onpopupshowing="gen_corpus_popup()">
+                <!-- will be generated dynamically
+                <menuitem uri="?" label="?label" cpname="?name" oncommand="kw.setCorpus(this.getAttribute('cpname'), this.label)"/>
+                -->
+            </menupopup>
         </menu>
-        
+
         <menu id="kwmenu_utils" label="Utils" accesskey="U">
           
           <menupopup>

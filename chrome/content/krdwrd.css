@@ -28,32 +28,139 @@
 
 .krdwrd-tag-1
 {
-	background: #F00 !important;
+	background: #FF0000 !important;
 }
 
 .krdwrd-tag-2
 {
-	background: #FF0 !important;
+	background: #FFFF00 !important;
 }
 
 .krdwrd-tag-3
 {
-	background: #0F0 !important;
+	background: #00FF00 !important;
+}
+
+.krdwrd-tag-4
+{
+	background: #B2B200 !important;
+}
+
+.krdwrd-tag-5
+{
+	background: #00B200 !important;
+}
+
+.krdwrd-tag-6
+{
+	background: #00B200 !important;
+    outline-style: dotted;
+    outline-width: thin;
+}
+
+.krdwrd-tag-7
+{
+	background: #4444FF !important;
+}
+
+.krdwrd-tag-8
+{
+	background: #4444B2 !important;
 }
 
 .krdwrd-tag-1-l
 {
-	background: #FCC !important;
+	background: #FFCCCC !important;
 }
 
 .krdwrd-tag-2-l
 {
-	background: #FFC !important;
+	background: #FFFFCC !important;
 }
 
 .krdwrd-tag-3-l
 {
-	background: #CFC !important;
+	background: #CCFFCC !important;
+}
+
+.krdwrd-highlighted.krdwrd-tag-1 
+{
+	background: #AA5555 !important;
+}
+
+.krdwrd-highlighted.krdwrd-tag-2
+{
+	background: #AAAA55 !important;
+}
+
+.krdwrd-highlighted.krdwrd-tag-3 
+{
+	background: #55AA55 !important;
+}
+
+.krdwrd-highlighted.krdwrd-tag-4 
+{
+	background: #B2B255 !important;
+}
+
+.krdwrd-highlighted.krdwrd-tag-5 
+{
+	background: #55B255 !important;
+}
+
+.krdwrd-highlighted.krdwrd-tag-6 
+{
+	background: #55B255 !important;
+}
+
+.krdwrd-highlighted.krdwrd-tag-7 
+{
+	background: #3333AA !important;
+}
+
+.krdwrd-highlighted.krdwrd-tag-8 
+{
+	background: #333377 !important;
+}
+
+.krdwrd-hidden-1 .krdwrd-tag-1 
+{
+	display: none;
+}
+
+.krdwrd-hidden-2 .krdwrd-tag-2
+{
+	display: none;
+}
+
+.krdwrd-hidden-3 .krdwrd-tag-3 
+{
+	display: none;
+}
+
+.krdwrd-hidden-4 .krdwrd-tag-4 
+{
+	display: none;
+}
+
+.krdwrd-hidden-5 .krdwrd-tag-5 
+{
+	display: none;
+}
+
+.krdwrd-hidden-6 .krdwrd-tag-6 
+{
+	display: none;
+}
+
+.krdwrd-hidden-7 .krdwrd-tag-7 
+{
+	display: none;
+}
+
+.krdwrd-hidden-8 .krdwrd-tag-8 
+{
+	display: none;
 }
 
 .krdwrd-tag-1-100
@@ -235,36 +342,6 @@
 .krdwrd-tag-mrgtie-0
 {
     background: #DFF !important;
-}
-
-.krdwrd-highlighted.krdwrd-tag-1 
-{
-	background: #A55 !important;
-}
-
-.krdwrd-highlighted.krdwrd-tag-2
-{
-	background: #AA5 !important;
-}
-
-.krdwrd-highlighted.krdwrd-tag-3 
-{
-	background: #5A5 !important;
-}
-
-.krdwrd-hidden-1 .krdwrd-tag-1 
-{
-	display: none;
-}
-
-.krdwrd-hidden-2 .krdwrd-tag-2
-{
-	display: none;
-}
-
-.krdwrd-hidden-3 .krdwrd-tag-3 
-{
-	display: none;
 }
 
 .kwsb-tag 
