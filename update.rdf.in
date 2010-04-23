@@ -10,7 +10,7 @@
               <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
               <em:maxVersion>3.6.*</em:maxVersion>
               <em:minVersion>3.0</em:minVersion>
-              <em:updateHash>sha512:889e5c7e4866db3c9800b924a02a04452d314d30bfe271116f7b52bc9d0d19691114c7f0302da08b69810b799b1a8e9c338b471876276e9a1ed75f3d945da413</em:updateHash>
+              <em:updateHash>sha512:fce2f290c90d2eaab473ec1a2fa1b96f177ca53c86d23e0cdf505560beab08923fb02e704acc397baab389fbd2b1753bcbf4ffc3f7d1b24bca6a5a7587f483d0</em:updateHash>
               <em:updateLink>set in Makefile</em:updateLink>
               <em:updateInfoURL>https://krdwrd.org/addon/news.html</em:updateInfoURL>
             </RDF:Description>
