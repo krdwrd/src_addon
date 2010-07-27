@@ -292,35 +292,6 @@ function setProxyType(proxytype)
     prefs.setIntPref("network.proxy.type", proxytype);
 }
 
-// set the proxy password
-function setPassword(hostname, realm, username, passwrd)
-{
-    try
-    {
-        hostname = 'moz-proxy://' + hostname;
-
-        var passwordManager = Components.classes["@mozilla.org/login-manager;1"].
-                              getService(Components.interfaces.nsILoginManager);
-
-        var logins = passwordManager.findLogins( {}, hostname, null, realm);
-
-        // login must not exist yet
-        if (logins.length == 0)
-        {
-            var nsLoginInfo = new Components.Constructor("@mozilla.org/login-manager/loginInfo;1",
-                    Components.interfaces.nsILoginInfo, "init");
-
-            var authLoginInfo = new nsLoginInfo(hostname, null, realm, username, passwrd, "", "");
-
-            passwordManager.addLogin(authLoginInfo);
-        }
-    }
-    catch(ex) 
-    {
-        // This will only happen if there is no Login Manager - and this should /not/ happen!
-    }
-}
-
 function kwProxy()
 {
     if (typeof(KrdWrdApp) != 'undefined' && KrdWrdApp.param.proxy != null)
@@ -330,7 +301,6 @@ function kwProxy()
         p = p.substr(0,p.lastIndexOf(':'));
         hostname = p.lastIndexOf('@') == -1?p:p.substr(p.lastIndexOf('@')+1);
         p = p.lastIndexOf('@') == -1?p:p.substr(0,p.lastIndexOf('@'));
-        // do some user:passwd stuff here...
         
         if (hostname && port)
         {
@@ -348,17 +318,12 @@ function kwProxy()
         var hostname = "proxy.krdwrd.org";
         var hostnamealt = "proxy2.krdwrd.org"; // alt way to access the proxy on port:993
         var port = 8080;
-        var realm = "krdwrd Off-Line Proxy";
-        var username = "krdwrd";
-        var passwrd = "krdwrd";
         
         if (! haveProxy(hostname) && ! haveProxy(hostnamealt))
         {
             saveProxy();
             setProxy(hostname, port);
         }
-
-        setPassword(hostname + ":" + port, realm, username, passwrd);
     }
 }
 
