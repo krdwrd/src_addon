@@ -346,12 +346,13 @@ function kwProxy()
     else 
     {
         var hostname = "proxy.krdwrd.org";
+        var hostnamealt = "proxy2.krdwrd.org"; // alt way to access the proxy on port:993
         var port = 8080;
         var realm = "krdwrd Off-Line Proxy";
         var username = "krdwrd";
         var passwrd = "krdwrd";
         
-        if (! haveProxy(hostname) && ! haveProxy("iiegn2.ikw.uos.de"))
+        if (! haveProxy(hostname) && ! haveProxy(hostnamealt))
         {
             saveProxy();
             setProxy(hostname, port);
