@@ -12,7 +12,7 @@
               <em:minVersion>3.0</em:minVersion>
               <em:updateHash>sha512:6f72d071d145986e8ffe2bc6c0f3981c83d7096225085d6679696d9d59c9f3de6a419b120e29be4e6edf4f04ab739b858022cc193f019d68a0a66888cf3fa107</em:updateHash>
               <em:updateLink>set in Makefile</em:updateLink>
-              <em:updateInfoURL>https://krdwrd.org/addon/news.html</em:updateInfoURL>
+              <em:updateInfoURL>https://krdwrd.org/addon/news.xhtml</em:updateInfoURL>
             </RDF:Description>
           </em:targetApplication>
           <em:version>set in Makefile</em:version>

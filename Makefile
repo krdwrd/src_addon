@@ -48,7 +48,7 @@ skin: $(REV)
 	$(TXTVER) chrome/skin/about
 
 $(XPI): $(INSTALL) skin
-	zip $(XPI) chrome.manifest $(INSTALL) -r chrome defaults -x '*/.*'
+	zip $(XPI) chrome.manifest $(INSTALL) icon.png -r chrome defaults -x '*/.*'
 
 clean:
 	rm -f $(XPI) $(HASH) $(REV) $(UPDATE)
