@@ -11,7 +11,8 @@ UPDATE=update_trunk.rdf
 VER := $(MAJOR).$(shell cat $(REV))trunk
 endif
 
-UPDATEURL := http://krdwrd.org/addon/$(XPI)
+UPDATEURL := http://krdwrd.org/addon/$(UPDATE)
+XPIURL := http://krdwrd.org/addon/$(XPI)
 INSTALL=install.rdf
 HASH=$(XPI).hash
 EXTR=krdwrd@krdwrd.org
@@ -61,7 +62,7 @@ sign: $(XPI)
 	signtool -k krdwrd@krdwrd.org -d cert -X -Z $(XPI) $(EXTR) || rm -rf $(XPI) $(EXTR)
 
 $(UPDATE): update.rdf.in sign
-	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v $(VER) -u $(UPDATEURL) -d cert > $(UPDATE)
+	spock/spock update.rdf.in -i urn:mozilla:extension:krdwrd@krdwrd.org -v $(VER) -u $(XPIURL) -d cert > $(UPDATE)
 
 release: clean $(UPDATE)
 
