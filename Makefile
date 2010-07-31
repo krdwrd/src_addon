@@ -4,14 +4,14 @@ REV=.REV
 ifeq ($(findstring release,$(MAKECMDGOALS)),release)
 XPI=krdwrd.xpi
 UPDATE=update.rdf
-VER := $(MAJOR).$(shell cat .REV)
+VER := $(MAJOR).$(shell cat $(REV))
 else
 XPI=krdwrd_trunk.xpi
 UPDATE=update_trunk.rdf
-VER := $(MAJOR).$(shell cat .REV)trunk
+VER := $(MAJOR).$(shell cat $(REV))trunk
 endif
 
-UPDATEURL := http://krdwrd.org/addon/$(UPDATE)
+UPDATEURL := http://krdwrd.org/addon/$(XPI)
 INSTALL=install.rdf
 HASH=$(XPI).hash
 EXTR=krdwrd@krdwrd.org
