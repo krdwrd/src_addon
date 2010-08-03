@@ -29,6 +29,8 @@
          oncommand="kw.onCommandSubmit();"/>
     <key id="kwkey_track" modifiers="accel shift" key="K"
          oncommand="kw.onToggleTracking();"/>
+    <key id="kwkey_sweep" modifiers="accel shift" key="A"
+         oncommand="kw.onCommandSweep();"/>
   </keyset>
   
   <popup id="contentAreaContextMenu">
@@ -58,6 +60,10 @@
         <menuitem id="kwcontext_propagate" label="Propagate downwards"
               accesskey="p"
               oncommand="kw.propagate()" />
+        
+        <menuitem id="kwcontext_sweep" label="Sweep the Page"
+              key="kwkey_sweep"
+              oncommand="kw.onCommandSweep()" />
         
       </menupopup>
       
@@ -162,6 +168,10 @@ function gen_corpus_popup() {
             <menuitem id="kwutil_kwtags" label="kw Tags" disabled="true"
             tooltiptext="Insert kw tags around all text blocks"
             oncommand="kw.insertKW();" />
+            
+            <menuitem id="kwutil_sweep" label="Sweep Page"
+            tooltiptext="Sweep this page with precomputed results from the Server"
+            oncommand="kw.onCommandSweep();" />
             
           </menupopup>
           

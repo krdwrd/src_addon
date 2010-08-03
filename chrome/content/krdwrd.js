@@ -194,6 +194,36 @@ function KrdWrd()
         this.onCommandGrab();
     };
 
+    // Sweep the Page with pre-computed results from the Server 
+    this.onCommandSweep = function()
+    {
+        var waiter = this.notify("Sweeping ..."); 
+
+        var self = this;
+        var url = 'url=' + encodeURIComponent(content.document.location.href);
+        var params = url;
+
+        post_request(this.kwserver + 'sweep', params, function(response, stat)
+        {
+            waiter.close();
+            if (stat != 200)
+            {
+                self.notify("Sweep failed. " + response);
+            }
+            else
+            {
+                clearkw(content.document.body);
+                var lst = response.split(" ");
+
+                traverse(content.document.body, function(node, kw)
+                {
+                    node.parentNode.className = filterkw(node.parentNode.className) +
+                        "krdwrd-tag-" + lst[i++];
+                });
+            }
+        });
+    }
+
     this.propagate = function()
     {
         var body = content.document.tracker.tracked || content.document.body;
