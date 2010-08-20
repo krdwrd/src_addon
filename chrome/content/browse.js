@@ -256,8 +256,20 @@ var httpRequestObserver =
                 var httpChannel = subject.QueryInterface(Components.interfaces.nsIHttpChannel);
                 // Http Response Status
                 hrs = httpChannel.responseStatus;
-                // don't bother about redirect
-                if (hrs != 302) print("HRS: "+httpChannel.responseStatus);
+                // don't bother about redirects
+                // HTTP/1.0: 302, (HTTP/1.1: 303,307)
+                if (hrs != 302) 
+                {
+                    switch (hrs)
+                    {
+                        case 200: // OK
+                        case 304: // Not Modified
+                            print("HRS: OK ("+httpChannel.responseStatus+")");
+                            break;
+                        default:
+                            print("HRS: ERR ("+httpChannel.responseStatus+")");
+                    }
+                }
             } catch (err) {
                 verbose(err);
                 // this should not happen
