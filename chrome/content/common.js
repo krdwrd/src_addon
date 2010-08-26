@@ -280,7 +280,7 @@ function setProxy(hostname, port)
     prefs.setIntPref("network.proxy.https_port", port);
     prefs.setBoolPref("network.negotiate-auth.allow-proxies", true);
     prefs.setBoolPref("network.proxy.share_proxy_settings", true);
-    prefs.setCharPref("network.proxy.no_proxies_on", "localhost, krdwrd.org");
+    prefs.setCharPref("network.proxy.no_proxies_on", "localhost");
 
     setProxyType(1);
 }
