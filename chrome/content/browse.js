@@ -256,19 +256,21 @@ var httpRequestObserver =
                 var httpChannel = subject.QueryInterface(Components.interfaces.nsIHttpChannel);
                 // Http Response Status
                 hrs = httpChannel.responseStatus;
-                // don't bother about redirects
-                // HTTP/1.0: 302, (HTTP/1.1: 303,307)
-                if (hrs != 302) 
+                // inform user about HRS  
+                switch (hrs)
                 {
-                    switch (hrs)
-                    {
-                        case 200: // OK
-                        case 304: // Not Modified
-                            print("HRS: OK ("+httpChannel.responseStatus+")");
-                            break;
-                        default:
-                            print("HRS: ERR ("+httpChannel.responseStatus+")");
-                    }
+                    case 200: // OK
+                    case 304: // Not Modified
+                        print("HRS: OK ("+httpChannel.responseStatus+")");
+                        break;
+                    case 301: // Moved Permanently
+                    case 302: // Redirect - HTTP/1.0
+                    case 303: // Redirect - HTTP/1.1
+                    case 307: // Redirect - HTTP/1.1
+                        print("HRS: IGN ("+httpChannel.responseStatus+")");
+                        break;
+                    default:
+                        print("HRS: ERR ("+httpChannel.responseStatus+")");
                 }
             } catch (err) {
                 verbose(err);
