@@ -111,8 +111,8 @@ function KrdWrd()
 
                 traverse(content.document.body, function(node, kw)
                 {
-                    node.parentNode.className = filterkw(node.parentNode.className) +
-                        "krdwrd-tag-" + lst[i++];
+                    node.parentNode.className = (filterkw(node.parentNode.className) +
+                        " krdwrd-tag-" + lst[i++]).trim();
                 });
 
                 var btns = [{ callback: function() { self.onCommandGrab(); }, 
@@ -217,8 +217,8 @@ function KrdWrd()
 
                 traverse(content.document.body, function(node, kw)
                 {
-                    node.parentNode.className = filterkw(node.parentNode.className) +
-                        "krdwrd-tag-" + lst[i++];
+                    node.parentNode.className = (filterkw(node.parentNode.className) +
+                        " krdwrd-tag-" + lst[i++]).trim();
                 });
             }
         });
@@ -228,7 +228,7 @@ function KrdWrd()
     {
         var body = content.document.tracker.tracked || content.document.body;
         traverse(body, function(node, kw) {
-                node.parentNode.className = filterkw(node.parentNode.className) + " " + kw;
+                node.parentNode.className = (filterkw(node.parentNode.className) + " " + kw).trim();
             });
     };
 

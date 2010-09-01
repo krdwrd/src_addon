@@ -28,6 +28,16 @@ function filterklass(klasses, filter)
     return res;
 }
 
+// convenience string trim function
+String.prototype.trim = function () {
+    return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+};
+
+String.prototype.btelen = function () {
+    return this.trim().replace( /\n/g, " ")
+        .replace(/  +/g, " ").split(/\s/).length;
+};
+
 // filter out any krdwrd classes from css class list 'klasses' given as string
 function filterkw(klasses)
 {
@@ -42,8 +52,10 @@ function getkwtag(klasses)
 {
     return filterklass(klasses, function(klass)
     {
-        return (klass.substring(10, 0) != "krdwrd-tag");
-    });
+        // "kw-t-none" can happen after tag/tag-remove action
+        return (klass.substring(15,0) == "krdwrd-tag-none" || klass.substring(10, 0) != "krdwrd-tag");
+        // return (klass.substring(10, 0) != "krdwrd-tag");
+    }).trim();
 }
 
 // get krdwrd class tag number
@@ -65,6 +77,16 @@ function clearkw(node)
     }
 }
 
+// check for nodes we do /not/ want to traverse.
+// common place for often-used check 
+function recursehere(node)
+{
+    return (node != undefined && 
+        node.nodeName != "SCRIPT" &&
+        node.nodeName != "STYLE" &&
+        node.nodeName != "#comment")
+}
+
 // traverse the dom, call cb on text nodes
 function traverse(body, cb, defaulttag)
 {
@@ -75,9 +97,7 @@ function traverse(body, cb, defaulttag)
         {
             var tag = getkwtag(cn);
             if (tag) 
-            {
-                kw = tag.replace(' ', '');
-            }
+                kw = tag;
         }
         if (node.nodeName == "#text")
         {
@@ -88,11 +108,11 @@ function traverse(body, cb, defaulttag)
         for (child in node.childNodes)
         {
             cnode = node.childNodes[child];
-            if (cnode != undefined && cnode.nodeName != "SCRIPT")
+            if (recursehere(cnode))
                 rec(cnode, kw);
         }
     };
-    rec(body, defaulttag || "krdwrd-tag-2");
+    rec(body, defaulttag || "krdwrd-tag-1");
 }
 
 
