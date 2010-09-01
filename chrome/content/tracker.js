@@ -42,9 +42,12 @@ Tracker.prototype.doTrack =
         // unhighlight old
         if (this.tracked)
         {
-            if (tag_index)
+            if (tag_index == "none")
                 this.tracked_class = this.tracked.className =
-                    filterkw(this.tracked_class) + " krdwrd-tag-" + tag_index;
+                    filterkw(this.tracked_class).trim();
+            else if (tag_index)
+                this.tracked_class = this.tracked.className =
+                    (filterkw(this.tracked_class) + " krdwrd-tag-" + tag_index).trim();
             else
                 this.tracked.className = this.tracked_class;
         }
