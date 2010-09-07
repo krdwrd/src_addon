@@ -214,12 +214,14 @@ function KrdWrd()
             {
                 clearkw(content.document.body);
                 var lst = response.split(" ");
+                var i = 0;
 
                 traverse(content.document.body, function(node, kw)
-                {
+                    {
                     node.parentNode.className = (filterkw(node.parentNode.className) +
                         " krdwrd-tag-" + lst[i++]).trim();
-                });
+                    }
+                );
             }
         });
     }
