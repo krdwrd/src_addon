@@ -7,63 +7,145 @@
   <script type="application/x-javascript" src="chrome://krdwrd/content/krdwrd.js" />
   
   <keyset id="mainKeyset">
-    <key id="kwkey_tag_1" modifiers="control alt" key="1" 
-         oncommand="kw.onTag(1);"/>
-    <key id="kwkey_tag_2" modifiers="control alt" key="2" 
-         oncommand="kw.onTag(2);"/>
-    <key id="kwkey_tag_3" modifiers="control alt" key="3" 
-         oncommand="kw.onTag(4);"/>
-    <key id="kwkey_tag_1" modifiers="control alt" key="4" 
-         oncommand="kw.onTag(3);"/>
-    <key id="kwkey_tag_2" modifiers="control alt" key="5" 
-         oncommand="kw.onTag(5);"/>
-    <key id="kwkey_tag_3" modifiers="control alt" key="6" 
-         oncommand="kw.onTag(6);"/>
-    <key id="kwkey_tag_2" modifiers="control alt" key="7" 
-         oncommand="kw.onTag(7);"/>
-    <key id="kwkey_tag_3" modifiers="control alt" key="8" 
-         oncommand="kw.onTag(8);"/>
-    <key id="kwkey_tag_none" modifiers="control alt" key="9"
-         oncommand="kw.onTag('none');"/>
+    <key id="kwkey_tag_1s1" modifiers="control alt" key="1"
+         oncommand="kw.onTag(1);" />
+    <key id="kwkey_tag_2s1" modifiers="control alt" key="2"
+         oncommand="kw.onTag(2);" />
+    <key id="kwkey_tag_3s1" modifiers="control alt" key="3"
+         oncommand="kw.onTag(3);" />
+    <key id="kwkey_tag_4s1" modifiers="control alt" key="4"
+         oncommand="kw.onTag('none');" />
+    <key id="kwkey_tag_4s2" modifiers="control alt" key="4"
+         oncommand="kw.onTag(3);" />
+
+    <key id="kwkey_tag_1s2" modifiers="control alt" key="1"
+         oncommand="kw.onTag(1);" />
+    <key id="kwkey_tag_2s2" modifiers="control alt" key="2"
+         oncommand="kw.onTag(2);" />
+    <key id="kwkey_tag_3s2" modifiers="control alt" key="3"
+         oncommand="kw.onTag(4);" />
+    <key id="kwkey_tag_4s2" modifiers="control alt" key="4"
+         oncommand="kw.onTag(3);" />
+    <key id="kwkey_tag_5s2" modifiers="control alt" key="5"
+         oncommand="kw.onTag(5);" />
+    <key id="kwkey_tag_6s2" modifiers="control alt" key="6"
+         oncommand="kw.onTag(6);" />
+    <key id="kwkey_tag_7s2" modifiers="control alt" key="7"
+         oncommand="kw.onTag(7);" />
+    <key id="kwkey_tag_8s2" modifiers="control alt" key="8"
+         oncommand="kw.onTag(8);" />
+    <key id="kwkey_tag_9s2" modifiers="control alt" key="9"
+         oncommand="kw.onTag('none');" />
+
     <key id="kwkey_submit" modifiers="accel shift" key="S"
          oncommand="kw.onCommandSubmit();"/>
     <key id="kwkey_track" modifiers="accel shift" key="K"
          oncommand="kw.onToggleTracking();"/>
     <key id="kwkey_sweep" modifiers="accel shift" key="A"
          oncommand="kw.onCommandSweep();"/>
+    <key id="kwkey_propthis" modifiers="accel shift" key="D"
+         oncommand="kw.propagate_this();"/>
   </keyset>
   
+<script type="application/x-javascript">
+function gen_tag_keyset() {
+    function createKeyItem(cId,cLabel,cAccessKey,cKey,cOncommand) {
+        const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+        var item = document.createElementNS(XUL_NS, "menuitem");
+        item.setAttribute("id", cId);
+        item.setAttribute("label", cLabel);
+        // item.setAttribute("accesskey", cAccesskey);
+        item.setAttribute("key", cKey);
+        item.setAttribute("oncommand", cOncommand);
+        return item;
+    }
+    var node = document.getElementById("kwcontext_popup");
+    // Remove existing mappings 
+    if (node)
+    {
+        for(var i=node.childNodes.length; i >= 0; --i)
+        {
+            try {
+                node.removeChild(node.childNodes[i]);
+            } catch (err) { }
+        }
+
+        var cnums = 0;
+        if (kw.getCorpus())
+        {
+            var cname = kw.getCorpus();
+            var req = new XMLHttpRequest();
+            req.open("GET", "https://krdwrd.org/addon/c-"+cname+"_tags.json", false);
+            req.overrideMimeType("application/json");
+            req.send(null);
+
+            if(req.status == 200)
+            {
+                var nativeJSON = Components.classes["@mozilla.org/dom/json;1"]
+                    .createInstance(Components.interfaces.nsIJSON);
+
+                try
+                {
+                    var keys = nativeJSON.decode(req.responseText);
+
+                    for(var k in keys)
+                    {
+                        var mitem = createKeyItem(keys[k].id, keys[k].label, keys[k].accesskey, keys[k].key, keys[k].oncommand);
+                        node.appendChild(mitem);
+                        cnums++;
+                    }
+                } catch (err) { } 
+            }
+        }
+
+        if (cnums == 0) 
+        {
+            node.appendChild(createKeyItem("kwcontext_tag_bad","Tab: Bad","","kwkey_tag_1s1","kw.onTag(1);"));
+            node.appendChild(createKeyItem("kwcontext_tag_unknown","Tag: Unknown","","kwkey_tag_2s1","kw.onTag(2);"));
+            node.appendChild(createKeyItem("kwcontext_tag_good","Tag: Good","","kwkey_tag_3s1","kw.onTag(3);"));
+            node.appendChild(createKeyItem("kwcontext_tag_clear","Clear Tag","","kwkey_tag_4s1","kw.onTag('none');"));
+        }
+
+        node.appendChild(document.createElement("menuseparator"));
+        node.appendChild(createKeyItem("kwcontext_propagate","Propagate /this/ downwards","","kwkey_propthis","kw.propagate_this();"));
+        node.appendChild(createKeyItem("kwcontext_sweep","Sweep the Page","","kwkey_sweep","kw.onCommandSweep();"));
+    }
+}
+</script>
+
   <popup id="contentAreaContextMenu">
     
     <menu id="kwcontext" label="KrdWrd" accesskey="K" insertafter="context-selectall">
       
-      <menupopup>
-        
-        <menuitem id="kwcontext_good" label="Tag Bad"
+      <menupopup id="kwcontext_popup" onpopupshowing="gen_tag_keyset()">
+
+          <!--
+        <menuitem id="kwcontext_tag_bad" label="Tag Bad"
               accesskey="b" key="kwkey_tag_1"
               oncommand="kw.onTag(1)" />
         
-        <menuitem id="kwcontext_good" label="Tag Unknown"
+        <menuitem id="kwcontext_tag_unknown" label="Tag Unknown"
               accesskey="u" key="kwkey_tag_2"
               oncommand="kw.onTag(2)" />
         
-        <menuitem id="kwcontext_good" label="Tag Good"
+        <menuitem id="kwcontext_tag_good" label="Tag Good"
               accesskey="g" key="kwkey_tag_3"
               oncommand="kw.onTag(3)" />
         
         <menuitem id="kwcontext_clear" label="Clear Tag"
               accesskey="c" key="kwkey_tag_none"
               oncommand="kw.onTag('none')" />
-        
+
         <menuseparator />
 
-        <menuitem id="kwcontext_propagate" label="Propagate downwards"
-              accesskey="p"
-              oncommand="kw.propagate()" />
+        <menuitem id="kwcontext_propagate" label="Propagate /this/ downwards"
+              key="kwkey_propthis"
+              oncommand="kw.propagate_this()" />
         
         <menuitem id="kwcontext_sweep" label="Sweep the Page"
               key="kwkey_sweep"
               oncommand="kw.onCommandSweep()" />
+          -->
         
       </menupopup>
       
@@ -93,13 +175,13 @@
          tooltiptext="Request a fresh page for tagging from the KrdWrd server"
          oncommand="kw.onCommandGrab();"/>
 
-        <script type="application/x-javascript">
+<script type="application/x-javascript">
 function gen_corpus_popup() {
     function createMenuItem(cLabel,cName) {
         const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
         var item = document.createElementNS(XUL_NS, "menuitem");
         item.setAttribute("label", cLabel);
-        item.setAttribute("oncommand", "kw.setCorpus(\"" + cName + "\", \"" + cLabel + "\")");
+        item.setAttribute("oncommand", "kw.setCorpus(\"" + cName + "\", \"" + cLabel + "\");");
         return item;
     }
     var popup = document.getElementById("kwmenu_corpus_popup");
@@ -109,11 +191,13 @@ function gen_corpus_popup() {
     req.overrideMimeType("application/json");
     req.send(null);
 
-    cnums = 0;
+    var cnums = 0;
     // Remove all of the existing buttons
-    for(i=popup.childNodes.length; i > 0; i--)
+    for(var i=popup.childNodes.length; i >= 0; --i)
     {
-        popup.removeChild(popup.childNodes[0]);
+        try {
+            popup.removeChild(popup.childNodes[0]);
+        } catch (err) { }
     }
 
     if(req.status == 200)
@@ -134,9 +218,13 @@ function gen_corpus_popup() {
         } catch (err) {} 
     }
 
-    if (cnums == 0) popup.appendChild(createMenuItem("Canola","canola")); 
+    if (cnums == 0) {
+        popup.appendChild(createMenuItem("Canola","canola")); 
+        // popup.appendChild(createMenuItem("Iota","iota"));
+    }
 }
-        </script>
+</script>
+
         <menu id="kwmenu_corpus" label="Corpus" accesskey="C">
             <menupopup id="kwmenu_corpus_popup" onpopupshowing="gen_corpus_popup()">
                 <!-- will be generated dynamically

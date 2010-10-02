@@ -234,6 +234,22 @@ function KrdWrd()
             });
     };
 
+    this.propagate_this = function()
+    {
+        var body = content.document.tracker.tracked || content.document.body;
+        var cn = body.className;
+        if (cn)
+        {
+            var tag = getkwtag(cn);
+        }
+
+        traverse(body, function(node, kw) {
+                if (tag) 
+                    kw = tag;
+                node.parentNode.className = (filterkw(node.parentNode.className) + " " + kw).trim();
+            });
+    };
+
     // show window w/ annotated text
     this.text = function()
     {
@@ -302,7 +318,6 @@ function KrdWrd()
         $('contentAreaContextMenu').addEventListener("popuphiding", function() {
             setTimeout(function () { content.document.blocked = false;}, 100); }, false);
     };
-
 }
 
 // Singleton
