@@ -3,6 +3,7 @@ function Tracker()
     this.tracked_class = null;
     this.tracked = null;
     this.listen = null;
+    this.lasttag = 0;
 }
 
 
@@ -22,14 +23,23 @@ Tracker.prototype._doTrackEvent =
         }
         else if (type == 'click' && event.button == 0)
         {
+            // a 'click' event will trigger a node for tagging: either
+            //  - with the same tag the last node was tagged
+            //  - with the 'next' tag in the sequence of tags
+            //  - or with the default tag
+
+            // the default tag to use
+            tag_index = 1;
+            // get the tag of the 'current' node
             curti = parseInt(getkwtagnum(this.tracked_class));
 
-            if (curti > 0)
-                // tag_index = (( curti + 1) % 3 ) + 1;
-                tag_index = ( (curti-1) % 3 ) == 0 ? 3 : (curti+2) % 3 ;
-            else
-                tag_index = 3;
+            if (curti > 0 && curti == this.lasttag)
+                tag_index = (( curti + 1) % 3 ) + 1;
+                // tag_index = ( (curti-1) % 3 ) == 0 ? 3 : (curti+2) % 3;
+            else if (this.lasttag > 0)
+                tag_index = this.lasttag;
 
+            this.lasttag = tag_index;
             this.doTrack(null, tag_index);
         }
 
