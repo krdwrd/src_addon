@@ -196,11 +196,17 @@ function progress_listener(browser, on_loaded)
                     // we have a page within the timeout - clear it
                     if (this.tmoutid) clearTimeout(tmoutid);
 
-                    if (this._statusChange == undefined) {
-                        error("DNS - server not found");
+                    var doc = brow.contentDocument;
+                    if (doc.location == null || doc.location == "about:blank")
+                    {
+                        //if (this._statusChange == undefined) {
+                        //    error("DNS - server not found");
+                        // this now, is more general - and does work when 
+                        // using offline html-only (without content).
+                        error("contacting " + browser.getAttribute('src'));
+
                     }
 
-                    var doc = brow.contentDocument;
                     if ((prog.DOMWindow == brow.contentWindow) && req && 
                             (brow.removeProgressListener(brow.listen) || true))
                     {
@@ -214,7 +220,7 @@ function progress_listener(browser, on_loaded)
                                 }
                                 catch (e)
                                 {
-                                    error("Error handling onLoad of " + doc.location
+                                    error("onLoad of " + doc.location
                                           + ": " + format_exception(e));
                                 }
                              },
