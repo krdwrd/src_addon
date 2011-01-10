@@ -53,7 +53,8 @@ function getkwtag(klasses)
     return filterklass(klasses, function(klass)
     {
         // "kw-t-none" can happen after tag/tag-remove action
-        return (klass.substring(15,0) == "krdwrd-tag-none" || klass.substring(10, 0) != "krdwrd-tag");
+        return (klass.substring(15,0) == "krdwrd-tag-none" 
+            || klass.substring(10, 0) != "krdwrd-tag");
         // return (klass.substring(10, 0) != "krdwrd-tag");
     }).trim();
 }
@@ -85,6 +86,33 @@ function recursehere(node)
         node.nodeName != "SCRIPT" &&
         node.nodeName != "STYLE" &&
         node.nodeName != "#comment")
+}
+
+// returns true for 'interrupting' white space nodes 
+function wsNode(node)
+{
+    var nn = String(node.nodeName);
+
+    return (nn == "P" ||
+        nn == "DIV" ||
+        nn == "BR" ||
+        nn == "BLOCKQUOTE" ||
+        nn == "DL" ||
+        nn == "UL" ||
+        nn == "OL" ||
+        nn == "LI" ||
+        nn == "TR" ||
+        nn == "TH" ||
+        nn == "TD" ||
+        nn == "TABLE" ||
+        nn == "OPTION" ||
+        nn == "PRE" ||
+        nn == "H1" ||
+        nn == "H2" ||
+        nn == "H3" ||
+        nn == "H4" ||
+        nn == "H5" ||
+        nn == "H6");
 }
 
 // traverse the dom, call cb on text nodes
