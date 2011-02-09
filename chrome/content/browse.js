@@ -20,7 +20,7 @@ function mkBrowser(url, onload)
     browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_STATE_NETWORK);
 
     return browser;
-};
+}
 
 // open all urls in filelist in a browser window
 // return list of document objects when fully loaded
@@ -220,8 +220,8 @@ function progress_listener(browser, on_loaded)
                                 }
                                 catch (e)
                                 {
-                                    error("onLoad of " + doc.location
-                                          + ": " + format_exception(e));
+                                    error("onLoad of " + doc.location + 
+                                        ": " + format_exception(e));
                                 }
                              },
                         500);
@@ -240,13 +240,13 @@ function progress_listener(browser, on_loaded)
                     { 
                         _statusChange = aStatus;
                         verbose(aMessage);
-                    }; 
+                    } 
             },
         onSecurityChange:
-            function() { return 0; },
+            function() { return 0; }
         };
     return pl;
-};
+}
 
 // self-contained object to observe nsIHttpChannel to have a handle onto 
 // the HTTP Response Status
@@ -277,6 +277,7 @@ var httpRequestObserver =
                         break;
                     default:
                         print("HRS: ERR ("+httpChannel.responseStatus+")");
+                        break;
                 }
             } catch (err) {
                 verbose(err);
@@ -289,8 +290,8 @@ var httpRequestObserver =
 
     get observerService() 
     {
-        return Components.classes["@mozilla.org/observer-service;1"]
-            .getService(Components.interfaces.nsIObserverService);
+        return Components.classes["@mozilla.org/observer-service;1"].
+            getService(Components.interfaces.nsIObserverService);
     },
 
     register: function()
@@ -317,12 +318,12 @@ function post_request(url, data, callback)
                                          var response = request.responseText;
                                          var status = request.status;
                                          callback(response, status);
-                                     };
+                                     }
                                  };
     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.setRequestHeader('Content-Encoding', 'multipart/form-data')
+    request.setRequestHeader('Content-Encoding', 'multipart/form-data');
     request.setRequestHeader("Content-length", data.length);
     request.send(data);
-};
+}
 
 // vim: et
