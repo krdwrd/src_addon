@@ -120,24 +120,27 @@ function traverse(body, cb, defaulttag)
 {
     function rec(node, kw)
     {
-        var cn = node.className;
-        if (cn)
+        if (node) 
         {
-            var tag = getkwtag(cn);
-            if (tag) 
-                kw = tag;
-        }
-        if (node.nodeName == "#text")
-        {
-            var tx = node.data.replace( /^\s+/g, "").replace( /\s+$/g, "").replace( /\n/g, " ").replace(/  +/g, " ");
-            if (tx)
-                cb(node, kw, tx);
-        }
-        for (child in node.childNodes)
-        {
-            cnode = node.childNodes[child];
-            if (recursehere(cnode))
-                rec(cnode, kw);
+            var cn = node.className;
+            if (cn)
+            {
+                var tag = getkwtag(cn);
+                if (tag) 
+                    kw = tag;
+            }
+            if (node.nodeName == "#text")
+            {
+                var tx = node.data.replace( /^\s+/g, "").replace( /\s+$/g, "").replace( /\n/g, " ").replace(/  +/g, " ");
+                if (tx)
+                    cb(node, kw, tx);
+            }
+            for (child in node.childNodes)
+            {
+                cnode = node.childNodes[child];
+                if (recursehere(cnode))
+                    rec(cnode, kw);
+            }
         }
     };
     rec(body, defaulttag || "krdwrd-tag-1");
