@@ -17,7 +17,7 @@ function getHTML()
 // generic string filter function
 function filterklass(klasses, filter)
 {
-    if (! klasses) return '';
+    if (!klasses || !klasses.split) return '';
     var l = klasses.split(" ");
     res = "";
     for (i in l)
