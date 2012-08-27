@@ -66,27 +66,27 @@ function open_documents(filelist, callback)
 // progress listener implementing nsIWebProgressListener
 function progress_listener(browser, on_loaded)
 {
-    const STATE_IS_REQUEST = 
+    var STATE_IS_REQUEST = 
         Components.interfaces.nsIWebProgressListener.STATE_IS_REQUEST;
-    const STATE_IS_DOCUMENT = 
+    var STATE_IS_DOCUMENT = 
         Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT;
-    const STATE_IS_NETWORK =
+    var STATE_IS_NETWORK =
         Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK;
-    const STATE_IS_WINDOW =
+    var STATE_IS_WINDOW =
         Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW;
 
-    const STATE_START =
+    var STATE_START =
         Components.interfaces.nsIWebProgressListener.STATE_START;
-    const STATE_REDIRECTING =
+    var STATE_REDIRECTING =
         Components.interfaces.nsIWebProgressListener.STATE_REDIRECTING;
-    const STATE_TRANSFERRING =
+    var STATE_TRANSFERRING =
         Components.interfaces.nsIWebProgressListener.STATE_TRANSFERRING;
-    const STATE_NEGOTIATING =
+    var STATE_NEGOTIATING =
         Components.interfaces.nsIWebProgressListener.STATE_NEGOTIATING;
-    const STATE_STOP =
+    var STATE_STOP =
         Components.interfaces.nsIWebProgressListener.STATE_STOP;
 
-    const STATUS_RESOLVING =
+    var STATUS_RESOLVING =
         Components.interfaces.nsISocketTransport.STATUS_RESOLVING;
 
 
@@ -94,9 +94,12 @@ function progress_listener(browser, on_loaded)
     {
         // page load timeout ID - track the overall timeout
         tmoutid = setTimeout(function() {
-                browser.removeProgressListener(browser.listen);
-                browser.stop();
+                // after we hit the 'STOP' button let the remainder of the 
+                // logic fall into place...
+                // browser.removeProgressListener(browser.listen);
+                // ...and handle things:hence, DON'T remove the PListener
                 print("APP: STOP");
+                browser.stop();
                 }, KrdWrdApp.param.tmout);
     }
 
@@ -108,7 +111,7 @@ function progress_listener(browser, on_loaded)
         _requestsStarted: 0,
         _requestsFinished: 0,
         _pageFuzzyFinished: 0,
-        _timeoutid: 0, 
+        _timeoutids: Array(), 
         _statusChange: null,
 
         QueryInterface :
@@ -156,7 +159,7 @@ function progress_listener(browser, on_loaded)
                         this._requestsFinished++;
                 }
                 args += ']';
-                // verbose(args + ' ' + this._requestsStarted  + '/' + this._requestsFinished);
+                verbose(args + ' ' + this._requestsStarted  + '/' + this._requestsFinished);
                
                 // now we know about the HTTP Response for the document
                 // no more responses needed (img, etc...)
@@ -167,32 +170,39 @@ function progress_listener(browser, on_loaded)
                     httpRequestObserver.unregister();
                 }
 
+
+                function clear_timeoutids()
+                {
+                    for(key in this._timeoutids)
+                    {
+                        clearTimeout(this._timeoutids[key]);
+                    }
+                    // if (this._timeoutid) 
+                    // { 
+                    //     clearTimeout(this._timeoutid);
+                    //     this._timeoutid = null;
+                    // } 
+                }
+
                 if ((flg & STATE_STOP) && (flg & STATE_IS_NETWORK))
                 {
-                    if (this._timeoutid) 
-                    { 
-                        clearTimeout(this._timeoutid);
-                        this._timeoutid = null;
-                    } 
-
+                    verbose("STATE_STOP && STATE_IS_NETWORK");
+                    clear_timeoutids();
                     fetchGrabDo(prog,req);
                 } 
                 else if (flg & STATE_STOP && this._requestsStarted > 1 && this._requestsStarted - this._requestsFinished <= 1) 
                 {
-                    if (this._timeoutid) 
-                    { 
-                        clearTimeout(this._timeoutid);
-                        this._timeoutid = null;
-                    } 
-
-                    this._timeoutid = setTimeout(function(){ 
+                    clear_timeoutids();
+                    this._timeoutids[this._requestsStarted] = setTimeout(function(){ 
                             this._pageFuzzyFinished = 1; 
+                            clear_timeoutid();
                             fetchGrabDo(prog,req);
-                            },5000);
+                            }, KrdWrdApp.param.tmout / 1.5);
                 }
 
                 function fetchGrabDo(prog,req)
                 {
+                    verbose("fetchGrabDo");
                     // we have a page within the timeout - clear it
                     if (this.tmoutid) clearTimeout(tmoutid);
 
@@ -230,12 +240,15 @@ function progress_listener(browser, on_loaded)
                 return 0;
             },
         onLocationChange:
-            function() { return 0; },
+            function() { // verbose("onLocationChange"); 
+                return 0; },
         onProgressChange:
-            function() { return 0; },
+            function() { // verbose("onProgressChange"); 
+                return 0; },
         onStatusChange:
             function(aWebProgress, aRequest, aStatus, aMessage)
             { 
+                // verbose("onStatusChange");
                 if (aStatus !== STATUS_RESOLVING) 
                     { 
                         _statusChange = aStatus;
@@ -243,7 +256,8 @@ function progress_listener(browser, on_loaded)
                     } 
             },
         onSecurityChange:
-            function() { return 0; }
+            function() { // verbose("onSecurityChange"); 
+                return 0; }
         };
     return pl;
 }
