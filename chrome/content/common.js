@@ -207,7 +207,7 @@ function filterNodes(doc, nName)
     }
 }
 
-
+// https://developer.mozilla.org/en-US/docs/How_to_Quit_a_XUL_Application
 // quit the application
 function quit(forced)
 {
