@@ -15,9 +15,35 @@ function mkBrowser(url, onload)
     // need to append to a document to become available
     document.documentElement.appendChild(browser);
 
+    if (KrdWrdApp.param.follow)
+    {
+        print("OPT: follow mode, timeout for page load is "+KrdWrdApp.param.tmout+"ms");
+        // page load timeout ID - track the overall timeout
+        tmoutid = setTimeout(function() {
+                // after we hit the 'STOP' button let the remainder of the 
+                // logic fall into place...
+                // browser.removeProgressListener(browser.listen);
+                // ...and handle things:hence, DON'T remove the PListener
+                print("APP: STOP");
+                browser.stop();
+                }, KrdWrdApp.param.tmout);
+    } 
+    else
+    {
+        print("OPT: timeout for app is "+KrdWrdApp.param.tmout+"ms");
+        var timer = 
+            Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+
+        timer.initWithCallback({notify: function(timer) { 
+            setTimeout(function() {error("TIMEOUT"); }, KrdWrdApp.param.tmout);
+            }}, 0, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+    }
+
+
+
     // hook into onload
     browser.listen = progress_listener(browser, onload);
-    browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_STATE_NETWORK);
+    browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_ALL);
 
     return browser;
 }
@@ -64,6 +90,7 @@ function open_documents(filelist, callback)
 }
 
 // progress listener implementing nsIWebProgressListener
+// (cf. https://developer.mozilla.org/en/nsIWebProgressListener)
 function progress_listener(browser, on_loaded)
 {
     var STATE_IS_REQUEST = 
@@ -90,28 +117,14 @@ function progress_listener(browser, on_loaded)
         Components.interfaces.nsISocketTransport.STATUS_RESOLVING;
 
 
-    if (KrdWrdApp.param.follow)
-    {
-        // page load timeout ID - track the overall timeout
-        tmoutid = setTimeout(function() {
-                // after we hit the 'STOP' button let the remainder of the 
-                // logic fall into place...
-                // browser.removeProgressListener(browser.listen);
-                // ...and handle things:hence, DON'T remove the PListener
-                print("APP: STOP");
-                browser.stop();
-                }, KrdWrdApp.param.tmout);
-    }
-
     var brow = browser;
     var handler = on_loaded;
     var pl =
         {
-
-        _requestsStarted: 0,
-        _requestsFinished: 0,
+        _requestsStarted: null,
+        _requestsFinished: null,
         _pageFuzzyFinished: 0,
-        _timeoutids: Array(), 
+        _tmoutid: null, 
         _statusChange: null,
 
         QueryInterface :
@@ -128,40 +141,52 @@ function progress_listener(browser, on_loaded)
             {
 
                 var args = '[';
-                if (flg   & STATE_IS_REQUEST) {
-                        args += 'R';
-                }
-                if (flg   & STATE_IS_DOCUMENT) {
-                        args += 'D';
-                }
-                if (flg   & STATE_IS_NETWORK) {
-                        args += 'N';
-                }
-                if (flg   & STATE_IS_WINDOW) {
-                        args += 'W';
-                }
+                if (flg   & STATE_IS_REQUEST)   { args += 'R'; }
+                if (flg   & STATE_IS_DOCUMENT)  { args += 'D'; }
+                if (flg   & STATE_IS_NETWORK)   { args += 'N'; }
+                if (flg   & STATE_IS_WINDOW)    { args += 'W'; }
                 args += '][';
-                if (flg   & STATE_START) {
-                        args += 'Start';
-                        this._requestsStarted++;
-                }
-                if (flg   & STATE_REDIRECTING) {
-                        args += 'Redir';
-                }
-                if (flg   & STATE_TRANSFERRING) {
-                        args += 'Trans';
-                }
-                if (flg   & STATE_NEGOTIATING) {
-                        args += 'Negot';
-                }
-                if (flg   & STATE_STOP) {
-                        args += 'Stop';
-                        this._requestsFinished++;
-                }
+                if (flg   & STATE_START)        { args += 'Start'; }
+                if (flg   & STATE_REDIRECTING)  { args += 'Redir'; }
+                if (flg   & STATE_TRANSFERRING) { args += 'Trans'; } 
+                if (flg   & STATE_NEGOTIATING)  { args += 'Negot'; }
+                if (flg   & STATE_STOP)         { args += 'Stop'; }
                 args += ']';
-                verbose(args + ' ' + this._requestsStarted  + '/' + this._requestsFinished);
                
-                // now we know about the HTTP Response for the document
+                if (flg & STATE_START)
+                {
+                    if (flg & STATE_IS_NETWORK) 
+                    {
+                        pl._requestsStarted = 0;
+                        pl._requestsFinished = 0;
+                    }
+                    if (flg & STATE_IS_REQUEST)
+                    {
+                        ++pl._requestsStarted;
+                    }
+                }
+                else
+                {
+                    if (flg & STATE_STOP)
+                    {
+                        if (flg & STATE_IS_REQUEST)
+                        {
+                            if ( (pl._requestsFinished + 1) <= pl._requestsStarted )
+                            {
+                                ++pl._requestsFinished;
+                            }
+                        }
+                    }
+                }
+                verbose(args + ' ' + pl._requestsStarted  + '/' + pl._requestsFinished);
+                
+                if ( (flg & STATE_START) && (flg & STATE_IS_DOCUMENT) )
+                {
+                    verbose("STATE_START && STATE_IS_DOCUMENT");
+                    return 0;
+                }
+
+                // now we know about the HTTP Response Code for the document;
                 // no more responses needed (img, etc...)
                 if ((flg & STATE_IS_REQUEST) && 
                         (flg & STATE_IS_DOCUMENT) && 
@@ -170,41 +195,52 @@ function progress_listener(browser, on_loaded)
                     httpRequestObserver.unregister();
                 }
 
-
-                function clear_timeoutids()
+                // this is a proper 'page loaded'
+                if ( (pl._requestsFinished == pl._requestsStarted)
+                        && ( (flg & STATE_STOP) && (flg & STATE_IS_NETWORK) ) 
+                        && (stat == false) )
                 {
-                    for(key in this._timeoutids)
-                    {
-                        clearTimeout(this._timeoutids[key]);
-                    }
-                    // if (this._timeoutid) 
-                    // { 
-                    //     clearTimeout(this._timeoutid);
-                    //     this._timeoutid = null;
-                    // } 
-                }
-
-                if ((flg & STATE_STOP) && (flg & STATE_IS_NETWORK))
-                {
-                    verbose("STATE_STOP && STATE_IS_NETWORK");
-                    clear_timeoutids();
+                    verbose("(_requestsFinished == _requestsStarted) " + 
+                            "&& (STOP && IS_NETWORK) && stat == false ");
                     fetchGrabDo(prog,req);
                 } 
-                else if (flg & STATE_STOP && this._requestsStarted > 1 && this._requestsStarted - this._requestsFinished <= 1) 
+                // this is a 'STOP button press'
+                else if ( (flg & STATE_STOP) && (flg & STATE_IS_NETWORK) &&
+                        (flg & STATE_IS_WINDOW) )
                 {
-                    clear_timeoutids();
-                    this._timeoutids[this._requestsStarted] = setTimeout(function(){ 
-                            this._pageFuzzyFinished = 1; 
-                            clear_timeoutid();
-                            fetchGrabDo(prog,req);
-                            }, KrdWrdApp.param.tmout / 1.5);
+                    verbose("STOP && IS_NETWORK && IS_WINDOW");
+                    fetchGrabDo(prog,req);
+                } 
+                // however, also try to determine whether the page is about to
+                // 'finish loading': we keep track of the started and finished
+                // requests, and when almost all requests have finished and
+                // nothing happens within a given timeout we also consider the
+                // page loaded.
+                // this will be reported as 'FUZ:' 
+                else if (flg & STATE_STOP && pl._requestsStarted > 0 
+                            && pl._requestsStarted - pl._requestsFinished <= 1) 
+                {
+                    clear_tmoutid();
+                    pl._tmoutid = setTimeout(function() {
+                        pl._pageFuzzyFinished += 1; 
+                        fetchGrabDo(prog,req);
+                        }, KrdWrdApp.param.tmout / 2);
+                }
+
+                function clear_tmoutid()
+                {
+                    if (pl._tmoutid) clearTimeout(pl._tmoutid);
                 }
 
                 function fetchGrabDo(prog,req)
                 {
                     verbose("fetchGrabDo");
                     // we have a page within the timeout - clear it
-                    if (this.tmoutid) clearTimeout(tmoutid);
+                    clear_tmoutid();
+                    if (this.tmoutid) {
+                        clearTimeout(this.tmoutid);
+                        verbose("clearTimeout(timeoutid)-ed");
+                    } 
 
                     var doc = brow.contentDocument;
                     if (doc.location == null || doc.location == "about:blank")
@@ -220,12 +256,14 @@ function progress_listener(browser, on_loaded)
                     if ((prog.DOMWindow == brow.contentWindow) && req && 
                             (brow.removeProgressListener(brow.listen) || true))
                     {
+                        print('FUZ: '+ ((pl._pageFuzzyFinished > 0) ?
+                                "true" : "false"));
+
                         // wait a second for the engine to settle
                         setTimeout(function()
                             {
                                 try
                                 {
-                                    print('FUZ: ' + this._pageFuzzyFinished );
                                     handler(doc, prog.DOMWindow);
                                 }
                                 catch (e)
@@ -310,12 +348,14 @@ var httpRequestObserver =
 
     register: function()
     {
+        verbose("httpRequestObserver.register()-ed");
         this.observerService.addObserver(this, "http-on-examine-response", false);
         this.observerService.addObserver(this, "http-on-examine-cached-response", false);
     },
 
     unregister: function()
     {
+        verbose("httpRequestObserver.unregister()-ed");
         this.observerService.removeObserver(this, "http-on-examine-cached-response");
         this.observerService.removeObserver(this, "http-on-examine-response");
     }
