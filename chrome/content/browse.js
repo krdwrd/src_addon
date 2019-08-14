@@ -45,6 +45,35 @@ function mkBrowser(url, onload)
     browser.listen = progress_listener(browser, onload);
     browser.addProgressListener(browser.listen, Components.interfaces.nsIWebProgress.NOTIFY_ALL);
 
+    // for debugging
+    // observerService.addObserver({
+    //     observe:function(aSubject, aTopic, aData)
+    //         {
+    //             //verbose("observe: "+aTopic+","+aSubject);
+    //             //if (aTopic == 'http-on-modify-request')
+    //             //{
+    //             //    aSubject.QueryInterface(Components.interfaces.nsIHttpChannel);
+    //             //    if (
+    //             //        (aSubject.URI.spec.substring(0, 8) == 'https://') ||
+    //             //        // (aSubject.URI.spec.substring(0, 25) == 'http://www.angolotesti.it')
+    //             //        // (aSubject.URI.spec.substring(0, 42) == "http://www.angolotesti.it/js/js-engine.php") ||
+    //             //        // (aSubject.URI.spec.substring(0, 23) == "http://www.facebook.com") ||
+    //             //        false
+    //             //       )
+    //             //    {
+    //             //        aSubject.loadFlags = Components.interfaces.nsICachingChannel.LOAD_ONLY_FROM_CACHE;
+    //             //        aSubject.cancel(Components.results.NS_ERROR_FAILURE);
+    //             //    }
+    //             //    else
+    //             //    {
+    //             //        verbose(aTopic+":"+aSubject.URI.spec);
+    //             //    }
+    //             //} else if (aTopic == 'document-element-inserted')
+    //             //{
+    //             //   verbose(aSubject.body);
+    //             //}
+    //         }
+    //     }, "*", false);
     return browser;
 }
 
