@@ -155,6 +155,7 @@ function progress_listener(browser, on_loaded)
         _pageFuzzyFinished: 0,
         _tmoutid: null, 
         _statusChange: null,
+        _urqs: Array(),
 
         QueryInterface :
             function(aIID)
@@ -213,6 +214,22 @@ function progress_listener(browser, on_loaded)
                 {
                     verbose("STATE_START && STATE_IS_DOCUMENT");
                     return 0;
+                }
+
+                if (KrdWrdApp.param.urlrqs)
+                {
+                    // print the URLs for document requests, and other types of
+                    // requests, such as requests for inline content (e.g. images
+                    // and stylesheets).
+                    if ((flg & STATE_STOP) && (flg & STATE_IS_REQUEST))
+                    {
+                        const regex = /^(file|gopher|about|chrome|resource):/;
+                        if (req && !regex.test(req.name) && (!(req.name in pl._urqs)))
+                        {
+                            print("URQ: "+req.name);
+                            pl._urqs[req.name] = "#seen";
+                        }
+                    }
                 }
 
                 // now we know about the HTTP Response Code for the document;
